@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
+const path = require('path');
 
 const mongoCollections = require('../config/mongoCollections');
 const games = mongoCollections.games;
