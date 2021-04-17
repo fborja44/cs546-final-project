@@ -135,7 +135,17 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
  * Retrieves all games in the database.
  */
 async function getAllGames() {
+    const gameCollection = await games();
 
+    const gameList = await gameCollection.find({}).toArray();
+
+    if (gameList.length === 0) return [];
+
+    for (let x of gameList) {
+        x._id = x._id.toString();
+    }
+
+    return gameList;
 }
 
 /**
@@ -143,7 +153,18 @@ async function getAllGames() {
  * @param {string} id String representation of the ObjectId of the game.
  */
 async function getGameById(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
 
+    let parsedId = ObjectId(id);
+
+    const gameCollection = await games();
+    const game = await gameCollection.findOne({ _id: parsedId });
+    if (game === null) throw "No game with that id";
+    game._id = game._id.toString();
+
+    return game;
 }
 
 /**
