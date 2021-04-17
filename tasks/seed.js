@@ -9,6 +9,10 @@ const main = async () => {
     const db = await dbConnection();
     await db.dropDatabase(); // Drop the databse before initalizing data to avoid duplicate data.
 
+    /* Main seeding operations here
+    ---------------------------------------------------------------------------*/
+
+
     // Finished seeding
     console.log("\nDatabase seeding complete.");
     await db.serverConfig.close();
