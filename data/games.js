@@ -51,7 +51,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     for (let x of genres) {
         if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
         if (x.trim().length === 0) throw "The genre must not be an empty string";
-        genresTrim = genresTrim.append(x.trim());
+        genresTrim.push(x.trim());
     }
 
     // releaseYear error checking
@@ -72,7 +72,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     for (let x of platforms) {
         if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
         if (x.trim().length === 0) throw "The platform must not be an empty string";
-        platformsTrim = platformsTrim.append(x.trim());
+        platformsTrim.push(x.trim());
     }
 
     // description error checking
@@ -105,7 +105,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
         if (x.platform.trim().length === 0) throw "The platform must not be an empty string";
         obj.platform = x.platform.trim();
 
-        pricesTrim = pricesTrim.append(obj);
+        pricesTrim.push(obj);
     }
 
     const gameCollection = await games();
