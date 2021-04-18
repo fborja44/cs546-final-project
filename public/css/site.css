@@ -1,21 +1,13 @@
 /* General site styles
  ---------------------------------------------------------------------------*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
 
-
- body{
-     margin: 0;
- }
-
- li,a,button{
-    font-family:"Poppins";
-    font-weight: 500;
-    font-size:16px;
-    text-decoration: none;
-    color:#edf0f1;
-
+/** General Styles **/
+body {
+    margin: 0;
 }
 
+/** Header Styles **/
 header {
     display: flex;
     justify-content: flex-end;
@@ -26,25 +18,77 @@ header {
     box-shadow:.1px 4px 5px #919aa1;
 }
 
+.logo {
+    width: 100px;
+    height: auto;
+    margin-right:auto;
+}
+
+/** Nav Styles **/
+li,a,button {
+    font-family:"Poppins";
+    font-weight: 500;
+    font-size:16px;
+    text-decoration: none;
+    color: #edf0f1;
+
+}
+
 .nav_links {
     list-style: none;
 }
 
-.nav_links li{
+.nav_links li {
     display:inline-block;
     padding: 0px 20px;
 }
 
-.nav_links li a{
+.nav_links li a {
     transitions: all 0.3s ease 0s;
 }
 
-.nav_links li a:hover{
+.nav_links li a:hover {
     color: #0088a9
 }
 
-.logo{
-    width: 100px;
-    height: auto;
-    margin-right:auto;
+/** Footer Styles **/
+footer {
+    /* Sticky Footer */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    text-align: right;
+    border: 1px;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+    /* box-shadow: 1px -4px 5px #919aa1; */
+}
+
+footer p {
+    font-family:"Poppins";
+    font-weight: 500;
+    font-size: 12px;
+    text-decoration: none;
+    color: #edf0f1;
+
+    margin-right: 20px;
+}
+
+footer a {
+    font-size: 12px;
+}
+
+footer a:hover {
+    color: #0088a9
+}
+
+footer p.left {
+    float: left;
+    margin-left: 20px;
+}
+   
+footer p.right {
+    float: right;
+    margin-right: 20px;
 }
