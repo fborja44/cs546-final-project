@@ -4,13 +4,14 @@ const dbConnection = require('../config/mongoConnection');
 const data = require('../data/');
 const usersData = data.users;
 const gamesData = data.games;
+const reviewsData = data.reviews;
 const chalk = require('chalk'); // add colors to output for easier reading
 
 const main = async () => {
     const db = await dbConnection();
     await db.dropDatabase(); // Drop the databse before initalizing data to avoid duplicate data.
 
-    /* Main seeding operations here
+    /* Creating games
     ---------------------------------------------------------------------------*/
     /* Game 1: Cyberpunk 2077
     -------------------------------------*/
@@ -39,7 +40,31 @@ const main = async () => {
         [{ price: "$49.99", platform: "Nintendo Switch" }]
     )
     let game2_id = game2._id.toString();
-    
+
+    /* Creating reviews
+    ---------------------------------------------------------------------------*/
+    /* Game 1 Reviews: Cyberpunk 2077
+    -------------------------------------*/
+    let review1_1 = await reviewsData.createReview(
+        game1_id,
+        "nice",
+        { username: "dude", _id: "1" },
+        "4/18/2020",
+        "pretty cool",
+        4
+    )
+
+    let review1_2 = await reviewsData.createReview(
+        game1_id,
+        "sucks",
+        { username: "otherdude", _id: "2" },
+        "4/15/2020",
+        "this game sucks",
+        1
+    )
+
+    /* Testing functions
+    ---------------------------------------------------------------------------*/
     // Testing getAllGames()
     let games = await gamesData.getAllGames();
     console.log(games);
@@ -47,6 +72,10 @@ const main = async () => {
     // Testing getGameById()
     let test1 = await gamesData.getGameById(game1_id);
     console.log(test1);
+
+    // Testing getAllReviews()
+    let reviews1 = await reviewsData.getAllReviews(game1_id);
+    console.log(reviews1);
 
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));

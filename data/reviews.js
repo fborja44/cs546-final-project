@@ -42,7 +42,7 @@
     if (!reviewDate) throw "The reviewDate must be provided";
     if (typeof reviewDate !== 'string') throw `${reviewDate || "provided argument"} must be a string`;
     if (reviewDate.trim().length === 0) throw "The reviewDate must not be an empty string";
-    if (!(moment(datePublished, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
+    if (!(moment(reviewDate, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
 
     // review error checking
     if (!review) throw "A review must be provided";
@@ -57,6 +57,7 @@
     const gameCollection = await games();
 
     let newReview = {
+        _id: ObjectId(),
         reviewTitle: reviewTitle.trim(),
         author: {
             username: author.username.trim(),
