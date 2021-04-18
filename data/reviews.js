@@ -4,14 +4,16 @@
  const games = mongoCollections.games;
  let { ObjectId } = require('mongodb');
  const moment = require('moment'); // for date checking
+ const gamesData = require('./games'); // games database methods
 
  /**
   * Creates a review for a game in the database using the following parameters:
-  * @param {string} reviewTitle 
-  * @param {Object} author 
-  * @param {string} reviewDate 
-  * @param {string} review 
-  * @param {number} rating 
+  * @param {string} gameId The Id of the game being reviewed.
+  * @param {string} reviewTitle The title of the review.
+  * @param {Object} author Object containing the user's id and username.
+  * @param {string} reviewDate The date of the published review, in the format MM/DD/YYYY.
+  * @param {string} review The main content of the review.
+  * @param {number} rating The rating of the review (Integer between 1 and 5 inclusive).
   */
  async function createReview(gameId, reviewTitle, author, reviewDate, review, rating) {
     // gameId error checking
@@ -52,4 +54,45 @@
     if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${review || "provided argument"} must be an integer.`;
     if (rating < 1 || rating > 5) throw "The rating must be an integer in the range [1-5]";
 
+    const gameCollection = await games();
+
+    let newReview = {
+        reviewTitle: reviewTitle.trim(),
+        author: {
+            username: author.username.trim(),
+            _id: author._id.trim()
+        },
+        reviewDate: reviewDate,
+        review: review.trim(),
+        replies: [],
+        rating: rating
+    }
+
+    gameId = ObjectId(gameId);
+    const updateInfo = await gameCollection.updateOne(
+        { _id: gameId },
+        { $addToSet: { reviews: newReview } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to create review.';
+    newReview._id = newReview._id.toString();
+    return newReview;
+}
+
+/**
+ * Returns all of the reviews for the game with the given id.
+ * @param {string} gameId 
+ */
+async function getAllReviews(gameId) {
+    // gameId error checking
+    if (!gameId) throw "A title must be provided";
+    if (typeof gameId !== 'string') throw `${gameId || "provided argument"} must be a string`;
+    if (gameId.trim().length === 0) throw "The gameId must not be an empty string";
+
+    const game = await gamesData.getGameById(gameId);
+    return game.reviews;
+}
+
+module.exports = {
+    createReview,
+    getAllReviews
 }
