@@ -65,9 +65,17 @@ const main = async () => {
 
     // Testing getUserById()
     let usertest1 = await usersData.getUserById(user1_id);
+    console.log(usertest1);
 
     // Testing updateUserName()
     await usersData.updateUsername(user1_id, "fborja");
+
+    // Testing updateFirstName()
+    await usersData.updateFirstName(user1_id, "Frankie")
+
+    // Testing updateLastName()
+    await usersData.updateLastName(user1_id, "B");
+
 
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));
