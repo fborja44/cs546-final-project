@@ -10,10 +10,10 @@ const games = mongoCollections.games;
 const gamesData = data.games;
 
 /**
- * 
+ * Renders games list page.
  */
 router.get('/', async (req, res) => {
-  
+    res.render('games/gameslist', {});
 });
 
 /**

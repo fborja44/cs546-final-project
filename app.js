@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const app = express();
 const static = express.static(__dirname + '/public');
 const configRoutes = require('./routes');
@@ -39,6 +40,37 @@ app.use(rewriteUnsupportedBrowserMethods);
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
+
+// Create session
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'super secret',
+  resave: false,
+  saveUninitialized: true
+}))
+
+/**
+ * Loggin Middleware to help with debugging routes
+ * Logs the following information:
+ * - Current Timestamp
+ * - Request Method
+ * - Request Route
+ * - Whether the user is authenticated (temporaryily disabled)
+ */
+ app.use(async (req, res, next) => {
+  let curr_time = new Date().toUTCString();
+  let method = req.method;
+  let route = req.originalUrl;
+  let auth;
+  if (req.session.user) {
+      auth = chalk.green("(Authenticated User)");
+  } else {
+      auth = chalk.red("(Non-Authenticated User)");
+  }
+  console.log(chalk.gray(`[${curr_time}]: `) + `${method} ` + chalk.yellow(`${route} `) + auth);
+
+  next();
+});
 
 configRoutes(app);
 
