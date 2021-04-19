@@ -63,7 +63,7 @@ const main = async () => {
         1
     )
 
-    /* Testing functions
+    /* Testing Games functions
     ---------------------------------------------------------------------------*/
     // Testing getAllGames()
     let games = await gamesData.getAllGames();
@@ -76,6 +76,36 @@ const main = async () => {
     // Testing getAllReviews()
     let reviews1 = await reviewsData.getAllReviews(game1_id);
     console.log(reviews1);
+    
+    /* Creating Users
+    ---------------------------------------------------------------------------*/
+    let user1 = await usersData.createUser(
+        "fborja44",
+        "Francis",
+        "Borja",
+        "fborja@stevens.edu",
+        "supersecret"
+    )
+    let user1_id = user1._id.toString();
+
+    /* Testing Users functions
+    ---------------------------------------------------------------------------*/
+    // Testing getAllUsers()
+    let users = await usersData.getAllUsers();
+    console.log(users);
+
+    // Testing getUserById()
+    let usertest1 = await usersData.getUserById(user1_id);
+    console.log(usertest1);
+
+    // Testing updateUserName()
+    await usersData.updateUsername(user1_id, "fborja");
+
+    // Testing updateFirstName()
+    await usersData.updateFirstName(user1_id, "Frankie")
+
+    // Testing updateLastName()
+    await usersData.updateLastName(user1_id, "B");
 
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));
