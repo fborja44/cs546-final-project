@@ -12,7 +12,7 @@ const saltRounds = 16;
  * @param {string} firstName The first name of the user.
  * @param {string} lastName The last name of the user.
  * @param {string} email The email of the user.
- * @param {string} hashedPassword The (hashed) password of the user used to log in.
+ * @param {string} password The password of the user used to log in.
  */
 async function createUser(username, firstName, lastName, email, password) {
 	if(!username || !firstName || !lastName || !email)
@@ -28,7 +28,7 @@ async function createUser(username, firstName, lastName, email, password) {
 	if(typeof password != 'string' || password.trim() === '')
 		throw `Password ${password} should be a string which is not empty.`
 	const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-	if (!emailParrern.test(email))
+	if (!emailPattern.test(email))
 		throw "Error: Invaild email."
 	const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -62,7 +62,7 @@ async function getAllUsers() {
     if(userList.length == 0){
         return userList;
     }else{
-        userList.forEach((movie) => {
+        userList.forEach((user) => {
             user._id = user._id.toString();
         })
     }
@@ -103,7 +103,7 @@ async function updateUsername(id, newUsername) {
 
     const userCollection = await users();
     return await userCollection
-    	.updateOne({_id: id}, {$set: {username: newUser}})
+    	.updateOne({_id: parsedId}, {$set: {username: newUser}})
     	.then(async function (){
     		return await module.exports.getUserById(id);
     	});
@@ -120,7 +120,7 @@ async function updateFirstName(id, newName) {
 
     const userCollection = await users();
     return await userCollection
-    	.updateOne({_id: id}, {$set: {firstName: newInfo}})
+    	.updateOne({_id: parsedId}, {$set: {firstName: newInfo}})
     	.then(async function (){
     		return await module.exports.getUserById(id);
     	});
@@ -137,7 +137,7 @@ async function updateLastName(id, newName) {
 
     const userCollection = await users();
     return await userCollection
-    	.updateOne({_id: id}, {$set: {lastName: newInfo}})
+    	.updateOne({_id: parsedId}, {$set: {lastName: newInfo}})
     	.then(async function (){
     		return await module.exports.getUserById(id);
     	});
@@ -163,20 +163,18 @@ async function removeUserById(id) {
  * @param {username} username A unique name that will be displayed across the site for the user.
  */
 async function usernameCheck(username) {
-	if(!username || typeof username != 'string' || usrname.trim() === '')
+	if(!username || typeof username != 'string' || username.trim() === '')
 		throw "username should be a string."
 	const newUsername = username.trim().toLowerCase();
 
 	const userCollection = await users();
-	const userList = await userCollection.getAllUsers();
-	let res = true;
+	const userList = await getAllUsers();
 	userList.forEach((user) => {
-		if(newUsername == user.username.toLowerCase()){
-			res = false;
-			break;
-			}
-        })
-	return res;
+		if (newUsername == user.username.toLowerCase()){
+			return false;
+		}
+    })
+	return true;
 
 }
 module.exports = {
