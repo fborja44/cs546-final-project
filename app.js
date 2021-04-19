@@ -40,6 +40,29 @@ app.use(rewriteUnsupportedBrowserMethods);
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
+/**
+ * Loggin Middleware to help with debugging routes
+ * Logs the following information:
+ * - Current Timestamp
+ * - Request Method
+ * - Request Route
+ * - Whether the user is authenticated (temporaryily disabled)
+ */
+ app.use(async (req, res, next) => {
+  let curr_time = new Date().toUTCString();
+  let method = req.method;
+  let route = req.originalUrl;
+  let auth = "temp";
+  // if (req.session.user) {
+  //     auth = chalk.green("Authenticated User");
+  // } else {
+  //     auth = chalk.red("Non-Authenticated User");
+  // }
+  console.log(chalk.gray(`[${curr_time}]: `) + `${method} ` + chalk.magenta(`${route} `) + chalk.green(`(${auth})`));
+
+  next();
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
