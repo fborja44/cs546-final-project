@@ -1,2 +1,31 @@
+<link rel="stylesheet" href="/public/css/gameslist.css">
 <!-- Iterate Through Games List collection -->
-<p>Games List</p>
+<ul>
+    {{#each games}}
+    <li class="games">
+        <div class="score">
+            <span>0.0</span> <!-- replace with {{averageScore}} -->
+        </div>
+        <img src="{{image}}" alt="{{title}}">
+        <div class="info">
+            <a href="/{{title}}" class="title">{{title}}</a>
+            <p class="subinfo">({{releaseYear}}) {{publisher}}</p>
+            <table>
+                <tr>
+                    <th>Genres:</th>
+                    <td>{{genres}}</td>
+                </tr>
+                <tr>
+                    <th>Platforms:</th>
+                    <td>{{platforms}}</td>
+                </tr>
+                <tr>
+                    <th>Prices:</th>
+                    <td>{{prices}}</td>
+                </tr>
+            </table>
+        </div>
+
+    </li>
+    {{/each}}
+</ul>

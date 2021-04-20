@@ -13,7 +13,14 @@ const gamesData = data.games;
  * Renders games list page.
  */
 router.get('/', async (req, res) => {
-    res.render('games/gameslist', {});
+    try {
+        let gamesList = await gamesData.getAllGames();
+        res.render('games/gameslist', { title: "Games", games: gamesList });
+    } catch (e) {
+        res.status(500).json({message: e});
+    }
+
+    
 });
 
 /**

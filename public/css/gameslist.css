@@ -1,0 +1,71 @@
+/* Gameslist page styles
+ ---------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
+
+ /** General Styles **/
+ main {
+    align-items: center;
+ }
+
+/** List styles **/
+/* Game entry */
+.games {
+    background: white;
+    color: black;
+    list-style: none;
+
+    margin: 20px auto 0 auto;
+    width: 1000px;
+    border-radius: 25px;
+    font-size: 14px;
+}
+
+/* Game score */
+.score {
+    background: #2FE58E;
+    float: left;
+    
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    
+    font-weight: bold;
+    font-size: 36px;
+
+    width: 100px;
+    height: 100px;
+
+    margin: 35px 0 0 25px;
+}
+
+.score span {
+    display: block;
+    padding-top: 24px;
+}
+
+/* Game image */
+.games img {
+    width: 110px;
+    display: block;
+    float: left;
+
+    margin: 10px 25px 10px 25px;
+}
+
+/* Game info */
+.info {
+    padding: 10px 0 10px 0;
+}
+
+.title {
+    color: black;
+    font-weight: bold;
+    font-size: 32px;
+    text-decoration: underline;
+}
+
+.info p {
+    margin: 0 0 0 0;
+    font-style: italic;
+    font-size: 20px;
+}
