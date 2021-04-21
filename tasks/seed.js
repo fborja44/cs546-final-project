@@ -41,6 +41,48 @@ const main = async () => {
     )
     let game2_id = game2._id.toString();
 
+    /* Game 3: Valorant
+    -----------------------------------------------------*/
+    let game3 = await gamesData.createGame(
+        "Valorant",
+        "https://cdn-ascope-prod.global.ssl.fastly.net/static/images/boxart_valorant_300x400.jpg",
+        "Riot Games",
+        ["First-Person Shooter", "Team", "Tactical"],
+        "2020",
+        ["PC"],
+        "Valorant is a free-to-play hero shooter developed and published by Riot Games, for Microsoft Windows.",
+        [{ price: "$0.00", platform: "PC" }]
+    )
+    let game3_id = game3._id.toString();
+
+    /* Game 4: Pokemon Emerald
+    -----------------------------------------------------*/
+    let game4 = await gamesData.createGame(
+        "Pokémon Emerald",
+        "https://e.snmc.io/lk/f/x/a9134260c04804e3ae77eb4fb7760be7/5280480",
+        "Gamefreak",
+        ["Adventure", "RPG", "Strategy"],
+        "2004",
+        ["Game Boy Advance"],
+        "Pokémon Emerald takes place over land and sea and pits you against the Team Aqua and Team Magma from Saphire and Ruby.",
+        [{ price: "$20.00", platform: "Game Boy Advance" }]
+    )
+    let game4_id = game4._id.toString();
+
+    /* Game 5: NBA 2K21
+    -----------------------------------------------------*/
+    let game5 = await gamesData.createGame(
+        "NBA 2K21",
+        "https://specials-images.forbesimg.com/imageserve/5efac3590c5dac00077000c0/960x0.jpg?fit=scale",
+        "2K Games",
+        ["Sports", "Simulation"],
+        "2020",
+        ["PlayStation 4", "Android", "PlayStation 5", "Xbox One", "PC", "Nintendo Switch"],
+        "NBA 2K21 is a basketball simulation video game that was developed by Visual Concepts and published by 2K Sports, based on the National Basketball Association. It is the 22nd installment in the NBA 2K franchise and the successor to NBA 2K20.",
+        [{ price: "$49.99", platform: "Xbox One" }]
+    )
+    let game5_id = game5._id.toString();
+
     /* Creating reviews
     ---------------------------------------------------------------------------*/
     /* Game 1 Reviews: Cyberpunk 2077

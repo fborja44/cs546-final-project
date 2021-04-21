@@ -59,10 +59,10 @@ li,a,button {
 /** Footer Styles **/
 footer {
     /* Sticky Footer */
-    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
+    position: fixed;
 
     text-align: right;
     border: 1px;

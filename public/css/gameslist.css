@@ -54,6 +54,7 @@ button:hover {
 
 #new {
     color: black;
+    padding-bottom: 60px;
 }
 
 #new:hover {
@@ -105,18 +106,18 @@ button:hover {
     display: block;
     float: left;
 
-    margin: 10px 25px 10px 25px;
+    margin: 10px 25px 5px 25px;
 }
 
 /* Game info */
 .info {
-    padding: 10px 0 10px 0;
+    padding: 10px 0 15px 0;
 }
 
 .title {
     color: black;
     font-weight: bold;
-    font-size: 32px;
+    font-size: 28px;
     /* text-decoration: underline; */
 }
 
