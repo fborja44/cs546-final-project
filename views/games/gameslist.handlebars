@@ -1,4 +1,12 @@
 <link rel="stylesheet" href="/public/css/gameslist.css">
+<div class="center">
+    <form id="game-search" method="POST" action-"/search">
+        <label for ="search">Search:</label>
+        <input id="search" type="text" name="searchTerm">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
 <!-- Iterate Through Games List collection -->
 <ul>
     {{#each games}}
@@ -9,7 +17,7 @@
         <img src="{{image}}" alt="{{title}}">
         <div class="info">
             <a href="/{{title}}" class="title">{{title}}</a>
-            <p class="subinfo">({{releaseYear}}) {{publisher}}</p>
+            <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>
             <table>
                 <tr>
                     <th>Genres:</th>

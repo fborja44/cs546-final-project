@@ -7,6 +7,10 @@
      margin: 0;
      background: #D4D4D4;
  }
+
+ .center {
+     text-align: center;
+ }
  
  /** Header Styles **/
  header {

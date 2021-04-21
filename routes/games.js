@@ -24,9 +24,16 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * 
+ * Adds a new game to the games collection.
  */
 router.post('/', async (req, res) => {
+    
+});
+
+/**
+ * Searches for games in the games collection.
+ */
+ router.post('/search', async (req, res) => {
     
 });
 
