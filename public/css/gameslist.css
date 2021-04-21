@@ -17,7 +17,7 @@ label {
     font-weight: bold;
 }
 
-input {
+input[type=text] {
     background: white;
 
     font-family: "Poppins";
@@ -29,8 +29,8 @@ input {
 
     outline-width: 0px;
 
-    border: none;
-    border-radius: 25px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
 }
 
 button {
@@ -52,6 +52,14 @@ button:hover {
 
 }
 
+#new {
+    color: black;
+}
+
+#new:hover {
+    color: #18415b;
+}
+
 /** List styles **/
 /* Game entry */
 .games {
@@ -59,9 +67,12 @@ button:hover {
     color: black;
     list-style: none;
 
-    margin: 20px auto 0 auto;
+    /* margin: 20px auto 0 auto; */
+    margin: 0 auto 0 auto;
     width: 1000px;
-    border-radius: 25px;
+    /* border-radius: 5px; */
+    border-bottom: 1px solid black;
+    box-shadow: .1px 4px 5px #919aa1;
     font-size: 14px;
 }
 
@@ -106,7 +117,11 @@ button:hover {
     color: black;
     font-weight: bold;
     font-size: 32px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
+}
+
+.title:hover {
+    color: #18415b;
 }
 
 .info p {
@@ -116,4 +131,24 @@ button:hover {
 
 .info p span {
     font-style: italic;
+}
+
+/** New Game Page Styles **/
+h1 {
+    font-family: "Poppins";
+}
+#game-new {
+    display: block;
+}
+
+.form-elem label {
+    display: block;
+}
+
+#form-container {
+    margin: 0 0 0 20px;
+}
+
+#new-submit {
+    margin: 10px auto 0 auto;
 }

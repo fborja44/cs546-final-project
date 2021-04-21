@@ -19,14 +19,24 @@ router.get('/', async (req, res) => {
     } catch (e) {
         res.status(500).json({message: e});
     }
+});
 
-    
+/**
+ * Renders add new game page
+ */
+ router.get('/new', async (req, res) => {
+    try {
+        let gamesList = await gamesData.getAllGames();
+        res.render('games/newgame', { title: "Add Game" });
+    } catch (e) {
+        res.status(500).json({message: e});
+    }
 });
 
 /**
  * Adds a new game to the games collection.
  */
-router.post('/', async (req, res) => {
+router.post('/new', async (req, res) => {
     
 });
 
