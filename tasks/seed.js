@@ -105,6 +105,26 @@ const main = async () => {
         1
     )
 
+    let review1_3 = await reviewsData.createReview(
+        game1_id,
+        "ok i guess",
+        { username: "nextdude", _id: "3" },
+        "1/12/2021",
+        "it was ok",
+        3
+    )
+
+    /* Game 2 Reviews: Breath of the Wild
+    -------------------------------------*/
+    let review2_1 = await reviewsData.createReview(
+        game2_id,
+        "best game",
+        { username: "ok", _id: "4" },
+        "4/18/2017",
+        "this is the greatest game ever!",
+        5
+    )
+
     /* Testing Games functions
     ---------------------------------------------------------------------------*/
     // Testing getAllGames()

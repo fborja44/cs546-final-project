@@ -1,23 +1,21 @@
 /* Methods for calculations
  ---------------------------------------------------------------------------*/
- const data = require('../../data');
- const path = require('path');
- 
- const mongoCollections = require('../../config/mongoCollections');
- const games = mongoCollections.games;
- const gamesData = data.games;
-
 /**
- * Update a game's review score with the average of all of its review scores.
+ * Update a game's rating background color based on the score and add a decimal 
+ * if it is missing
  */
-// let gamesList = await gamesData.getAllGames();
-// let total = 0, avgRating;
-// for (let i = 0; i < gamesList.length; i++) {
-//     let game = gamesList[i];
-//     for (let j = 0; j < game.reviews.length; j++) {
-//         let review = game.reviews[j];
-//         total += review.rating;
-//     }
-//     avgRating = total/game.reviews.length;
-//     await gamesData.updateGameRating(game._id, avgRating)
-// }
+let ratings = document.getElementsByClassName("score");
+for (let i = 0; i < ratings.length; i++) {
+    let rating = ratings[i].firstElementChild.innerHTML;
+    // janky way of adding .0 to the end
+    if (rating.length === 1) {
+        ratings[i].firstElementChild.innerHTML = ratings[i].firstElementChild.innerHTML + ".0";
+    }
+    if (rating >= 4) {
+        ratings[i].style.background = "#2FE58E";
+    } else if (4 > rating && rating >= 2) {
+        ratings[i].style.background = "#FBD927";
+    } else if (2 > rating && rating >= 0) {
+        ratings[i].style.background = "#FB4027";
+    }
+}

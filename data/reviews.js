@@ -85,6 +85,8 @@
         total += review.rating;
     }
     avgRating = total/game.reviews.length;
+    // trim to 1 decimal
+    avgRating = parseFloat(avgRating.toFixed(1));
     await gamesData.updateGameRating(gameId, avgRating);
 
     return newReview;

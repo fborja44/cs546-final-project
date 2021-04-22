@@ -195,7 +195,7 @@ async function getGameById(id) {
 
     if (rating === null) throw "You must provide a rating";
     if (typeof rating !== 'number') throw "The provided rating is not a number";
-    if (rating > 5 || rating < 0) throw "Rating must be in the valid range of (0-5)";
+    if (rating > 5 || rating < 1) throw "Rating must be in the valid range of (1-5)";
 
     let parsedId = ObjectId(id);
 
