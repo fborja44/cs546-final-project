@@ -24,13 +24,26 @@ main {
     margin: 0 auto 0 auto;
     width: 1000px;
     /* border-radius: 5px; */
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
     box-shadow: .1px 4px 5px #919aa1;
     font-size: 14px;
     font-family: "Poppins";
 }
 
 #game-desc {
+    margin: 0 15px 10px 15px;
+    font-style: italic;
+}
+
+h1 {
+    margin: 0 15px 0 15px;
+}
+
+h2 {
+    margin: 0 0 0 0;
+}
+
+.review {
     margin: 0 15px 10px 15px;
 }
 
@@ -89,4 +102,10 @@ main {
 
 .info p span {
     font-style: italic;
+}
+
+#empty {
+    font-style: italic;
+    margin: 0 15px 0 15px;
+    padding-bottom: 10px;
 }

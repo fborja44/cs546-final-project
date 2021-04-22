@@ -27,7 +27,22 @@
         <p id="game-desc">
             {{game.description}}
         </p>
-
+        <h1>Reviews</h1>
+        {{#each game.reviews}}
+        <div class="review">
+            <h2>{{reviewTitle}}</h2>
+            <p>{{author.username}}</p>
+            <p>{{reviewDate}}</p>
+            <p>{{review}}</p>
+            <p>{{rating}}</p>
+            <div>
+                {{replies}}
+            </div>
+        </div>
+        {{/each}}
+        {{#if reviewEmpty}}
+        <p id="empty">There are no reviews for this game.</p>
+        {{/if}}
     </div>
     {{/if}}
 </div>
