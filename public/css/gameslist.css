@@ -83,6 +83,10 @@ button:hover {
     color: #747474;
 }
 
+#empty {
+    padding-top: 15px;
+}
+
 /* Game score */
 .score {
     background: #2FE58E;

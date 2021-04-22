@@ -16,7 +16,7 @@ const gamesData = data.games;
 router.get('/', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/gameslist', { title: "Games", games: gamesList });
+        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0});
     } catch (e) {
         res.status(500).json({message: e});
     }

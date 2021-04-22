@@ -38,6 +38,13 @@
         </p>
     </li>
     {{/each}}
+    {{#if gamesEmpty}}
+    <li class="games">
+        <div class="center">
+            <p id="empty">No games have been added. Create one below!</p>
+        </div>
+    </li>
+    {{/if}}
 </ul>
 <!-- Link to Add New Game page -->
 <div class="center">
