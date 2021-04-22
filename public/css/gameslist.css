@@ -77,6 +77,10 @@ button:hover {
     font-size: 14px;
 }
 
+.game-desc {
+    margin: 0 15px 10px 15px;
+}
+
 /* Game score */
 .score {
     background: #2FE58E;
@@ -147,7 +151,8 @@ h1 {
 }
 
 #form-container {
-    margin: 0 0 0 20px;
+    margin: 0 auto 0 auto;
+    width: 500px;
 }
 
 #new-submit {

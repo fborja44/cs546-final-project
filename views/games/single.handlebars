@@ -1,9 +1,33 @@
 <link rel="stylesheet" href="/public/css/game.css">
-<div class="center">
+<div class="game-container">
     {{#if game}}
     <div class="game">
-        <h1>{{game.title}}</h1>
-        <img src="{{game.image}}" alt="{{gametitle}}">
+        <div class="score">
+            <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
+        </div>
+        <img src="{{game.image}}" alt="{{game.title}}">
+        <div class="info">
+            <a href="games/{{game.title}}" class="title">{{game.title}}</a>
+            <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
+            <table>
+                <tr>
+                    <th>Genres:</th>
+                    <td>{{game.genres}}</td>
+                </tr>
+                <tr>
+                    <th>Platforms:</th>
+                    <td>{{game.platforms}}</td>
+                </tr>
+                <tr>
+                    <th>Prices:</th>
+                    <td>{{game.prices}}</td>
+                </tr>
+            </table>
+        </div>
+        <p id="game-desc">
+            {{game.description}}
+        </p>
+
     </div>
     {{/if}}
 </div>
