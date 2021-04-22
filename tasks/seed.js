@@ -109,15 +109,18 @@ const main = async () => {
     ---------------------------------------------------------------------------*/
     // Testing getAllGames()
     let games = await gamesData.getAllGames();
-    console.log(games);
+    // console.log(games);
 
     // Testing getGameById()
     let test1 = await gamesData.getGameById(game1_id);
-    console.log(test1);
+    // console.log(test1);
 
     // Testing getAllReviews()
     let reviews1 = await reviewsData.getAllReviews(game1_id);
-    console.log(reviews1);
+    // console.log(reviews1);
+
+    // Testing updateGameRating()
+    // let update1 = await gamesData.updateGameRating(game1_id, 4.2);
     
     /* Creating Users
     ---------------------------------------------------------------------------*/
@@ -134,11 +137,11 @@ const main = async () => {
     ---------------------------------------------------------------------------*/
     // Testing getAllUsers()
     let users = await usersData.getAllUsers();
-    console.log(users);
+    // console.log(users);
 
     // Testing getUserById()
     let usertest1 = await usersData.getUserById(user1_id);
-    console.log(usertest1);
+    // console.log(usertest1);
 
     // Testing updateUserName()
     await usersData.updateUsername(user1_id, "fborja");

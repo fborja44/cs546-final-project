@@ -185,6 +185,31 @@ async function getGameById(id) {
 }
 
 /**
+ * Updates a game in the database with the given id's average rating.
+ * @param {string} id String representation of the ObjectId of the game.
+ */
+ async function updateGameRating(id, rating) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (rating === null) throw "You must provide a rating";
+    if (typeof rating !== 'number') throw "The provided rating is not a number";
+    if (rating > 5 || rating < 0) throw "Rating must be in the valid range of (0-5)";
+
+    let parsedId = ObjectId(id);
+
+    const gameCollection = await games();
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $set: { averageRating: rating } }
+    )
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+        throw new Error(`Failed to update game's rating.`);
+    return await this.getGameById(id);
+}
+
+/**
  * Updates a game in the database with the given id.
  * @param {string} id String representation of the ObjectId of the game.
  */
@@ -205,6 +230,7 @@ module.exports = {
     getAllGames,
     getGameById,
     getGameByTitle,
+    updateGameRating,
     updateGameById,
     removeGameById
 };

@@ -1,6 +1,9 @@
-<div class="game">
+<link rel="stylesheet" href="/public/css/game.css">
+<div class="center">
     {{#if game}}
-    <h1>{{game.title}}</h1>
-    <img src="{{show.image}}" alt="{{show.title}}">
+    <div class="game">
+        <h1>{{game.title}}</h1>
+        <img src="{{game.image}}" alt="{{gametitle}}">
+    </div>
     {{/if}}
 </div>

@@ -23,6 +23,18 @@ router.get('/', async (req, res) => {
 });
 
 /**
+ * Renders add new game page
+ */
+ router.get('/new', async (req, res) => {
+    try {
+        let gamesList = await gamesData.getAllGames();
+        res.render('games/newgame', { title: "Add Game" });
+    } catch (e) {
+        res.status(500).json({message: e});
+    }
+});
+
+/**
  * Renders single game page
  */
  router.get('/:title', async (req, res) => {
@@ -46,18 +58,6 @@ router.get('/', async (req, res) => {
     try {
         let game = await gamesData.getGameByTitle(title);
         res.render('games/single', { title: game.title, game: game });
-    } catch (e) {
-        res.status(500).json({message: e});
-    }
-});
-
-/**
- * Renders add new game page
- */
- router.get('/new', async (req, res) => {
-    try {
-        let gamesList = await gamesData.getAllGames();
-        res.render('games/newgame', { title: "Add Game" });
     } catch (e) {
         res.status(500).json({message: e});
     }
