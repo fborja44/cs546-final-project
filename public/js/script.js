@@ -19,3 +19,18 @@ for (let i = 0; i < ratings.length; i++) {
         ratings[i].style.background = "#FB4027";
     }
 }
+
+/**
+ * Do the same for review scores
+ */
+ratings = document.getElementsByClassName("review-rating");
+for (let i = 0; i < ratings.length; i++) {
+    let rating = ratings[i].firstElementChild.innerHTML;
+    if (rating >= 4) {
+        ratings[i].style.background = "#2FE58E";
+    } else if (4 > rating && rating >= 2) {
+        ratings[i].style.background = "#FBD927";
+    } else if (2 > rating && rating >= 0) {
+        ratings[i].style.background = "#FB4027";
+    }
+}

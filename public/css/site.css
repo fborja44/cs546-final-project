@@ -97,3 +97,60 @@ footer p.right {
     float: right;
     margin-right: 20px;
 }
+
+/** Login Styles **/
+.login-container {
+    background: white;
+    width: 500px;
+    text-align: center;
+    font-family:"Poppins";
+    margin: 0 auto 0 auto;
+    box-shadow: .1px 4px 5px #919aa1;
+}
+
+.login-container button {
+    color: black;
+    margin-bottom: 20px;
+}
+
+.login-header {
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+    color: white;
+    font-weight: normal;
+}
+
+.login-header h2 {
+    padding: 10px 0 10px 0;
+}
+
+.form-elem {
+    display: block;
+    margin: 20px 0 20px 0;
+}
+
+#username, #password {
+    font-size: 14px;
+    padding: 0 2px 0 2px;
+    width: 200px;
+}
+
+/* Error Styles */
+.error {
+    background-color: #ED4337;
+    border-radius: 5px;
+    font-family: "Poppins";
+    font-style: italic;
+    font-size: 14px;
+    text-align: center;
+
+    padding: 4px 0 4px 0;
+
+    margin-top: 20px;
+    margin-right: 40%;
+    margin-left: 40%;
+}
+
+.error p {
+    margin: 0 0 0 0;
+    color: white;
+}

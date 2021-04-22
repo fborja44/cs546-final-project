@@ -2,39 +2,48 @@
 <div class="game-container">
     {{#if game}}
     <div class="game">
-        <div class="score">
-            <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
+        <div id="main-game-content">
+            <div class="score">
+                <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
+            </div>
+            <img src="{{game.image}}" alt="{{game.title}}">
+            <div class="info">
+                <a href="games/{{game.title}}" class="title">{{game.title}}</a>
+                <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
+                <table>
+                    <tr>
+                        <th>Genres:</th>
+                        <td>{{game.genres}}</td>
+                    </tr>
+                    <tr>
+                        <th>Platforms:</th>
+                        <td>{{game.platforms}}</td>
+                    </tr>
+                    <tr>
+                        <th>Prices:</th>
+                        <td>{{game.prices}}</td>
+                    </tr>
+                </table>
+            </div>
+            <p id="game-desc">
+                {{game.description}}
+            </p>
         </div>
-        <img src="{{game.image}}" alt="{{game.title}}">
-        <div class="info">
-            <a href="games/{{game.title}}" class="title">{{game.title}}</a>
-            <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
-            <table>
-                <tr>
-                    <th>Genres:</th>
-                    <td>{{game.genres}}</td>
-                </tr>
-                <tr>
-                    <th>Platforms:</th>
-                    <td>{{game.platforms}}</td>
-                </tr>
-                <tr>
-                    <th>Prices:</th>
-                    <td>{{game.prices}}</td>
-                </tr>
-            </table>
-        </div>
-        <p id="game-desc">
-            {{game.description}}
-        </p>
+        
         <h1>Reviews</h1>
         {{#each game.reviews}}
         <div class="review">
-            <h2>{{reviewTitle}}</h2>
-            <p>{{author.username}}</p>
-            <p>{{reviewDate}}</p>
-            <p>{{review}}</p>
-            <p>{{rating}}</p>
+            <div class="review-heading">
+                <div class="review-rating">
+                    <span>{{rating}}</span>
+                </div>
+                <h2>{{reviewTitle}}</h2>
+            </div>
+
+            <p>Author: {{author.username}}</p>
+            <p>Date: {{reviewDate}}</p>
+            <p>Review: {{review}}</p>
+            
             <div>
                 {{replies}}
             </div>

@@ -10,7 +10,7 @@ main {
 .game-container {
     background: white;
     width: 1000px;
-    margin: auto;
+    margin: auto auto 42px auto;
     box-shadow: .1px 4px 5px #919aa1;
     height: auto;
 }
@@ -31,20 +31,66 @@ main {
 }
 
 #game-desc {
-    margin: 0 15px 10px 15px;
+    margin: 0 15px 0 15px;
+    padding-bottom: 15px;
     font-style: italic;
 }
 
 h1 {
-    margin: 0 15px 0 15px;
+    color: white;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
 h2 {
     margin: 0 0 0 0;
 }
 
+/** Review Styles **/
 .review {
-    margin: 0 15px 10px 15px;
+    border-bottom: 1px solid black;
+}
+
+.review-heading {
+    height: 50px;
+    background: #dcf1f7;
+    border-bottom: 1px solid black;
+}
+
+.review-rating {
+    background: #2FE58E;
+    float: right;
+    
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    
+    font-weight: bold;
+    font-size: 22px;
+
+    width: 50px;
+    height: 50px;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.review-rating span {
+    display: block;
+    padding-top: 12px;
+}
+
+.review p {
+    margin: 5px 15px 5px 15px;
+}
+
+.review h2 {
+    margin: auto 15px auto 15px;
+    padding-top: 10px;
+    background: #dcf1f7;
 }
 
 /* Game score */
@@ -107,5 +153,5 @@ h2 {
 #empty {
     font-style: italic;
     margin: 0 15px 0 15px;
-    padding-bottom: 10px;
+    padding: 10px 0 10px 0;
 }
