@@ -24,8 +24,9 @@ header {
 }
 
 .logo {
-    width: 100px;
+    width: 80px;
     height: auto;
+    padding: 10px 0 10px 0;
     margin-right:auto;
 }
 
