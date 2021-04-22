@@ -23,7 +23,7 @@ const main = async () => {
         "2020",
         ["PlayStation 4", "Google Stadia", "Xbox One", "PlayStation 5", "Xbox Series X", "PC"],
         "Cyberpunk 2077 is a 2020 action role-playing video game developed and published by CD Projekt. The story takes place in Night City, an open world set in the Cyberpunk universe.",
-        [{ price: "$49.99", platform: "PC" }]
+        [{ price: "$49.99", platform: "PC" }, { price: "$49.99", platform: "Xbox One" }, { price: "$49.99", platform: "PlayStation 5" }]
     )
     let game1_id = game1._id.toString();
 

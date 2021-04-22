@@ -29,7 +29,11 @@
                 </tr>
                 <tr>
                     <th>Prices:</th>
-                    <td>{{prices}}</td>
+                    <td>
+                        {{#each prices}}
+                        {{platform}}: {{price}}
+                        {{/each}}
+                    </td>
                 </tr>
             </table>
         </div>
