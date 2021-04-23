@@ -168,6 +168,48 @@ async function getGameById(id) {
 }
 
 /**
+ * Retrieves a game in the databse with the given title
+ * @param {string} tile String representation of the ObjectId of the game.
+ */
+ async function getGameByTitle(title) {
+    if (!title) throw "You must provide an id to search for";
+    if (typeof title !== "string") throw "The provided id must be a string";
+    if (title.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+    const game = await gameCollection.findOne({ title: title });
+    if (game === null) throw "No game with that title";
+    game._id = game._id.toString();
+
+    return game;
+}
+
+/**
+ * Updates a game in the database with the given id's average rating.
+ * @param {string} id String representation of the ObjectId of the game.
+ */
+ async function updateGameRating(id, rating) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (rating === null) throw "You must provide a rating";
+    if (typeof rating !== 'number') throw "The provided rating is not a number";
+    if (rating > 5 || rating < 1) throw "Rating must be in the valid range of (1-5)";
+
+    let parsedId = ObjectId(id);
+
+    const gameCollection = await games();
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $set: { averageRating: rating } }
+    )
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+        throw new Error(`Failed to update game's rating.`);
+    return await this.getGameById(id);
+}
+
+/**
  * Updates a game in the database with the given id.
  * @param {string} id String representation of the ObjectId of the game.
  * @param {object} updatedGame Object containing data to update game.
@@ -321,6 +363,8 @@ module.exports = {
     createGame,
     getAllGames,
     getGameById,
+    getGameByTitle,
+    updateGameRating,
     updateGameById,
     removeGameById
 };

@@ -1,0 +1,166 @@
+/* Gameslist page styles
+ ---------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
+
+ /** General Styles **/
+ main {
+    align-items: center;
+ }
+
+/** Search Form Styles **/
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-family: "Poppins";
+    font-weight: bold;
+}
+
+input[type=text] {
+    background: white;
+
+    font-family: "Poppins";
+    font-size: 14px;
+    width: 500px;
+
+    margin: 0 5px 0 5px;
+    padding: 3px 12px 3px 12px;
+
+    outline-width: 0px;
+
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+button {
+    background: #2473a4;
+    color: black;
+
+    font-size: 14px;
+
+    border: none;
+    border-radius: 5px;
+
+    padding: 3px 10px 3px 10px;
+    font-family: "Poppins";
+    font-weight: bold;
+}
+
+button:hover {
+    background: #a6a6a6;
+
+}
+
+#new {
+    color: black;
+    padding-bottom: 60px;
+}
+
+#new:hover {
+    color: #18415b;
+}
+
+/** List styles **/
+/* Game entry */
+.games {
+    background: white;
+    color: black;
+    list-style: none;
+
+    /* margin: 20px auto 0 auto; */
+    margin: 0 auto 0 auto;
+    width: 1000px;
+    /* border-radius: 5px; */
+    border-bottom: 1px solid black;
+    box-shadow: .1px 4px 5px #919aa1;
+    font-size: 14px;
+}
+
+.game-desc {
+    margin: 0 15px 10px 15px;
+    font-style: italic;
+    color: #747474;
+}
+
+#empty {
+    padding-top: 15px;
+}
+
+/* Game score */
+.score {
+    background: #2FE58E;
+    float: left;
+    
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    
+    font-weight: bold;
+    font-size: 36px;
+
+    width: 100px;
+    height: 100px;
+
+    margin: 35px 0 0 25px;
+}
+
+.score span {
+    display: block;
+    padding-top: 24px;
+}
+
+/* Game image */
+.games img {
+    width: 110px;
+    display: block;
+    float: left;
+
+    margin: 10px 25px 5px 25px;
+}
+
+/* Game info */
+.info {
+    padding: 10px 0 15px 0;
+}
+
+.title {
+    color: black;
+    font-weight: bold;
+    font-size: 28px;
+    /* text-decoration: underline; */
+}
+
+.title:hover {
+    color: #18415b;
+}
+
+.info p {
+    margin: 0 0 0 0;
+    font-size: 20px;
+}
+
+.info p span {
+    font-style: italic;
+}
+
+/** New Game Page Styles **/
+h1 {
+    font-family: "Poppins";
+}
+#game-new {
+    display: block;
+}
+
+.form-elem label {
+    display: block;
+}
+
+#form-container {
+    margin: 0 auto 0 auto;
+    width: 500px;
+}
+
+#new-submit {
+    margin: 10px auto 0 auto;
+}

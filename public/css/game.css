@@ -1,0 +1,161 @@
+/* Single game page styles
+ ---------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
+
+/** General Styles **/
+main {
+    align-items: center;
+}
+
+.game-container {
+    background: white;
+    width: 1000px;
+    margin: auto auto 42px auto;
+    box-shadow: .1px 4px 5px #919aa1;
+    height: auto;
+}
+
+th {
+    text-align: left;
+}
+
+.game {
+    background: white;
+    color: black;
+    list-style: none;
+
+    /* margin: 20px auto 0 auto; */
+    margin: 0 auto 0 auto;
+    width: 1000px;
+    /* border-radius: 5px; */
+    /* border-bottom: 1px solid black; */
+    box-shadow: .1px 4px 5px #919aa1;
+    font-size: 14px;
+    font-family: "Poppins";
+}
+
+#game-desc {
+    margin: 0 15px 0 15px;
+    padding-bottom: 15px;
+    font-style: italic;
+}
+
+h1 {
+    color: white;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+h2 {
+    margin: 0 0 0 0;
+}
+
+/** Review Styles **/
+.review {
+    border-bottom: 1px solid black;
+}
+
+.review-heading {
+    height: 50px;
+    background: #dcf1f7;
+    border-bottom: 1px solid black;
+}
+
+.review-rating {
+    background: #2FE58E;
+    float: right;
+    
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    
+    font-weight: bold;
+    font-size: 22px;
+
+    width: 50px;
+    height: 50px;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.review-rating span {
+    display: block;
+    padding-top: 12px;
+}
+
+.review p {
+    margin: 5px 15px 5px 15px;
+}
+
+.review h2 {
+    margin: auto 15px auto 15px;
+    padding-top: 10px;
+    background: #dcf1f7;
+}
+
+/* Game score */
+.score {
+    background: #2FE58E;
+    float: left;
+    
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    
+    font-weight: bold;
+    font-size: 36px;
+
+    width: 100px;
+    height: 100px;
+
+    margin: 35px 0 0 25px;
+}
+
+.score span {
+    display: block;
+    padding-top: 24px;
+}
+
+/* Game image */
+.game img {
+    width: 110px;
+    display: block;
+    float: left;
+
+    margin: 10px 25px 5px 25px;
+}
+
+/* Game info */
+.info {
+    padding: 10px 0 15px 0;
+}
+
+.title {
+    color: black;
+    font-weight: bold;
+    font-size: 28px;
+    /* text-decoration: underline; */
+}
+
+.title:hover {
+    color: #18415b;
+}
+
+.info p {
+    margin: 0 0 0 0;
+    font-size: 20px;
+}
+
+.info p span {
+    font-style: italic;
+}
+
+#empty {
+    font-style: italic;
+    margin: 0 15px 0 15px;
+    padding: 10px 0 10px 0;
+}

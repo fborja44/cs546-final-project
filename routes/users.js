@@ -24,10 +24,41 @@ router.post('/', async (req, res) => {
 });
 
 /**
+ * Route to login form
+ */
+ router.get('/login', async (req, res) => {
+    res.render('users/login', { title: "Login" });
+});
+
+/**
  * Route to handle user login
  */
 router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    let error = false;
     
+    // Check if username was entered
+    if (!username) {
+        res.status(401).render('users/login', { error: "Missing username." });
+        return;
+    }
+    // Check if password was entered
+    if (!password) {
+        res.status(401).render('users/login', { error: "Missing password.", username: username });
+        return;
+    }
+
+    // Retrieve user from file
+    // let user;
+    // try {
+    //     user = usersData.getUserByUsername(username); // Need to make this function
+    // } catch (e) {
+    //     // User doesn't exist
+    //     error = true;
+    // }
+
+    res.render('users/login', { title: "Login" });
+    // NOT DONE
 });
 
 /**

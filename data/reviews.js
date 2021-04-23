@@ -68,14 +68,27 @@
         replies: [],
         rating: rating
     }
+    parsedGameId = ObjectId(gameId);
 
-    gameId = ObjectId(gameId);
     const updateInfo = await gameCollection.updateOne(
-        { _id: gameId },
-        { $addToSet: { reviews: newReview } }
+        { _id: parsedGameId },
+        { $addToSet: { reviews: newReview } },
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to create review.';
     newReview._id = newReview._id.toString();
+
+    // Also remember to update the game's average rating!
+    let total = 0, avgRating;
+    let game = await gamesData.getGameById(gameId);
+    for (let i = 0; i < game.reviews.length; i++) {
+        let review = game.reviews[i];
+        total += review.rating;
+    }
+    avgRating = total/game.reviews.length;
+    // trim to 1 decimal
+    avgRating = parseFloat(avgRating.toFixed(1));
+    await gamesData.updateGameRating(gameId, avgRating);
+
     return newReview;
 }
 

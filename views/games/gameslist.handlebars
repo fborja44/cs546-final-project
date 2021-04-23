@@ -1,2 +1,56 @@
+<link rel="stylesheet" href="/public/css/gameslist.css">
+<!-- Search form -->
+<div class="center">
+    <form id="game-search" method="POST" action-"/search">
+        <label for ="search">Search:</label>
+        <input id="search" type="text" name="searchTerm", placeholder="Search for game(s)...">
+        <button type="submit">Submit</button>
+    </form>
+</div>
 <!-- Iterate Through Games List collection -->
-<p>Games List</p>
+<ul>
+    {{#each games}}
+    <li class="games">
+        <div class="score">
+            <span class="score-span">{{averageRating}}</span>
+        </div>
+        <img src="{{image}}" alt="{{title}}">
+        <div class="info">
+            <a href="games/{{title}}" class="title">{{title}}</a>
+            <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>
+            <table>
+                <tr>
+                    <th>Genres:</th>
+                    <td>{{genres}}</td>
+                </tr>
+                <tr>
+                    <th>Platforms:</th>
+                    <td>{{platforms}}</td>
+                </tr>
+                <tr>
+                    <th>Prices:</th>
+                    <td>
+                        {{#each prices}}
+                        {{platform}}: {{price}}
+                        {{/each}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p class="game-desc">
+            {{description}}
+        </p>
+    </li>
+    {{/each}}
+    {{#if gamesEmpty}}
+    <li class="games">
+        <div class="center">
+            <p id="empty">No games have been added. Create one below!</p>
+        </div>
+    </li>
+    {{/if}}
+</ul>
+<!-- Link to Add New Game page -->
+<div class="center">
+    <a id="new" href="/games/new">Add a New Game</a>
+</div>
