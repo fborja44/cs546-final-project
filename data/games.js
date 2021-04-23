@@ -222,7 +222,7 @@ async function updateGameById(id, updatedGame) {
             if (x.trim().length === 0) throw "The genre must not be an empty string";
             genresTrim.push(x.trim());
         }
-        updatedGame.genres = genresTrim;
+        updatedGameData.genres = genresTrim;
     }
 
     if (updatedGame.releaseYear) {
@@ -234,7 +234,7 @@ async function updateGameById(id, updatedGame) {
         if (isNaN(releaseYearParsed)) throw "The releaseYear must be a valid year";
         let d = new Date();
         if (releaseYearParsed < 1930 || releaseYearParsed > d.getFullYear() + 5) throw "The releaseYear must be a valid year";
-        updatedGame.releaseYear = releaseYear.trim();
+        updatedGameData.releaseYear = releaseYear.trim();
     }
 
     if (updatedGame.platforms) {
@@ -247,14 +247,14 @@ async function updateGameById(id, updatedGame) {
             if (x.trim().length === 0) throw "The platform must not be an empty string";
             platformsTrim.push(x.trim());
         }
-        updatedGame.platforms = platformsTrim;
+        updatedGameData.platforms = platformsTrim;
     }
 
     if (updatedGame.description) {
         let description = updatedGame.description;
         if (typeof description !== 'string') throw `${description || "provided argument"} must be a string`;
         if (description.trim().length === 0) throw "The description must not be an empty string";
-        updatedGame.description = description.trim();
+        updatedGameData.description = description.trim();
     }
 
     if (updatedGame.prices) {
@@ -284,7 +284,7 @@ async function updateGameById(id, updatedGame) {
 
             pricesTrim.push(obj);
         }
-        updatedGame.prices = pricesTrim;
+        updatedGameData.prices = pricesTrim;
     }
 
     const gameCollection = await games();
