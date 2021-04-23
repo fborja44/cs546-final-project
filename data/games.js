@@ -359,6 +359,18 @@ async function removeGameById(id) {
     return true;
 }
 
+async function searchGamesByTitle(title) {
+    if (!title) throw "You must provide an id to search for";
+    if (typeof title !== "string") throw "The provided id must be a string";
+    if (title.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gamesCollection = await games();
+
+    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } );
+    if (!searchData) throw `Failed to find game after searching with ${title}`;
+    return searchData;
+}
+
 module.exports = {
     createGame,
     getAllGames,
@@ -366,5 +378,6 @@ module.exports = {
     getGameByTitle,
     updateGameRating,
     updateGameById,
-    removeGameById
+    removeGameById,
+    searchGamesByTitle
 };

@@ -73,8 +73,27 @@ router.post('/new', async (req, res) => {
 /**
  * Searches for games in the games collection.
  */
- router.post('/search', async (req, res) => {
-    
+router.post('/search', async (req, res) => {
+    let searchData = req.body;
+    let errors = [];
+
+    if (!searchData.searchTerm) {
+        errors.push("No search term provided.");
+    } else if (searchData.searchTerm.trim().length === 0) {
+        errors.push("Search term must non-empty.");
+    }
+
+    if (errors.length > 0) {
+        alert(`Error: ${errors}`)// do something but for now just alert
+        return;
+    }
+
+    try {
+        let search = await gamesData.searchGamesByTitle(searchData.searchTerm);
+        console.log(search);
+    } catch (e) {
+        res.json(e);
+    }
 });
 
 module.exports = router;
