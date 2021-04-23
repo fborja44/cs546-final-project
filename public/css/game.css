@@ -15,6 +15,10 @@ main {
     height: auto;
 }
 
+th {
+    text-align: left;
+}
+
 .game {
     background: white;
     color: black;

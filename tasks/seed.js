@@ -11,6 +11,8 @@ const main = async () => {
     const db = await dbConnection();
     await db.dropDatabase(); // Drop the databse before initalizing data to avoid duplicate data.
 
+    console.log(chalk.yellow("Seeding database..."));
+
     /* Creating games
     ---------------------------------------------------------------------------*/
     /* Game 1: Cyberpunk 2077
@@ -141,6 +143,27 @@ const main = async () => {
 
     // Testing updateGameRating()
     // let update1 = await gamesData.updateGameRating(game1_id, 4.2);
+
+    // Testing updateGameById()
+    let update2 = await gamesData.updateGameById(game1_id,
+        {
+            prices: [{ price: "$49.99", platform: "PC" }, { price: "$49.99", platform: "Xbox One" }, { price: "$49.99", platform: "PlayStation 5" }]
+        });
+
+    // Testing removeGameById()
+    let delete_this = await gamesData.createGame(
+        "delete",
+        "badurl.png",
+        "no",
+        ["hi"],
+        "2001",
+        ["samsung smart fridge"],
+        "ok",
+        [{ price: "$0.00", platform: "samsung smart fridge" }]
+    )
+    let delete1_id = delete_this._id;
+
+    let delete1 = await gamesData.removeGameById(delete1_id);
     
     /* Creating Users
     ---------------------------------------------------------------------------*/
