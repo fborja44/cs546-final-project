@@ -48,16 +48,18 @@ router.post('/login', async (req, res) => {
         return;
     }
 
-    // Retrieve user from file
-    // let user;
-    // try {
-    //     user = usersData.getUserByUsername(username); // Need to make this function
-    // } catch (e) {
+     // Retrieve user from file
+     let user;
+     try {
+         user = await usersData.getUserByUsername(username); // Need to make this function
+         req.session.user_id = user;
+
+    // return to main page?
+     } catch (e) {
     //     // User doesn't exist
     //     error = true;
-    // }
-
-    res.render('users/login', { title: "Login" });
+    res.status(401).render('users/login', { title: "Login" });
+     }
     // NOT DONE
 });
 
