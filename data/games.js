@@ -366,7 +366,7 @@ async function searchGamesByTitle(title) {
 
     const gamesCollection = await games();
 
-    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } );
+    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } ).toArray();
     if (!searchData) throw `Failed to find game after searching with ${title}`;
     return searchData;
 }

@@ -89,8 +89,8 @@ router.post('/search', async (req, res) => {
     }
 
     try {
-        let search = await gamesData.searchGamesByTitle(searchData.searchTerm);
-        console.log(search);
+        let searchList = await gamesData.searchGamesByTitle(searchData.searchTerm);
+        res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
     } catch (e) {
         res.json(e);
     }
