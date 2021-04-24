@@ -34,7 +34,7 @@
  
 	 const userCollection = await users();
 	 let newUser = {
-		 username: username.trim(),
+		 username: username.trim().toLowerCase(),
 		 firstName: firstName,
 		 lastName: lastName,
 		 email: email,
@@ -287,10 +287,25 @@
 	 return true;
  
  }
+/**
+ * Return _id based on the username.
+ * @param {string} username 
+ */
+ async function getUserByUsername(username) {
+	if(!username || typeof username != 'string') throw "Username should be provied and it is a string."
+	 if(username.trim() === '') throw "The input is an empty string."
+	 let name = username.trim().toLowerCase();
+	 const userCollection = await users();
+	 const res = await userCollection.findOne({username: name});
+	 if(res === null) throw "Not found. No such username in database."
+	 res._id = res._id.toString();
+	 return res;
+ }
  module.exports = {
 	 createUser,
 	 getAllUsers,
 	 getUserById,
+	 getUserByUsername,
   //   updateUsername,
 	 updateFirstName,
 	 updateLastName,
