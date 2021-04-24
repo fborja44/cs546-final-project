@@ -187,7 +187,7 @@ const main = async () => {
     // console.log(usertest1);
 
     // Testing updateUserName()
-    await usersData.updateUsername(user1_id, "fborja");
+    //await usersData.updateUsername(user1_id, "fborja");
 
     // Testing updateFirstName()
     await usersData.updateFirstName(user1_id, "Frankie")
