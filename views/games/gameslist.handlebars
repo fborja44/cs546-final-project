@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/public/css/gameslist.css">
 <!-- Search form -->
 <div class="center">
-    <form id="game-search" method="POST" action-"/search">
+    <form id="game-search" method="POST" action="/games/search">
         <label for ="search">Search:</label>
         <input id="search" type="text" name="searchTerm", placeholder="Search for game(s)...">
         <button type="submit">Submit</button>
@@ -45,7 +45,7 @@
     {{#if gamesEmpty}}
     <li class="games">
         <div class="center">
-            <p id="empty">No games have been added. Create one below!</p>
+            <p id="empty">No games found. Create one below!</p>
         </div>
     </li>
     {{/if}}
