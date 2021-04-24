@@ -165,6 +165,18 @@ const main = async () => {
 
     let delete1 = await gamesData.removeGameById(delete1_id);
     
+    // Testing getGamesByRating
+    let ratings1 = await gamesData.getGamesByRating(2);
+    // console.log(ratings1);
+
+    // Testing getGamesByGenre
+    let genre1 = await gamesData.getGamesByGenre("action");
+    // console.log(genre1);
+
+    // Testing getGamesByPlatform
+    let platform1 = await gamesData.getGamesByPlatform("pc");
+    // console.log("platorm1");
+
     /* Creating Users
     ---------------------------------------------------------------------------*/
     let user1 = await usersData.createUser(

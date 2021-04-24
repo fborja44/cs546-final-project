@@ -54,8 +54,26 @@
         </div>
         {{/each}}
         {{#if reviewEmpty}}
-        <p id="empty">There are no reviews for this game.</p>
+        <p id="empty">There are no reviews for this game. You can be the first to write one!</p>
         {{/if}}
+        <!-- Should only be shown if user is logged in -->
+        <div>
+            <form>
+                <div class="form-elem">
+                    <label>Title</label>
+                    <input type="text" placeholder="Title here">
+                </div>
+                <div id="rating-input" class="form-elem">
+                    <label>Rating</label>
+                    <input type="number" min="1" max="5">
+                </div>
+                <div class="form-elem">
+                    <label>Review</label>
+                    <textarea placeholder="Review here" rows="4" cols="50"></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
     {{/if}}
 </div>

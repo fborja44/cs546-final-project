@@ -159,3 +159,31 @@ h2 {
     margin: 0 15px 0 15px;
     padding: 10px 0 10px 0;
 }
+
+/** Reply Form **/
+form {
+    padding: 0px 15px 15px 0;
+}
+
+.form-elem {
+    display: block;
+}
+
+button {
+    background: #2473a4;
+    color: black;
+
+    font-size: 14px;
+
+    border: none;
+    border-radius: 5px;
+
+    padding: 3px 10px 3px 10px;
+    margin-left: 15px;
+    font-family: "Poppins";
+    font-weight: bold;
+}
+
+button:hover {
+    background: #a6a6a6;
+}
