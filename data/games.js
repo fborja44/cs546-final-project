@@ -413,7 +413,6 @@ async function getGamesByGenre(genre) {
     const gameCollection = await games();
     const gameList = await gameCollection.find({}).toArray();
     for (const game of gameList) {
-        console.log(game);
         for (const x of game.platforms) {
             if (x.toLowerCase() === platform) {
                 query.push(game);
@@ -436,6 +435,13 @@ async function searchGamesByTitle(title) {
     return searchData;
 }
 
+async function getBestGame() {
+    const gamesCollection = await games();
+
+    const game = gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
+    return game;
+}
+
 module.exports = {
     createGame,
     getAllGames,
@@ -447,5 +453,6 @@ module.exports = {
     getGamesByRating,
     getGamesByGenre,
     getGamesByPlatform,
-    searchGamesByTitle
+    searchGamesByTitle,
+    getBestGame
 };

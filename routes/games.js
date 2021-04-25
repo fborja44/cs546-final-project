@@ -84,7 +84,7 @@ router.post('/search', async (req, res) => {
     }
 
     if (errors.length > 0) {
-        alert(`Error: ${errors}`)// do something but for now just alert
+        // show error on screen
         return;
     }
 

@@ -50,6 +50,16 @@ h1 {
     border-bottom: 2px solid black;
 }
 
+h3 {
+    color: white;
+    padding: 5px 15px 5px 15px;
+    margin: auto;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
 h2 {
     margin: 0 0 0 0;
 }
@@ -167,6 +177,7 @@ form {
 
 .form-elem {
     display: block;
+    margin: 10px;
 }
 
 button {
@@ -179,7 +190,7 @@ button {
     border-radius: 5px;
 
     padding: 3px 10px 3px 10px;
-    margin-left: 15px;
+    margin-left: 25px;
     font-family: "Poppins";
     font-weight: bold;
 }

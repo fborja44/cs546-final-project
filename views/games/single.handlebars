@@ -58,18 +58,19 @@
         {{/if}}
         <!-- Should only be shown if user is logged in -->
         <div>
+            <h3>Create a new Review</h3>
             <form>
                 <div class="form-elem">
                     <label>Title</label>
-                    <input type="text" placeholder="Title here">
+                    <input type="text" placeholder="Give your review a title!">
                 </div>
                 <div id="rating-input" class="form-elem">
                     <label>Rating</label>
-                    <input type="number" min="1" max="5">
+                    <input type="number" min="1" max="5" placeholder="5">
                 </div>
                 <div class="form-elem">
                     <label>Review</label>
-                    <textarea placeholder="Review here" rows="4" cols="50"></textarea>
+                    <textarea placeholder="Enter your review here!" rows="4" cols="50"></textarea>
                 </div>
                 <button type="submit">Submit</button>
             </form>
