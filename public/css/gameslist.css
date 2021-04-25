@@ -33,6 +33,22 @@ input[type=text] {
     border-radius: 5px;
 }
 
+select {
+    background: white;
+
+    font-family: "Poppins";
+    font-size: 14px;
+    width: 125px;
+
+    margin: 0 5px 0 5px;
+    padding: 3px 12px 3px 12px;
+
+    outline-width: 0px;
+
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
 button {
     background: #2473a4;
     color: black;
