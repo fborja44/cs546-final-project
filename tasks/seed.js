@@ -85,6 +85,20 @@ const main = async () => {
     )
     let game5_id = game5._id.toString();
 
+    /* Game 6: NBA 2K20
+    -----------------------------------------------------*/
+    let game6 = await gamesData.createGame(
+        "NBA 2K20",
+        "https://oyster.ignimgs.com/wordpress/stg.ign.com/2019/07/2KSMKT_NBA2K20_LE_AG_FOB.jpg",
+        "2K Games",
+        ["Sports", "Simulation"],
+        "2019",
+        ["PlayStation 4", "Android", "PlayStation 5", "Xbox One", "PC", "Nintendo Switch"],
+        "NBA 2K20 is a basketball simulation video game developed by Visual Concepts and published by 2K Sports, based on the National Basketball Association. It is the 21st installment in the NBA 2K franchise, the successor to NBA 2K19, and the predecessor to NBA 2K21.",
+        [{ price: "$49.99", platform: "Xbox One" }]
+    )
+    let game6_id = game6._id.toString();
+
     /* Creating reviews
     ---------------------------------------------------------------------------*/
     /* Game 1 Reviews: Cyberpunk 2077
@@ -120,10 +134,28 @@ const main = async () => {
     -------------------------------------*/
     let review2_1 = await reviewsData.createReview(
         game2_id,
-        "best game",
-        { username: "ok", _id: "4" },
+        "This Game is Awesome!",
+        { username: "ZeldaFan1000", _id: "4" },
         "4/18/2017",
-        "this is the greatest game ever!",
+        "This is the greatest game ever! Nintendo really outdid themselves",
+        5
+    )
+
+    let review2_2 = await reviewsData.createReview(
+        game2_id,
+        "Could be better.",
+        { username: "xXPessimistXx", _id: "5" },
+        "6/23/2018",
+        "It was an ok game I guess.",
+        3
+    )
+
+    let review2_3 = await reviewsData.createReview(
+        game2_id,
+        "5 Stars",
+        { username: "mang0", _id: "6" },
+        "6/23/2018",
+        "^^^",
         5
     )
 
@@ -165,6 +197,22 @@ const main = async () => {
 
     let delete1 = await gamesData.removeGameById(delete1_id);
     
+    // Testing getGamesByRating
+    let ratings1 = await gamesData.getGamesByRating(2);
+    // console.log(ratings1);
+
+    // Testing getGamesByGenre
+    let genre1 = await gamesData.getGamesByGenre("action");
+    // console.log(genre1);
+
+    // Testing getGamesByPlatform
+    let platform1 = await gamesData.getGamesByPlatform("pc");
+    // console.log("platorm1");
+
+    // Testing getBestGame
+    let best1 = await gamesData.getBestGame();
+    console.log(best1);
+
     /* Creating Users
     ---------------------------------------------------------------------------*/
     let user1 = await usersData.createUser(

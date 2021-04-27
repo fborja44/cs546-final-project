@@ -73,8 +73,52 @@ router.post('/new', async (req, res) => {
 /**
  * Searches for games in the games collection.
  */
- router.post('/search', async (req, res) => {
+router.post('/search', async (req, res) => {
+    let searchData = req.body;
+    let errors = [];
+
+    if (!searchData.searchTerm) {
+        errors.push("No search term provided.");
+    } else if (searchData.searchTerm.trim().length === 0) {
+        errors.push("Search term must non-empty.");
+    }
+
+    if (!searchData.searchType) { // should never happen but should still check
+        errors.push("Search type not specified.");
+    } else if (searchData.searchType.trim().length === 0) {
+        errors.push("Search type must non-empty.");
+    }
+
+    if (errors.length > 0) {
+        // show error on screen <--- REMEMBER TO ADD
+        return;
+    }
     
+    // Change search depending on specified search type
+    if (searchData.searchType === "title") {
+        try {
+            let searchList = await gamesData.searchGamesByTitle(searchData.searchTerm);
+            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+        } catch (e) {
+            res.json(e);
+        }
+    } else if (searchData.searchType === "genre") {
+        try {
+            let searchList = await gamesData.getGamesByGenre(searchData.searchTerm);
+            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+        } catch (e) {
+            res.json(e);
+        }
+    } else if (searchData.searchType === "platform") {
+        try {
+            let searchList = await gamesData.getGamesByPlatform(searchData.searchTerm);
+            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+        } catch (e) {
+            res.json(e);
+        }
+    } else if (searchData.searchType === "prices") {
+        // implement
+    }
 });
 
 module.exports = router;

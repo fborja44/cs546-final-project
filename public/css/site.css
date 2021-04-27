@@ -127,6 +127,19 @@ footer p.right {
 .form-elem {
     display: block;
     margin: 20px 0 20px 0;
+    padding-left: 15px;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.form-elem label {
+    display: block;
 }
 
 #username, #password {

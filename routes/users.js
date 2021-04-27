@@ -7,13 +7,21 @@ const path = require('path');
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
+const games = mongoCollections.games;
 const usersData = data.users;
+const gamesData = data.games;
 
 /**
  * 
  */
 router.get('/', async (req, res) => {
-    res.sendFile(path.resolve('static/home.html')); // temporary
+    try {
+        let game = await gamesData.getBestGame();
+        res.render('users/home', { title: "Home", game: game[0] });
+    } catch (e) {
+        res.status(404).json( {error: e });
+    }
+    
 });
 
 /**
@@ -58,8 +66,8 @@ router.post('/login', async (req, res) => {
      } catch (e) {
     //     // User doesn't exist
     //     error = true;
-    res.status(401).render('users/login', { title: "Login" });
-     }
+        res.status(401).render('users/login', { title: "Login" });
+    }
     // NOT DONE
 });
 

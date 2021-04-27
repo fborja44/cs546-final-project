@@ -359,6 +359,89 @@ async function removeGameById(id) {
     return true;
 }
 
+/**
+ * Gets all games with a rating greater than or equal to minRating. minRating must be
+ * an integer between 1-5.
+ * @param {number} minRating 
+ */
+async function getGamesByRating(minRating) {
+    if (minRating === null) throw 'A minimum rating must be provided';
+    if (typeof minRating !== 'number' || !Number.isInteger(minRating)) throw `${review || "provided argument"} must be an integer.`;
+    if (minRating < 1 || minRating > 5) throw "The rating must be an integer in the range [1-5]";
+
+    const gameCollection = await games();
+
+    const query = gameCollection.find( { averageRating: { $gte: minRating } } ).toArray();
+    return query;
+}
+
+/**
+ * Gets all games with the specified genre.
+ * @param {string} genre 
+ */
+async function getGamesByGenre(genre) {
+    if (!genre) throw "A genre must be provided";
+    if (typeof genre !== 'string') throw `${genre || "provided argument"} must be a string`;
+    if (genre.trim().length === 0) throw "The genre must not be an empty string";
+    
+    genre = genre.toLowerCase();
+    const query = [];
+    const gameCollection = await games();
+    const gameList = await gameCollection.find({}).toArray();
+    for (const game of gameList) {
+        for (const x of game.genres) {
+            if (x.toLowerCase() === genre) {
+                query.push(game);
+                break;
+            }
+        }
+    }
+    return query;
+}
+
+/**
+ * Gets all games that are on the specified platform.
+ * @param {string} platform
+ */
+ async function getGamesByPlatform(platform) {
+    if (!platform) throw "A platform must be provided";
+    if (typeof platform !== 'string') throw `${platform || "provided argument"} must be a string`;
+    if (platform.trim().length === 0) throw "The publisher must not be an empty string";
+    
+    platform = platform.toLowerCase();
+    const query = [];
+    const gameCollection = await games();
+    const gameList = await gameCollection.find({}).toArray();
+    for (const game of gameList) {
+        for (const x of game.platforms) {
+            if (x.toLowerCase() === platform) {
+                query.push(game);
+                break;
+            }
+        }
+    }
+    return query;
+}
+
+async function searchGamesByTitle(title) {
+    if (!title) throw "You must provide an id to search for";
+    if (typeof title !== "string") throw "The provided id must be a string";
+    if (title.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gamesCollection = await games();
+
+    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } ).toArray();
+    if (!searchData) throw `Failed to find game after searching with ${title}`;
+    return searchData;
+}
+
+async function getBestGame() {
+    const gamesCollection = await games();
+
+    const game = gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
+    return game;
+}
+
 module.exports = {
     createGame,
     getAllGames,
@@ -366,5 +449,10 @@ module.exports = {
     getGameByTitle,
     updateGameRating,
     updateGameById,
-    removeGameById
+    removeGameById,
+    getGamesByRating,
+    getGamesByGenre,
+    getGamesByPlatform,
+    searchGamesByTitle,
+    getBestGame
 };
