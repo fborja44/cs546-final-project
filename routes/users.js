@@ -78,4 +78,24 @@ router.get('/logout', async (req, res) => {
     
 });
 
+/**
+ * Route to individual user page. Should be public to all users.
+ */
+router.get('/:id', async (req, res) => {
+    const id = req.params.id;
+    let errors = [];
+
+    if (!id) {
+        // Display error page. error.handlebars
+        return;
+    }
+
+    try {
+        const user = await usersData.getUserById(id);
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 });
+    } catch (e) {
+        res.status(404).json( {} ); // Display error page. error.handlebars
+    }
+});
+
 module.exports = router;
