@@ -148,8 +148,8 @@ footer p.right {
     width: 200px;
 }
 
-/* Error Styles */
-.error {
+/* Login Error Styles */
+.login-error {
     background-color: #ED4337;
     border-radius: 5px;
     font-family: "Poppins";
@@ -164,7 +164,28 @@ footer p.right {
     margin-left: 40%;
 }
 
-.error p {
+.login-error p {
     margin: 0 0 0 0;
     color: white;
+}
+
+/* Error Page Styles */
+#error-container {
+    background: white;
+    width: 500px;
+    text-align: center;
+    font-family:"Poppins";
+
+    margin: 15px auto 0 auto;
+    padding: 10px 0 10px 0;
+
+    box-shadow: .1px 4px 5px #919aa1;
+}
+
+.error {
+    margin: auto;
+}
+
+#status {
+    margin: auto;
 }

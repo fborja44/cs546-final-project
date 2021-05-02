@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameByTitle(title);
-        res.render('games/single', { title: game.title, game: game , reviewEmpty: game.reviews.length === 0 });
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
     } catch (e) {
         res.status(500).json({message: e});
     }
