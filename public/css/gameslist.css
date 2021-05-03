@@ -2,10 +2,14 @@
  ---------------------------------------------------------------------------*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
 
- /** General Styles **/
- main {
+/** General Styles **/
+main {
     align-items: center;
- }
+}
+
+#games-list {
+    margin-bottom: 41px;
+}
 
 /** Search Form Styles **/
 form {
@@ -24,7 +28,7 @@ input[type=text] {
     font-size: 14px;
     width: 500px;
 
-    margin: 0 5px 0 5px;
+    margin: 0 0 0 5px;
     padding: 3px 12px 3px 12px;
 
     outline-width: 0px;
@@ -32,8 +36,6 @@ input[type=text] {
     border: 1px solid #aaa;
     border-radius: 5px;
 }
-
-
 
 select {
     background: white;
@@ -43,7 +45,7 @@ select {
     width: 125px;
 
     margin: 0 5px 0 5px;
-    padding: 3px 12px 3px 12px;
+    padding: 3px 12px 3px 5px;
 
     outline-width: 0px;
 
@@ -58,25 +60,34 @@ button {
     font-size: 14px;
 
     border: none;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
 
     padding: 3px 10px 3px 10px;
     font-family: "Poppins";
     font-weight: bold;
+    border: 1px solid #aaa;
+
+    position: relative;
+    right: 8px;
 }
 
 button:hover {
-    background: #a6a6a6;
-
+    background: #888888;
+    cursor: pointer;
 }
 
 #new {
     color: black;
-    padding-bottom: 60px;
+    background: #a6a6a6;
+
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 60px;
+    border-radius: 5px;
+    border: 1px solid #666666;
 }
 
 #new:hover {
-    color: #2473a4;
+    background: #8d8d8d;
 }
 
 /** List styles **/
@@ -193,13 +204,18 @@ h1 {
     margin: 5px 15px 5px 15px;
 }
 
-.actions a {
+.actions a, .actions span {
     color: black;
     font-size: 14px;
 }
 
+.actions span {
+    color: #2473a4;
+}
+
 .actions a:hover {
     color: #2473a4;
+    cursor: pointer;
 }
 
 .actions p {

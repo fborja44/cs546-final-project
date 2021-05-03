@@ -121,6 +121,8 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
         prices: pricesTrim,
         averageRating: 0,
         reviews: [],
+        numLikes: 0,
+        numFollows: 0
     };
 
     const insertInfo = await gameCollection.insertOne(newGame);
