@@ -1,0 +1,67 @@
+/* Single game page styles
+ ---------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); /** Font: Poppins **/
+
+/** General Styles **/
+main {
+    align-items: center;
+}
+
+.user-container {
+    background: white;
+    width: 1000px;
+    margin: auto auto 42px auto;
+    box-shadow: .1px 4px 5px #919aa1;
+    height: auto;
+}
+
+.user {
+    background: white;
+    color: black;
+    list-style: none;
+
+    /* margin: 20px auto 0 auto; */
+    margin: 0 auto 0 auto;
+    width: 1000px;
+    /* border-radius: 5px; */
+    /* border-bottom: 1px solid black; */
+    box-shadow: .1px 4px 5px #919aa1;
+    font-size: 14px;
+    font-family: "Poppins";
+}
+
+h1 {
+    color: white;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+h3 {
+    color: white;
+    padding: 5px 15px 5px 15px;
+    margin: auto;
+    background-image: linear-gradient(to right, #2473a4, #18415b);
+
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.content-container {
+    margin: 15px 15px 15px 15px;
+}
+
+#profile-pic {
+    width: 150px;
+    height: auto;
+    /* float: left; */
+}
+
+#empty {
+    font-style: italic;
+    margin: 0 15px 0 15px;
+    padding: 10px 0 10px 0;
+}

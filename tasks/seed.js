@@ -211,7 +211,11 @@ const main = async () => {
 
     // Testing getBestGame
     let best1 = await gamesData.getBestGame();
-    console.log(best1);
+    // console.log(best1);
+
+    // Testing getGamesByPrice
+    let price1 = await gamesData.getGamesByPrice("$30.00");
+    console.log(price1);
 
     /* Creating Users
     ---------------------------------------------------------------------------*/

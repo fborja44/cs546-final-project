@@ -1,41 +1,53 @@
 <link rel="stylesheet" href="/public/css/gameslist.css">
 <div id="form-container">
     <h1>Add A New Game</h1>
-    <form id="game-new" method="POST" action="/new">
+    <form id="game-new" method="POST" action="/games/new">
         <!-- Title -->
         <div class="form-elem">
             <label for ="title-input">Title:</label>
-            <input id="title-input" type="text" name="newTitle">
+            <input id="title-input" type="text" name="newTitle" placeholder="ex. Cyberpunk 2077">
         </div>
         <!-- Image -->
         <div class="form-elem">
             <label for ="image-input">Preview Image URL:</label>
-            <input id="image-input" type="text" name="newImage">
+            <input id="image-input" type="text" name="newImage" placeholder="ex. https://i.imgur.com/DvizWKa.jpg">
         </div>
         <!-- Publisher -->
         <div class="form-elem">
             <label for ="publisher-input">Publisher:</label>
-            <input id="publisher-input" type="text" name="newPublisher">
+            <input id="publisher-input" type="text" name="newPublisher" placeholder="ex. CD Projekt Red">
         </div>
         <!-- Release Year -->
         <div class="form-elem">
             <label for ="releaseyear-input">Release Year:</label>
-            <input id="releaseyear-input" type="text" name="newReleaseYear">
+            <input id="releaseyear-input" type="text" name="newReleaseYear" placeholder="ex. 2020">
         </div>
         <!-- Genres -->
-        <div class="form-elem">
-            <label for ="genre-input">Genres:</label>
-            <input id="genre-input" type="text" name="newGenres">
+        <div class="form-elem" id="genre-div">
+            <label for ="genre-input1">Genres:</label>
+            <input id="genre-input1" type="text" name="newGenres[]">
+        </div>
+        <div class="center">
+            <button id="new-genre" class="update-field" type="button"><img class="form-button" src="/public/img/add.png" alt="add genre"/></button>
+            <button id="remove-genre" class="update-field" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove genre"/></button>
         </div>
         <!-- Platforms -->
-        <div class="form-elem">
-            <label for ="platform-input">Platforms:</label>
-            <input id="platform-input" type="text" name="newPlatforms">
+        <div class="form-elem" id="platform-div">
+            <label for ="platform-input1">Platforms:</label>
+            <input id="platform-input1" type="text" name="newPlatforms[]">
+        </div>
+        <div class="center">
+            <button id="new-platform" class="update-field" type="button"><img class="form-button" src="/public/img/add.png" alt="add platform"/></button>
+            <button id="remove-platform" class="update-field" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove platform"/></button>
         </div>
         <!-- Prices -->
-        <div class="form-elem">
-            <label for ="price-input">Prices:</label>
-            <input id="price-input" type="text" name="newPrices">
+        <div class="form-elem" id="price-div">
+            <label for ="price-input1">Prices:</label>
+            <input id="price-input1" type="text" name="newPrices[]" placeholder="ex. PC: $49.99">
+        </div>
+        <div class="center">
+            <button id="new-price" type="button"><img class="form-button" src="/public/img/add.png" alt="add price"/></button>
+            <button id="remove-price" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove price"/></button>
         </div>
         <!-- Description -->
         <div class="form-elem">
@@ -46,4 +58,9 @@
             <button id="new-submit" type="submit">Submit</button>
         </div>
     </form>
+    <div class="hidden center" id="gameForm-error-container">
+        <ul id="gameFormErrors">
+            
+        </ul>
+    </div>
 </div>

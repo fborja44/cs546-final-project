@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameByTitle(title);
-        res.render('games/single', { title: game.title, game: game , reviewEmpty: game.reviews.length === 0 });
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -67,7 +67,8 @@ router.get('/', async (req, res) => {
  * Adds a new game to the games collection.
  */
 router.post('/new', async (req, res) => {
-    
+    let gameData = req.body;
+    res.status(200).json(gameData);
 });
 
 /**
@@ -89,8 +90,15 @@ router.post('/search', async (req, res) => {
         errors.push("Search type must non-empty.");
     }
 
-    if (errors.length > 0) {
-        // show error on screen <--- REMEMBER TO ADD
+    // maybe update to make it so search type is remembered after search?
+    if (errors.length > 0) { 
+        let gamesList = await gamesData.getAllGames();
+        res.render('games/gameslist', { title: "Games", 
+                                        games: gamesList , 
+                                        gamesEmpty: gamesList.length === 0, 
+                                        error: errors, 
+                                        search_type_value: searchData.searchType, 
+                                        search_term_value: searchData.searchTerm });
         return;
     }
     
@@ -98,26 +106,47 @@ router.post('/search', async (req, res) => {
     if (searchData.searchType === "title") {
         try {
             let searchList = await gamesData.searchGamesByTitle(searchData.searchTerm);
-            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+            res.render('games/gameslist', { title: "Games", 
+                                            games: searchList , 
+                                            gamesEmpty: searchList.length === 0,                                        
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         } catch (e) {
             res.json(e);
         }
     } else if (searchData.searchType === "genre") {
         try {
             let searchList = await gamesData.getGamesByGenre(searchData.searchTerm);
-            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+            res.render('games/gameslist', { title: "Games", 
+                                            games: searchList, 
+                                            gamesEmpty: searchList.length === 0,                                        
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         } catch (e) {
             res.json(e);
         }
     } else if (searchData.searchType === "platform") {
         try {
             let searchList = await gamesData.getGamesByPlatform(searchData.searchTerm);
-            res.render('games/gameslist', { title: "Games", games: searchList , gamesEmpty: searchList.length === 0});
+            res.render('games/gameslist', { title: "Games", 
+                                            games: searchList, 
+                                            gamesEmpty: searchList.length === 0,                                        
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         } catch (e) {
             res.json(e);
         }
     } else if (searchData.searchType === "prices") {
-        // implement
+        try {
+            let searchList = await gamesData.getGamesByPrice(searchData.searchTerm);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: searchList, 
+                                            gamesEmpty: searchList.length === 0,                                        
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
+        } catch (e) {
+            res.json(e);
+        }
     }
 });
 
