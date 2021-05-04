@@ -8,7 +8,7 @@
             </div>
             <img src="{{game.image}}" alt="{{game.title}}">
             <div class="info">
-                <a href="games/{{game.title}}" class="title">{{game.title}}</a>
+                <h1 class="title">{{game.title}}</h1>
                 <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
                 <table>
                     <tr>
@@ -34,9 +34,13 @@
                 {{game.description}}
             </p>
             <div class="actions">
-                <p><a><img src="/public/img/like.png">Like</a> | <a><img src="/public/img/follow.png">Follow</a> | <a><img src="/public/img/wishlist.png">Wishlist</a> | <a><img src="/public/img/comment.png">Leave a Review</a>
-            </p>
-        </div>
+                <p>
+                    <a><img src="/public/img/like.png" alt="">Like</a> [<span></span>{{game.numLikes}}</span>] | 
+                    <a><img src="/public/img/follow.png" alt="">Follow</a> [<span>{{game.numFollows}}</span>] | 
+                    <a><img src="/public/img/wishlist.png" alt="">Wishlist</a> | 
+                    <a><img src="/public/img/comment.png" alt="">Leave a Review</a>
+                </p>
+            </div>
         </div>
         
         <h1>User Reviews</h1>
@@ -46,6 +50,7 @@
                 <div class="review-rating">
                     <span>{{rating}}</span>
                 </div>
+                <img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
                 <h2>{{reviewTitle}}</h2>
             </div>
 
