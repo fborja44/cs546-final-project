@@ -137,7 +137,16 @@ router.post('/search', async (req, res) => {
             res.json(e);
         }
     } else if (searchData.searchType === "prices") {
-        // implement
+        try {
+            let searchList = await gamesData.getGamesByPrice(searchData.searchTerm);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: searchList, 
+                                            gamesEmpty: searchList.length === 0,                                        
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
+        } catch (e) {
+            res.json(e);
+        }
     }
 });
 

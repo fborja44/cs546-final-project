@@ -425,6 +425,10 @@ async function getGamesByGenre(genre) {
     return query;
 }
 
+/**
+ * Gets games by searching using a title.
+ * @param {string} title 
+ */
 async function searchGamesByTitle(title) {
     if (!title) throw "You must provide an id to search for";
     if (typeof title !== "string") throw "The provided id must be a string";
@@ -437,11 +441,31 @@ async function searchGamesByTitle(title) {
     return searchData;
 }
 
+/**
+ * Gets the game with the highest average rating.
+ */
 async function getBestGame() {
     const gamesCollection = await games();
 
     const game = gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
     return game;
+}
+
+/**
+ * Gets games with a price less than the one specified, ignoring platform.
+ */
+async function getGamesByPrice(searchPrice) {
+    // Error checking
+    if (!searchPrice) throw "The price must be provided";
+    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string`;
+    if (searchPrice.trim().length === 0) throw "The price must not be an empty string";
+    if (!validPrice.test(searchPrice)) throw `${searchPrice || "provided argument"} must be a valid price`;
+
+    const gamesCollection = await games();
+
+    // *********** NEED TO CONVERT PRICES TO NUMBERS; CURRENTLY STORED AS STRINGS
+    const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
+    return gamesList;
 }
 
 module.exports = {
@@ -456,5 +480,6 @@ module.exports = {
     getGamesByGenre,
     getGamesByPlatform,
     searchGamesByTitle,
-    getBestGame
+    getBestGame,
+    getGamesByPrice
 };
