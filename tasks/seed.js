@@ -243,9 +243,30 @@ const main = async () => {
     // Testing updateLastName()
     await usersData.updateLastName(user1_id, "B");
 
+     /* Testing Review functions
+    ---------------------------------------------------------------------------*/
+    //Testing Delete Review();
+    //console.log("review Testing");
+    //let r1 = await reviewsData.getReviewById(game2_id,review2_1._id);
+    //console.log(r1);
+    //let allReviewsBeforeDel = await reviewsData.getAllReviews(game2_id);
+    //console.log(allReviewsBeforeDel);
+    //let del1 = await reviewsData.deleteReview(game2_id,review2_1._id);
+    //console.log(del1);
+    //let allReviewsAfterDel = await reviewsData.getAllReviews(game2_id);
+    // console.log(allReviewsAfterDel);
+    //let updateReviews1 = await reviewsData.updateReview(game2_id,review2_1._id,"sdfd","","lololol",5);
+    //console.log(updateReviews1);
+
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));
     await db.serverConfig.close();
+
+
+
+
+
+
 }
 
 main().catch(console.log);
