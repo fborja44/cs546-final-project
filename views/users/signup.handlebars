@@ -1,0 +1,32 @@
+<div class="login-container" id = "signup-container">
+    <div class="login-header" id = "signup-header">
+        <h2>User Sign Up</h2>
+    </div>
+    <div id = "signupError" class = "error" hidden>
+
+    </div>
+    <form method="POST" id="signup-form" action="/signup">
+        
+        <div class="form-elem">
+            <label for="signup_username">Username:</label>
+            <input name="signup_username" id="signup-username" type="text" value="{{signup_username}}">
+        </div>
+        <div class="form-elem">
+            <label for="signup_password">Password:</label>
+            <input name="signup_password" id="signup-password" type="password" value="{{signup_password}}">
+        </div>
+        <div class="form-elem">
+            <label for="signup_email">Email:</label>
+            <input name="signup_email" id="signup-email" type="email" value="{{signup_email}}">
+        </div>
+        <div class="form-elem">
+            <label for="firstName">First name:</label>
+            <input name="firstName" id="firstName" type="text" value="{{firstName}}">
+        </div>
+        <div class="form-elem">
+            <label for="lastName">Last name:</label>
+            <input name="lastName" id="lastName" type="text" value="{{lastName}}">
+        </div>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>

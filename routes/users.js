@@ -13,7 +13,8 @@ const usersData = data.users;
  * 
  */
 router.get('/', async (req, res) => {
-    res.sendFile(path.resolve('static/home.html')); // temporary
+    res.render('home', { main: "init" }); // temporary
+    //res.sendFile(path.resolve('static/home.html')); // temporary
 });
 
 /**
@@ -21,6 +22,20 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
     
+});
+
+/**
+ * 
+ */
+router.get('/signup', async (req, res) => {
+    res.render('users/signup', { title: "Sign Up" });
+});
+
+/**
+ * Temporary post (for test)
+ */
+router.post('/signup', async (req, res) => {
+    res.render('home', { main: "success" });
 });
 
 /**
