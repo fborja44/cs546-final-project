@@ -177,6 +177,7 @@ h1 {
 #form-container {
     margin: 0 auto 0 auto;
     width: 500px;
+    padding-bottom: 42px;
 }
 
 #new-submit {
@@ -185,6 +186,30 @@ h1 {
 
 .form-elem {
     margin: auto;
+}
+
+.form-button {
+    width: 15px;
+    position: relative;
+    top: 2px;
+}
+
+.update-field {
+    margin-top: 5px;
+}
+
+.gameFormError {
+    color: red;
+    text-align: left;
+}
+
+.form-elem .gameFormInputError {
+    border-color:red;
+    border-width: 3px;
+}
+
+.hidden {
+    display: none;
 }
 
 /* User Actions Styles */
