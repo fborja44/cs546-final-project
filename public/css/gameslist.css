@@ -216,3 +216,21 @@ h1 {
     position: relative;
     top: 1px;
 }
+
+.hidden {
+    display:none;
+}
+
+.gameFormError {
+    color: red;
+    text-align: left;
+}
+
+.form-elem .gameFormInputError {
+    border-color:red;
+    border-width: 3px;
+}
+
+.form-button {
+    width: 30px;
+}

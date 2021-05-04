@@ -67,7 +67,6 @@ router.get('/', async (req, res) => {
  * Adds a new game to the games collection.
  */
 router.post('/new', async (req, res) => {
-    
 });
 
 /**
