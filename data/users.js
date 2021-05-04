@@ -3,7 +3,7 @@
  const mongoCollections = require('../config/mongoCollections');
  const users = mongoCollections.users;
  let { ObjectId } = require('mongodb');
- const bcrypt = require('bcrypt');
+ const bcrypt = require('bcryptjs');
  const saltRounds = 16;
  
  /**
