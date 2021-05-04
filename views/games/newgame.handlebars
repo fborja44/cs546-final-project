@@ -5,22 +5,22 @@
         <!-- Title -->
         <div class="form-elem">
             <label for ="title-input">Title:</label>
-            <input id="title-input" type="text" name="newTitle">
+            <input id="title-input" type="text" name="newTitle" placeholder="ex. Cyberpunk 2077">
         </div>
         <!-- Image -->
         <div class="form-elem">
             <label for ="image-input">Preview Image URL:</label>
-            <input id="image-input" type="text" name="newImage">
+            <input id="image-input" type="text" name="newImage" placeholder="ex. https://i.imgur.com/DvizWKa.jpg">
         </div>
         <!-- Publisher -->
         <div class="form-elem">
             <label for ="publisher-input">Publisher:</label>
-            <input id="publisher-input" type="text" name="newPublisher">
+            <input id="publisher-input" type="text" name="newPublisher" placeholder="ex. CD Projekt Red">
         </div>
         <!-- Release Year -->
         <div class="form-elem">
             <label for ="releaseyear-input">Release Year:</label>
-            <input id="releaseyear-input" type="text" name="newReleaseYear">
+            <input id="releaseyear-input" type="text" name="newReleaseYear" placeholder="ex. 2020">
         </div>
         <!-- Genres -->
         <div class="form-elem" id="genre-div">
@@ -28,8 +28,8 @@
             <input id="genre-input1" type="text" name="newGenres[]">
         </div>
         <div class="center">
-            <button id="new-genre" type="button"><img class="form-button" src="/public/img/add.png" alt="add genre"/></button>
-            <button id="remove-genre" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove genre"/></button>
+            <button id="new-genre" class="update-field" type="button"><img class="form-button" src="/public/img/add.png" alt="add genre"/></button>
+            <button id="remove-genre" class="update-field" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove genre"/></button>
         </div>
         <!-- Platforms -->
         <div class="form-elem" id="platform-div">
@@ -37,13 +37,13 @@
             <input id="platform-input1" type="text" name="newPlatforms[]">
         </div>
         <div class="center">
-            <button id="new-platform" type="button"><img class="form-button" src="/public/img/add.png" alt="add platform"/></button>
-            <button id="remove-platform" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove platform"/></button>
+            <button id="new-platform" class="update-field" type="button"><img class="form-button" src="/public/img/add.png" alt="add platform"/></button>
+            <button id="remove-platform" class="update-field" type="button"><img class="form-button" src="/public/img/sub.png" alt="remove platform"/></button>
         </div>
         <!-- Prices -->
         <div class="form-elem" id="price-div">
             <label for ="price-input1">Prices:</label>
-            <input id="price-input1" type="text" name="newPrices[]" placeholder="Platform: price">
+            <input id="price-input1" type="text" name="newPrices[]" placeholder="ex. PC: $49.99">
         </div>
         <div class="center">
             <button id="new-price" type="button"><img class="form-button" src="/public/img/add.png" alt="add price"/></button>
