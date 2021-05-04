@@ -8,15 +8,13 @@
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
 
-    const validPrice = /^.+: \$\d+.\d\d$/;
+    const validPrice = /^.+: \$\d+.\d\d$/; // price format
   
-    const form = document.getElementById('game-new');
+    // Add game form
+    const form = document.getElementById('game-new'); 
   
     if (form) {
-      // We can store references to our elements; it's better to
-      // store them once rather than re-query the DOM traversal each time
-      // that the event runs.
-      
+      // References to elements
       const titleElement = document.getElementById('title-input');
       const imageElement = document.getElementById('image-input');
       const publisherElement = document.getElementById('publisher-input');
@@ -29,7 +27,11 @@
       const genreButtonSub = document.getElementById('remove-genre');
 
       const genreDiv = document.getElementById('genre-div');
-      let gi = 2;
+
+      // Event listeners for add and remove buttons
+
+      // Genre buttons
+      let gi = 2; // genre index
       genreButtonAdd.addEventListener("click", (event) => {
         let newInput = document.createElement("input");
         newInput.type = "text";
@@ -38,7 +40,6 @@
         gi++;
         genreDiv.appendChild(newInput);
       });
-
       genreButtonSub.addEventListener("click", (event) => {
         gi--;
         if (gi > 1) {
@@ -49,11 +50,11 @@
         }
       });
 
+      // Platform buttons
       const platformButtonAdd = document.getElementById('new-platform');
       const platformButtonSub = document.getElementById('remove-platform');
-
       const platformDiv = document.getElementById('platform-div');
-      let pi = 2;
+      let pi = 2; // platform index
       platformButtonAdd.addEventListener("click", (event) => {
         let newInput = document.createElement("input");
         newInput.type = "text";
@@ -62,7 +63,6 @@
         pi++;
         platformDiv.appendChild(newInput);
       });
-
       platformButtonSub.addEventListener("click", (event) => {
         pi--;
         if (pi > 1) {
@@ -73,11 +73,11 @@
         }
       });
 
+      // Price buttons
       const priceButtonAdd = document.getElementById('new-price');
       const priceButtonSub = document.getElementById('remove-price');
-
       const priceDiv = document.getElementById('price-div');
-      let pri = 2;
+      let pri = 2; // price constant
       priceButtonAdd.addEventListener("click", (event) => {
         let newInput = document.createElement("input");
         newInput.type = "text";
@@ -86,7 +86,6 @@
         pri++;
         priceDiv.appendChild(newInput);
       });
-
       priceButtonSub.addEventListener("click", (event) => {
         pri--;
         if (pri > 1) {
@@ -97,6 +96,7 @@
         }
       });
 
+      // Event handler for when the form is submitted
       form.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -104,6 +104,7 @@
             // hide containers by default
             errorContainer.classList.add('hidden');
             
+            // Get values
             const title = titleElement.value;
             const image = imageElement.value;
             const publisher = publisherElement.value;
@@ -118,6 +119,7 @@
             let platforms = [];
             let prices = [];
 
+            // Get array values
             for (let x of genreElement) {
                 genres.push(x.value);
                 x.classList.remove("gameFormInputError");
@@ -133,12 +135,15 @@
                 x.classList.remove("gameFormInputError");
             }
 
+            // Remove class that displays red box
             titleElement.classList.remove("gameFormInputError");
             imageElement.classList.remove("gameFormInputError");
             publisherElement.classList.remove("gameFormInputError");
             releaseyearElement.classList.remove("gameFormInputError");
             descriptionElement.classList.remove("gameFormInputError");
 
+            // Error handling
+            // Throws at the end after creating an array of all error messages
             let titleError = true;
             let imageError = true;
             let publisherError = true;
@@ -147,11 +152,12 @@
             let platformError = true;
             let priceError = true;
             let descriptionError = true;
-
             let errors = [];
             let errorList = [];
             let errorsMsg = [];
             let error = false;
+
+            // Title error checking
             if (!title && titleError) {
                 errorsMsg.push("A title must be provided");
                 errorList.push("title");
@@ -171,6 +177,7 @@
                 error = true;
             }
 
+            // Image error checking
             if (!image && imageError) {
                 errorsMsg.push("An image must be provided");
                 errorList.push("image");
@@ -196,6 +203,7 @@
                 error = true;
             }
 
+            // Publisher error checking
             if (!publisher && publisherError) {
                 errorsMsg.push("A publisher must be provided");
                 errorList.push("publisher");
@@ -215,6 +223,7 @@
                 error = true;
             }
 
+            // Release year error checking
             if (!releaseYear && releaseyearError) {
                 errorsMsg.push("A release year must be provided");
                 errorList.push("releaseYear");
@@ -254,6 +263,7 @@
                 error = true;
             }
 
+            // Genres error checking
             if (!genres && genreError) {
                 errorsMsg.push("Genres must be provided");
                 errorList.push("genres");
@@ -281,6 +291,7 @@
                 error = true;
             }
 
+            // Platforms error checking
             if (!platforms && platformError) {
                 errorsMsg.push("Platforms must be provided");
                 errorList.push("platforms");
@@ -308,6 +319,7 @@
                 error = true;
             }
 
+            // Prices error checking
             if (!prices && priceError) {
                 errorsMsg.push("Prices must be provided");
                 errorList.push("prices");
@@ -335,6 +347,7 @@
                 error = true;
             }
 
+            // Description error checking
             if (!description && descriptionError) {
                 errorsMsg.push("A description must be provided");
                 errorList.push("description");
@@ -364,8 +377,9 @@
                 throw errors;
             }
 
-            form.submit();
+            form.submit(); // submit form when no errors were detected
         } catch (e) {
+            // Displays the errors in red on the page
             const errorList = document.getElementById("gameFormErrors");
             const empty = document.createElement("ul");
             empty.id = "gameFormErrors";
