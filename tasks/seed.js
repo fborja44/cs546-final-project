@@ -49,7 +49,7 @@ const main = async () => {
         "Valorant",
         "https://cdn-ascope-prod.global.ssl.fastly.net/static/images/boxart_valorant_300x400.jpg",
         "Riot Games",
-        ["First-Person Shooter", "Team", "Tactical"],
+        ["First-Person Shooter", "Team", "Tactical", "Shooting"],
         "2020",
         ["PC"],
         "Valorant is a free-to-play hero shooter developed and published by Riot Games, for Microsoft Windows.",
@@ -216,6 +216,10 @@ const main = async () => {
     // Testing getGamesByPrice
     let price1 = await gamesData.getGamesByPrice("$30.00");
     // console.log(price1);
+
+    // Testing getBestGameByGenre
+    let bestgenre1 = await gamesData.getBestGameByGenre("Action");
+    // console.log(bestgenre1);
 
     /* Creating Users
     ---------------------------------------------------------------------------*/

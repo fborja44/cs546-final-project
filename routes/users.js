@@ -15,9 +15,68 @@ const gamesData = data.games;
  * 
  */
 router.get('/', async (req, res) => {
+    // Check to make sure that a game exist for the category before passing them to user/home
+    // Need to render error pages
+    let best_game, best_action, best_adventure, best_shooting, best_sports;
+    let games = {};
+
+    // Check if there are games in the collection
+    let gamesList;
     try {
-        let game = await gamesData.getBestGame();
-        res.render('users/home', { title: "Home", game: game[0] });
+        gamesList = await gamesData.getAllGames();
+    } catch (e) {
+
+    }
+
+    if (gamesList.length === 0) {
+        res.render('users/home', { title: "Home", games: games, empty: true});
+        return;
+    }
+
+    // Best Overall
+    try {
+        let best_game_ = await gamesData.getBestGame();
+        best_game = best_game_[0];
+        games.best_game = best_game;
+    } catch (e) {
+        // if it fails, then skip
+    }
+
+    // Best Action
+    try {
+        best_action = await gamesData.getBestGameByGenre("Action");
+        games.best_action = best_action;
+    } catch (e) {
+        // if it fails, then skip
+    }
+
+    // Best Adventure
+    try {
+        best_adventure = await gamesData.getBestGameByGenre("Adventure");
+        games.best_adventure = best_adventure;
+    } catch (e) {
+
+    }
+
+    // Best Shooting
+    try {
+        best_shooting = await gamesData.getBestGameByGenre("Shooting");
+        games.best_shooting = best_shooting;
+    } catch (e) {
+
+    }
+
+    // Best Shooting
+    try {
+        best_sports = await gamesData.getBestGameByGenre("Sports");
+        games.best_sports = best_sports;
+    } catch (e) {
+
+    }
+    
+    // Render the route
+    try {
+        res.render('users/home', { title: "Home", games: games });
     } catch (e) {
         res.status(404).json( {error: e });
     }

@@ -452,6 +452,26 @@ async function getBestGame() {
 }
 
 /**
+ * Gets the game with the highest average rating by the specified genre
+ */
+ async function getBestGameByGenre(genre) {
+    // Error checking
+    if (!genre) throw "You must provide a genre";
+    if (typeof genre !== "string") throw "The provided genre must be a string";
+    if (genre.trim().length === 0) throw "The provided genre must not be an empty string";
+    
+    const gamesList = await getGamesByGenre(genre);
+    let query = gamesList[1];
+    for (const game of gamesList) {
+        if (game.averageRating > query.averageRating) {
+            query = game;
+        }
+    }
+
+    return query;
+}
+
+/**
  * Gets games with a price less than the one specified, ignoring platform.
  */
 async function getGamesByPrice(searchPrice) {
@@ -491,5 +511,6 @@ module.exports = {
     getGamesByPlatform,
     searchGamesByTitle,
     getBestGame,
+    getBestGameByGenre,
     getGamesByPrice
 };
