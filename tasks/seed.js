@@ -215,7 +215,7 @@ const main = async () => {
 
     // Testing getGamesByPrice
     let price1 = await gamesData.getGamesByPrice("$30.00");
-    console.log(price1);
+    // console.log(price1);
 
     /* Creating Users
     ---------------------------------------------------------------------------*/
