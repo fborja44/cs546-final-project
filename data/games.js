@@ -430,9 +430,9 @@ async function getGamesByGenre(genre) {
  * @param {string} title 
  */
 async function searchGamesByTitle(title) {
-    if (!title) throw "You must provide an id to search for";
-    if (typeof title !== "string") throw "The provided id must be a string";
-    if (title.trim().length === 0) throw "The provided must not be an empty string";
+    if (!title) throw "You must provide a title to search for";
+    if (typeof title !== "string") throw "The provided title must be a string";
+    if (title.trim().length === 0) throw "The provided title must not be an empty string";
 
     const gamesCollection = await games();
 
@@ -456,16 +456,26 @@ async function getBestGame() {
  */
 async function getGamesByPrice(searchPrice) {
     // Error checking
-    if (!searchPrice) throw "The price must be provided";
-    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string`;
-    if (searchPrice.trim().length === 0) throw "The price must not be an empty string";
-    if (!validPrice.test(searchPrice)) throw `${searchPrice || "provided argument"} must be a valid price`;
+    if (!searchPrice) throw "The price must be provided.";
+    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string.`;
+    if (searchPrice.trim().length === 0) throw "The price must not be an empty string.";
+    if (!validPrice.test(searchPrice)) throw `You must provide a valid price. ex. '$5.00', '$X.XX'.`;
 
-    const gamesCollection = await games();
+    const list = [];
+
+    const gamesList = await getAllGames();
+    for (const game of gamesList) {
+        for (const obj of game.prices) {
+            if (Number.parseFloat(obj.price.substring(1)) < Number.parseFloat(searchPrice.substring(1))) {
+                list.push(game);
+                break;
+            }
+        }
+    }
 
     // *********** NEED TO CONVERT PRICES TO NUMBERS; CURRENTLY STORED AS STRINGS
-    const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
-    return gamesList;
+    // const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
+    return list;
 }
 
 module.exports = {

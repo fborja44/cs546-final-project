@@ -14,8 +14,10 @@
         <button type="submit">></button>
     </form>
     {{#if error}}
-    <div class="form-error">
-        <p>Error: {{error}}</p>
+    <div class="center">
+        <div class="form-error">
+            <p>Error: {{error}}</p>
+        </div>
     </div>
     {{/if}}
 </div>
@@ -69,7 +71,7 @@
     {{#if gamesEmpty}}
     <li class="games">
         <div class="center">
-            <p id="empty">No games found. Create one below!</p>
+            <p id="empty">No games found. Create one above!</p>
         </div>
     </li>
     {{/if}}
