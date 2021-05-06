@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     errors.push('No title provided');
   }
 
-  if (!reviewPost.reviewBody || reviewPost.reviewBody.trim()===0) {
+  if (!reviewPost.reviewBody || reviewPost.reviewBody.trim().length===0) {
     errors.push('No body provided');
   }
 
@@ -27,15 +27,15 @@ router.post('/', async (req, res) => {
     errors.push('No rating provided');
   }
 
-    if (errors.length > 0) {
-        res.render('games/single', {
-            title:game.title,
-            game:game,
-            errors: errors,
-            hasErrors: true
-        });
-        return;
-    }
+  if (errors.length > 0) {
+      res.render('games/single', {
+          title:game.title,
+          game:game,
+          errors: errors,
+          hasErrors: true
+      });
+      return;
+  }
 
   try {
     const newReview = await reviewsData.createReview(
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
 
   }catch (e) {
     console.log(e);
-    res.status(500).json({ error: "can't make game" });
+    res.status(500).json({ error: e });
   }
 });
 
