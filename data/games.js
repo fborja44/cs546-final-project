@@ -151,7 +151,7 @@ async function getAllGames() {
 }
 
 /**
- * Retrieves a game in the databse with the given id.
+ * Retrieves a game in the database with the given id.
  * @param {string} id String representation of the ObjectId of the game.
  */
 async function getGameById(id) {
