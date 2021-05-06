@@ -69,21 +69,31 @@
         <!-- Should only be shown if user is logged in -->
         <div>
             <h3>Create a new Review</h3>
-            <form>
+            <form method="POST" class="new-review-post">
+                <input name="gameTitle" value="{{game.title}}" type="hidden">
                 <div class="form-elem">
                     <label>Title</label>
-                    <input type="text" placeholder="Give your review a title!">
+                    <input name="reviewTitle" type="text" placeholder="Give your review a title!">
                 </div>
                 <div id="rating-input" class="form-elem">
                     <label>Rating</label>
-                    <input type="number" min="1" max="5" placeholder="5">
+                    <input name="reviewRating" type="number" min="1" max="5" placeholder="5">
                 </div>
                 <div class="form-elem">
                     <label>Review</label>
-                    <textarea placeholder="Enter your review here!" rows="4" cols="50"></textarea>
+                    <textarea name="reviewBody" placeholder="Enter your review here!" rows="4" cols="50"></textarea>
                 </div>
                 <button type="submit">Submit</button>
             </form>
+            {{#if hasErrors}}
+             <ul>
+               {{#each errors}}
+               <li class="reviewErrors">
+                    {{this}}
+               </li>
+              {{/each}}
+            </ul>
+            {{/if}}
         </div>
     </div>
     {{/if}}
