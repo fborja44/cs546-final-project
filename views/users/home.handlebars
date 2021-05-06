@@ -11,8 +11,8 @@
     </div>
     <!-- Display if there are no games in the database -->
     {{#if empty}}
-    <div class="mySlides fade">
-        <p>No games have been added.</p>
+    <div class="mySlides fade empty">
+        <p>No games have been added yet!</p>
         <a href="/games/new">Add one now!</a>
     </div>
     {{/if}}
@@ -20,46 +20,76 @@
     <!-- Only render slides that exist (WIP)-->
     {{#if games.best_game}}
     <div class="mySlides fade">
-        <h3>Highest Rated Overall Game</h3>
+        <h2>Highest Rated Overall Game</h2>
         {{!-- <div class="numbertext">1 / 3</div> --}}
-        <img src="{{games.best_game.image}}" style="width:100%">
-        <div class="text">{{games.best_game.title}}</div>
+        <a href="/games/{{games.best_game.title}}"><img src="{{games.best_game.image}}" alt="{{games.best_game.title}}"></a>
+        <div class="score-info">
+            <h4>User Score</h4>
+            <div class="score">
+                <span class="score-span">{{games.best_game.averageRating}}</span>
+            </div>
+        </div>
+        <h3><a href="/games/{{games.best_game.title}}">{{games.best_game.title}}</a></h3>
     </div>
     {{/if}}
 
     {{#if games.best_action}}
     <div class="mySlides fade">
-        <h3>Highest Rated Action Game</h3>
+        <h2>Highest Rated Action Game</h2>
         {{!-- <div class="numbertext">2 / 3</div> --}}
-        <img src="{{games.best_action.image}}" style="width:100%">
-        <div class="text">{{games.best_action.title}}</div>
+        <a href="/games/{{games.best_action.title}}"><img src="{{games.best_action.image}}" alt="{{games.best_action.title}}"></a>
+        <div class="score-info">
+            <h4>User Score</h4>
+            <div class="score">
+                <span class="score-span">{{games.best_action.averageRating}}</span>
+            </div>
+        </div>
+        <h3><a href="/games/{{games.best_action.title}}">{{games.best_action.title}}</a></h3>
     </div>
     {{/if}}
 
     {{#if games.best_adventure}}
     <div class="mySlides fade">
-        <h3>Highest Rated Adventure Game</h3>
+        <h2>Highest Rated Adventure Game</h2>
         {{!-- <div class="numbertext">3 / 3</div> --}}
-        <img src="{{games.best_adventure.image}}" style="width:100%">
-        <div class="text">{{games.best_adventure.title}}</div>
+        <a href="/games/{{games.best_adventure.title}}"><img src="{{games.best_adventure.image}}" alt="{{games.best_adventure.title}}"></a>
+        <div class="score-info">
+            <h4>User Score</h4>
+            <div class="score">
+                <span class="score-span">{{games.best_adventure.averageRating}}</span>
+            </div>
+        </div>
+        <h3><a href="/games/{{games.best_adventure.title}}">{{games.best_adventure.title}}</a></h3>
     </div>
     {{/if}}
 
     {{#if games.best_shooting}}
     <div class="mySlides fade">
-        <h3>Highest Rated Shooting Game</h3>
+        <h2>Highest Rated Shooting Game</h2>
         {{!-- <div class="numbertext">3 / 3</div> --}}
-        <img src="{{games.best_shooting.image}}" style="width:100%">
-        <div class="text">{{games.best_shooting.title}}</div>
+        <a href="/games/{{games.best_shooting.title}}"><img src="{{games.best_shooting.image}}" alt="{{games.best_shooting.title}}"></a>
+        <div class="score-info">
+            <h4>User Score</h4>
+            <div class="score">
+                <span class="score-span">{{games.best_shooting.averageRating}}</span>
+            </div>
+        </div>
+        <h3><a href="/games/{{games.best_shooting.title}}">{{games.best_shooting.title}}</a></h3>
     </div>
     {{/if}}
 
-    {{#if games.best_shooting}}
+    {{#if games.best_sports}}
     <div class="mySlides fade">
-        <h3>Highest Rated Sports Game</h3>
+        <h2>Highest Rated Sports Game</h2>
         {{!-- <div class="numbertext">3 / 3</div> --}}
-        <img src="{{games.best_sports.image}}" style="width:100%">
-        <div class="text">{{games.best_sports.title}}</div>
+        <a href="/games/{{games.best_sports.title}}"><img src="{{games.best_sports.image}}" alt="{{games.best_sports.title}}"></a>
+        <div class="score-info">
+            <h4>User Score</h4>
+            <div class="score">
+                <span class="score-span">{{games.best_sports.averageRating}}</span>
+            </div>
+        </div>
+        <h3><a href="/games/{{games.best_sports.title}}">{{games.best_sports.title}}</a></h3>
     </div>
     {{/if}}
 
@@ -71,9 +101,21 @@
 <!-- The dots/circles -->
 <div style="text-align:center">
     <!-- Only render dots that are needed, and add more as they are needed (WIP) -->
+    {{#if games.best_game}}
     <span class="dot" onclick="currentSlide(1)"></span>
+    {{/if}}
+    {{#if games.best_action}}
     <span class="dot" onclick="currentSlide(2)"></span>
+    {{/if}}
+    {{#if games.best_adventure}}
     <span class="dot" onclick="currentSlide(3)"></span>
+    {{/if}}
+    {{#if games.best_shooting}}
+    <span class="dot" onclick="currentSlide(4)"></span>
+    {{/if}}
+    {{#if games.best_sports}}
+    <span class="dot" onclick="currentSlide(5)"></span>
+    {{/if}}
 </div>
 {{/if}}
 
