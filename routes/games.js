@@ -225,7 +225,7 @@ router.post('/new', async (req, res) => {
                                                 gameData.newReleaseYear.trim(),
                                                 platformsTrim,
                                                 gameData.newDesc.trim(),
-                                                pricesTrim);
+                                                pricesTrim());
         res.redirect(`/games/${gameData.newTitle.trim()}`);
     } catch (e) {
         res.status(500).json({error: e});
