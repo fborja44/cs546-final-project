@@ -14,11 +14,9 @@ router.post('/', async (req, res) => {
 
   let reviewPost = req.body;
   let errors = [];
-
   let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
   if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {
     errors.push('No title provided');
-      console.log("enter");
   }
 
   if (!reviewPost.reviewBody || reviewPost.reviewBody.trim()===0) {
