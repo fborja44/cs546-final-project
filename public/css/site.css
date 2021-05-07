@@ -194,3 +194,7 @@ footer p.right {
 #status {
     margin: auto;
 }
+
+.reviewErrors{
+    color:red;
+}

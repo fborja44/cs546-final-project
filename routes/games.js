@@ -176,7 +176,7 @@ router.post('/new', async (req, res) => {
                 errors.push("The prices must not have an empty string");
                 break;
             } else if (typeof x !== 'string') {
-                errors.push("The prices must be of the correct type");
+                errors.push("The prices must be of the correct type. `Platform: $X.XX`");
                 break;
             } else if (!validPrice.test(x.trim())) {
                 errors.push("The prices must be of the correct form");
