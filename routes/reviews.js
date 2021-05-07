@@ -19,9 +19,17 @@ router.post('/', async (req, res) => {
     errors.push('No title provided');
   }
 
+  if(reviewPost.reviewTitle.length > 85){
+    errors.push("Title can't exceed 85 characters.");
+  }
   if (!reviewPost.reviewBody || reviewPost.reviewBody.trim().length===0) {
     errors.push('No body provided');
   }
+
+  if (reviewPost.reviewBody.length >125) {
+    errors.push("Body can't exceed 125 characters.");
+  }
+
 
   if (!reviewPost.reviewRating) {
     errors.push('No rating provided');
