@@ -15,11 +15,83 @@ const gamesData = data.games;
  * 
  */
 router.get('/', async (req, res) => {
+    // Check to make sure that a game exist for the category before passing them to user/home
+    // Need to render error pages
+    let best_game, best_action, best_adventure, best_shooting, best_sports;
+    let games = {};
+
+    let default_game = {
+        title: " ",
+        image: "../public/img/default_game.png",
+        averageRating: "N/A"
+    };
+
+    // Check if there are games in the collection
+    let gamesList;
     try {
-        let game = await gamesData.getBestGame();
-        res.render('users/home', { title: "Home", game: game[0] });
+        gamesList = await gamesData.getAllGames();
     } catch (e) {
-        res.status(404).json( {error: e });
+        // DISPLAY ERROR PAGE
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
+    }
+
+    if (gamesList.length === 0) {
+        res.render('users/home', { title: "Home", games: games, empty: true});
+        return;
+    }
+
+    // Best Overall
+    try {
+        let best_game_ = await gamesData.getBestGame();
+        best_game = best_game_[0];
+        games.best_game = best_game;
+    } catch (e) {
+        // if it fails, then make a default game
+        games.best_game = default_game;
+    }
+
+    // Best Action
+    try {
+        best_action = await gamesData.getBestGameByGenre("Action");
+        games.best_action = best_action;
+    } catch (e) {
+        games.best_action = default_game;
+    }
+
+    // Best Adventure
+    try {
+        best_adventure = await gamesData.getBestGameByGenre("Adventure");
+        games.best_adventure = best_adventure;
+    } catch (e) {
+        games.best_adventure = default_game;
+    }
+
+    // Best Shooting
+    try {
+        best_shooting = await gamesData.getBestGameByGenre("Shooting");
+        if (best_shooting != null) {
+            games.best_shooting = best_shooting;
+        } else {
+            games.best_shooting = default_game;
+        }
+        
+    } catch (e) {
+        games.best_shooting = default_game;
+    }
+
+    // Best Shooting
+    try {
+        best_sports = await gamesData.getBestGameByGenre("Sports");
+        games.best_sports = best_sports;
+    } catch (e) {
+        games.best_sports = default_game;
+    }
+    
+    // Render the route
+    try {
+        res.render('users/home', { title: "Home", games: games });
+    } catch (e) {
+        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' });
     }
     
 });
