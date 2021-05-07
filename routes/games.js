@@ -225,7 +225,7 @@ router.post('/new', async (req, res) => {
                                                 platformsTrim,
                                                 gameData.newDesc.trim(),
                                                 pricesTrim);
-        res.redirect(`/games/${gameData.newTitle.trim()}`);
+        res.redirect(`/games/${newGame.title.trim()}`);
     } catch (e) {
         errors.push(e);
         res.status(500).render('games/newgame', { title: "Add Game", 

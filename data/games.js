@@ -112,14 +112,20 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
 
     const gamesList = await gameCollection.find({}).toArray();
     for (let x of gamesList) {
-        if (x.title.trim().toLowerCase() === title.trim().toLowerCase()) {
+        if (x.title.trim().toLowerCase().replace(" ", "") === title.trim().toLowerCase().replace(" ", "")) {
             throw "There may not be any duplicate games";
         }
     }
-    // console.log(checkGame);
-    // if (checkGame !== null || (checkGame !== null && (checkGame.title.trim().lower() === title.trim.lower()))) {
-    //     throw "There may not be any duplicate games";
-    // } 
+
+    title = title.trim();
+    let titleSplit = title.split(" ");
+    title = "";
+    for (let x of titleSplit) {
+        if (x !== '') {
+            title = title.concat(x.concat(" "));
+        }
+    }
+    title = title.trim();
 
     let newGame = {
         title: title.trim(),
