@@ -110,10 +110,16 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
 
     const gameCollection = await games();
 
-    const checkGame = await gameCollection.findOne({ title: title.trim() });
-    if (checkGame !== null) {
-        throw "There may not be any duplicate games";
+    const gamesList = await gameCollection.find({}).toArray();
+    for (let x of gamesList) {
+        if (x.title.trim().toLowerCase() === title.trim().toLowerCase()) {
+            throw "There may not be any duplicate games";
+        }
     }
+    // console.log(checkGame);
+    // if (checkGame !== null || (checkGame !== null && (checkGame.title.trim().lower() === title.trim.lower()))) {
+    //     throw "There may not be any duplicate games";
+    // } 
 
     let newGame = {
         title: title.trim(),

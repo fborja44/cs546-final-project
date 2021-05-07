@@ -203,7 +203,6 @@ router.post('/new', async (req, res) => {
     }
 
     if (errors.length > 0) { 
-        let gamesList = await gamesData.getAllGames();
         res.status(400).render('games/newgame', { title: "Add Game", 
                                     gameTitle: gameData.newTitle.trim(),
                                     image: gameData.newImage.trim(),
@@ -228,7 +227,18 @@ router.post('/new', async (req, res) => {
                                                 pricesTrim);
         res.redirect(`/games/${gameData.newTitle.trim()}`);
     } catch (e) {
-        res.status(500).json({error: e});
+        errors.push(e);
+        res.status(500).render('games/newgame', { title: "Add Game", 
+                gameTitle: gameData.newTitle.trim(),
+                image: gameData.newImage.trim(),
+                publisher: gameData.newPublisher.trim(),
+                releaseYear: gameData.newReleaseYear.trim(),
+                genre: genresTrim[0],
+                platform: platformsTrim[0],
+                price: gameData.newPrices[0].trim(),
+                description: gameData.newDesc.trim(),
+                error: errors});
+        return;
     }
 
 });
@@ -254,6 +264,7 @@ router.post('/search', async (req, res) => {
 
     // maybe update to make it so search type is remembered after search?
     let gamesList = await gamesData.getAllGames();
+    console.log(searchData.searchType);
     if (errors.length > 0) { 
         res.render('games/gameslist', { title: "Games", 
                                         games: gamesList , 
