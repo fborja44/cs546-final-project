@@ -143,7 +143,8 @@ router.post('/signup', async (req, res) => {
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
          let userId = newUser._id.toString();
          req.session.user_id = userId;
-         res.render('home', { message: `Welcome ${newUser.username}`});
+         res.redirect("/");
+        //  res.render('users/home', { message: `Welcome ${newUser.username}`});
      } catch (e){
         res.status(400).json({ error: 'Creation failed.'});
      }
@@ -183,7 +184,8 @@ router.post('/login', async (req, res) => {
         
         if (await bcrypt.compare(password, userInfo.hashedPassword)){
             req.session.user_id = userInfo._id;
-            res.render('home', { message: `Welcome ${userInfo.username}`});
+            res.redirect("/");
+            // res.render('home', { message: `Welcome ${userInfo.username}`});
         } else {
             res.status(401).render('users/login', { error: "Wrong password."});
         }
@@ -200,7 +202,15 @@ router.post('/login', async (req, res) => {
 router.get('/logout', async (req, res) => {
     let userInfo = await usersData.getUserById(req.session.user_id);
     req.session.destroy();
-    res.render('home', { message: `Bye ${userInfo.username}`});
+    let gamesList;
+    try {
+        gamesList = await gamesData.getAllGames();
+    } catch (e) {
+        // DISPLAY ERROR PAGE
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
+    }
+    res.redirect("/");
+    // res.render('home', { message: `Bye ${userInfo.username}`});
 });
 
 /**
