@@ -17,6 +17,8 @@ for (let i = 0; i < ratings.length; i++) {
         ratings[i].style.background = "#FBD927";
     } else if (2 > rating && rating >= 0) {
         ratings[i].style.background = "#FB4027";
+    } else if (rating === "N/A") {
+        ratings[i].style.background = "black";
     }
 }
 

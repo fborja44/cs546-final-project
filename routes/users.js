@@ -20,12 +20,19 @@ router.get('/', async (req, res) => {
     let best_game, best_action, best_adventure, best_shooting, best_sports;
     let games = {};
 
+    let default_game = {
+        title: " ",
+        image: "../public/img/default_game.png",
+        averageRating: "N/A"
+    };
+
     // Check if there are games in the collection
     let gamesList;
     try {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
-
+        // DISPLAY ERROR PAGE
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
     }
 
     if (gamesList.length === 0) {
@@ -39,7 +46,8 @@ router.get('/', async (req, res) => {
         best_game = best_game_[0];
         games.best_game = best_game;
     } catch (e) {
-        // if it fails, then skip
+        // if it fails, then make a default game
+        games.best_game = default_game;
     }
 
     // Best Action
@@ -47,7 +55,7 @@ router.get('/', async (req, res) => {
         best_action = await gamesData.getBestGameByGenre("Action");
         games.best_action = best_action;
     } catch (e) {
-        // if it fails, then skip
+        games.best_action = default_game;
     }
 
     // Best Adventure
@@ -55,15 +63,20 @@ router.get('/', async (req, res) => {
         best_adventure = await gamesData.getBestGameByGenre("Adventure");
         games.best_adventure = best_adventure;
     } catch (e) {
-
+        games.best_adventure = default_game;
     }
 
     // Best Shooting
     try {
         best_shooting = await gamesData.getBestGameByGenre("Shooting");
-        games.best_shooting = best_shooting;
+        if (best_shooting != null) {
+            games.best_shooting = best_shooting;
+        } else {
+            games.best_shooting = default_game;
+        }
+        
     } catch (e) {
-
+        games.best_shooting = default_game;
     }
 
     // Best Shooting
@@ -71,14 +84,14 @@ router.get('/', async (req, res) => {
         best_sports = await gamesData.getBestGameByGenre("Sports");
         games.best_sports = best_sports;
     } catch (e) {
-
+        games.best_sports = default_game;
     }
     
     // Render the route
     try {
         res.render('users/home', { title: "Home", games: games });
     } catch (e) {
-        res.status(404).json( {error: e });
+        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' });
     }
     
 });
