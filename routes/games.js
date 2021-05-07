@@ -253,8 +253,8 @@ router.post('/search', async (req, res) => {
     }
 
     // maybe update to make it so search type is remembered after search?
+    let gamesList = await gamesData.getAllGames();
     if (errors.length > 0) { 
-        let gamesList = await gamesData.getAllGames();
         res.render('games/gameslist', { title: "Games", 
                                         games: gamesList , 
                                         gamesEmpty: gamesList.length === 0, 
@@ -274,7 +274,12 @@ router.post('/search', async (req, res) => {
                                             search_type_value: searchData.searchType, 
                                             search_term_value: searchData.searchTerm });
         } catch (e) {
-            res.json(e);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: gamesList , 
+                                            gamesEmpty: gamesList.length === 0, 
+                                            error: e, 
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         }
     } else if (searchData.searchType === "genre") {
         try {
@@ -285,7 +290,12 @@ router.post('/search', async (req, res) => {
                                             search_type_value: searchData.searchType, 
                                             search_term_value: searchData.searchTerm });
         } catch (e) {
-            res.json(e);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: gamesList , 
+                                            gamesEmpty: gamesList.length === 0, 
+                                            error: e, 
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         }
     } else if (searchData.searchType === "platform") {
         try {
@@ -296,9 +306,14 @@ router.post('/search', async (req, res) => {
                                             search_type_value: searchData.searchType, 
                                             search_term_value: searchData.searchTerm });
         } catch (e) {
-            res.json(e);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: gamesList , 
+                                            gamesEmpty: gamesList.length === 0, 
+                                            error: e, 
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         }
-    } else if (searchData.searchType === "prices") {
+    } else if (searchData.searchType === "price") {
         try {
             let searchList = await gamesData.getGamesByPrice(searchData.searchTerm);
             res.render('games/gameslist', { title: "Games", 
@@ -307,7 +322,12 @@ router.post('/search', async (req, res) => {
                                             search_type_value: searchData.searchType, 
                                             search_term_value: searchData.searchTerm });
         } catch (e) {
-            res.json(e);
+            res.render('games/gameslist', { title: "Games", 
+                                            games: gamesList , 
+                                            gamesEmpty: gamesList.length === 0, 
+                                            error: e, 
+                                            search_type_value: searchData.searchType, 
+                                            search_term_value: searchData.searchTerm });
         }
     }
 });
