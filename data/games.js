@@ -430,9 +430,9 @@ async function getGamesByGenre(genre) {
  * @param {string} title 
  */
 async function searchGamesByTitle(title) {
-    if (!title) throw "You must provide an id to search for";
-    if (typeof title !== "string") throw "The provided id must be a string";
-    if (title.trim().length === 0) throw "The provided must not be an empty string";
+    if (!title) throw "You must provide a title to search for";
+    if (typeof title !== "string") throw "The provided title must be a string";
+    if (title.trim().length === 0) throw "The provided title must not be an empty string";
 
     const gamesCollection = await games();
 
@@ -452,20 +452,50 @@ async function getBestGame() {
 }
 
 /**
+ * Gets the game with the highest average rating by the specified genre
+ */
+ async function getBestGameByGenre(genre) {
+    // Error checking
+    if (!genre) throw "You must provide a genre";
+    if (typeof genre !== "string") throw "The provided genre must be a string";
+    if (genre.trim().length === 0) throw "The provided genre must not be an empty string";
+    
+    const gamesList = await getGamesByGenre(genre);
+    let query = gamesList[1];
+    for (const game of gamesList) {
+        if (game.averageRating > query.averageRating) {
+            query = game;
+        }
+    }
+
+    return query;
+}
+
+/**
  * Gets games with a price less than the one specified, ignoring platform.
  */
 async function getGamesByPrice(searchPrice) {
     // Error checking
-    if (!searchPrice) throw "The price must be provided";
-    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string`;
-    if (searchPrice.trim().length === 0) throw "The price must not be an empty string";
-    if (!validPrice.test(searchPrice)) throw `${searchPrice || "provided argument"} must be a valid price`;
+    if (!searchPrice) throw "The price must be provided.";
+    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string.`;
+    if (searchPrice.trim().length === 0) throw "The price must not be an empty string.";
+    if (!validPrice.test(searchPrice)) throw `You must provide a valid price. ex. '$5.00', '$X.XX'.`;
 
-    const gamesCollection = await games();
+    const list = [];
+
+    const gamesList = await getAllGames();
+    for (const game of gamesList) {
+        for (const obj of game.prices) {
+            if (Number.parseFloat(obj.price.substring(1)) < Number.parseFloat(searchPrice.substring(1))) {
+                list.push(game);
+                break;
+            }
+        }
+    }
 
     // *********** NEED TO CONVERT PRICES TO NUMBERS; CURRENTLY STORED AS STRINGS
-    const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
-    return gamesList;
+    // const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
+    return list;
 }
 
 module.exports = {
@@ -481,5 +511,6 @@ module.exports = {
     getGamesByPlatform,
     searchGamesByTitle,
     getBestGame,
+    getBestGameByGenre,
     getGamesByPrice
 };
