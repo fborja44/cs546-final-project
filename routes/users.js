@@ -11,14 +11,93 @@ const bcrypt = require('bcrypt');
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
+const games = mongoCollections.games;
 const usersData = data.users;
+const gamesData = data.games;
 
 /**
  * 
  */
 router.get('/', async (req, res) => {
-    res.render('home', {}); // temporary
-    //res.sendFile(path.resolve('static/home.html')); // temporary
+    // Check to make sure that a game exist for the category before passing them to user/home
+    // Need to render error pages
+    let best_game, best_action, best_adventure, best_shooting, best_sports;
+    let games = {};
+
+    let default_game = {
+        title: " ",
+        image: "../public/img/default_game.png",
+        averageRating: "N/A"
+    };
+
+    // Check if there are games in the collection
+    let gamesList;
+    try {
+        gamesList = await gamesData.getAllGames();
+    } catch (e) {
+        // DISPLAY ERROR PAGE
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
+    }
+
+    if (gamesList.length === 0) {
+        res.render('users/home', { title: "Home", games: games, empty: true});
+        return;
+    }
+
+    // Best Overall
+    try {
+        let best_game_ = await gamesData.getBestGame();
+        best_game = best_game_[0];
+        games.best_game = best_game;
+    } catch (e) {
+        // if it fails, then make a default game
+        games.best_game = default_game;
+    }
+
+    // Best Action
+    try {
+        best_action = await gamesData.getBestGameByGenre("Action");
+        games.best_action = best_action;
+    } catch (e) {
+        games.best_action = default_game;
+    }
+
+    // Best Adventure
+    try {
+        best_adventure = await gamesData.getBestGameByGenre("Adventure");
+        games.best_adventure = best_adventure;
+    } catch (e) {
+        games.best_adventure = default_game;
+    }
+
+    // Best Shooting
+    try {
+        best_shooting = await gamesData.getBestGameByGenre("Shooting");
+        if (best_shooting != null) {
+            games.best_shooting = best_shooting;
+        } else {
+            games.best_shooting = default_game;
+        }
+        
+    } catch (e) {
+        games.best_shooting = default_game;
+    }
+
+    // Best Shooting
+    try {
+        best_sports = await gamesData.getBestGameByGenre("Sports");
+        games.best_sports = best_sports;
+    } catch (e) {
+        games.best_sports = default_game;
+    }
+    
+    // Render the route
+    try {
+        res.render('users/home', { title: "Home", games: games });
+    } catch (e) {
+        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' });
+    }
+    
 });
 
 /**
@@ -122,6 +201,26 @@ router.get('/logout', async (req, res) => {
     let userInfo = await usersData.getUserById(req.session.user_id);
     req.session.destroy();
     res.render('home', { message: `Bye ${userInfo.username}`});
+});
+
+/**
+ * Route to individual user page. Should be public to all users.
+ */
+router.get('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    let errors = [];
+
+    if (!id) {
+        // Display error page. error.handlebars
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." } );
+    }
+
+    try {
+        const user = await usersData.getUserById(id);
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 });
+    } catch (e) {
+        res.status(404).render('general/error', { status: 404, error: "User not found." } );
+    }
 });
 
 module.exports = router;

@@ -35,7 +35,7 @@ const main = async () => {
         "The Legend of Zelda: Breath of the Wild",
         "https://upload.wikimedia.org/wikipedia/en/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg",
         "Nintendo",
-        ["Adventure", "Action", "Fantasy", "Open World"],
+        ["Adventure", "Fantasy", "Open World"],
         "2017",
         ["Nintendo Switch", "Wii U"],
         "Breath of the Wild is part of the Legend of Zelda franchise and is set at the end of the Zelda timeline; the player controls Link, who awakens from a hundred-year slumber to defeat Calamity Ganon and save the kingdom of Hyrule.",
@@ -49,7 +49,7 @@ const main = async () => {
         "Valorant",
         "https://cdn-ascope-prod.global.ssl.fastly.net/static/images/boxart_valorant_300x400.jpg",
         "Riot Games",
-        ["First-Person Shooter", "Team", "Tactical"],
+        ["First-Person Shooter", "Team", "Tactical", "Shooting"],
         "2020",
         ["PC"],
         "Valorant is a free-to-play hero shooter developed and published by Riot Games, for Microsoft Windows.",
@@ -84,6 +84,48 @@ const main = async () => {
         [{ price: "$49.99", platform: "Xbox One" }]
     )
     let game5_id = game5._id.toString();
+
+    /* Game 6: NBA 2K20
+    -----------------------------------------------------*/
+    let game6 = await gamesData.createGame(
+        "NBA 2K20",
+        "https://oyster.ignimgs.com/wordpress/stg.ign.com/2019/07/2KSMKT_NBA2K20_LE_AG_FOB.jpg",
+        "2K Games",
+        ["Sports", "Simulation"],
+        "2019",
+        ["PlayStation 4", "Android", "PlayStation 5", "Xbox One", "PC", "Nintendo Switch"],
+        "NBA 2K20 is a basketball simulation video game developed by Visual Concepts and published by 2K Sports, based on the National Basketball Association. It is the 21st installment in the NBA 2K franchise, the successor to NBA 2K19, and the predecessor to NBA 2K21.",
+        [{ price: "$49.99", platform: "Xbox One" }]
+    )
+    let game6_id = game6._id.toString();
+
+    /* Game 7: Skyrim
+    -----------------------------------------------------*/
+    let game7 = await gamesData.createGame(
+        "Skyrim",
+        "https://upload.wikimedia.org/wikipedia/en/1/15/The_Elder_Scrolls_V_Skyrim_cover.png",
+        "Bethesda",
+        ["Adventure", "RPG", "Fantasy"],
+        "2011",
+        ["PC", "Xbox 360", "PlayStation 3", "Nintendo Switch", "Xbox One", "PlayStation 4"],
+        "The Elder Scrolls V: Skyrim is an action role-playing game, playable from either a first or third-person perspective. The player may freely roam over the land of Skyrim which is an open world environment consisting of wilderness expanses, dungeons, caves, cities, towns, fortresses, and villages.",
+        [{ price: "$29.99", platform: "PC" }]
+    )
+    let game7_id = game7._id.toString();
+
+    /* Game 8: Hades
+    -----------------------------------------------------*/
+    let game8 = await gamesData.createGame(
+        "Hades",
+        "https://media.wired.com/photos/5f6cf5ec6f32a729dc0b3a89/master/w_1600%2Cc_limit/Culture_inline_Hades_PackArt.jpg",
+        "Supergiant",
+        ["Action", "Rogue-like", "Fantasy", "Indie"],
+        "2020",
+        ["PC", "Nintendo Switch"],
+        "Hades is a rogue-like dungeon crawler in which you defy the god of the dead as you hack and slash your way out of the Underworld of Greek myth.",
+        [{ price: "$24.99", platform: "PC" }]
+    )
+    let game8_id = game8._id.toString();
 
     /* Creating reviews
     ---------------------------------------------------------------------------*/
@@ -120,11 +162,78 @@ const main = async () => {
     -------------------------------------*/
     let review2_1 = await reviewsData.createReview(
         game2_id,
-        "best game",
-        { username: "ok", _id: "4" },
+        "This Game is Awesome!",
+        { username: "ZeldaFan1000", _id: "4" },
         "4/18/2017",
-        "this is the greatest game ever!",
+        "This is the greatest game ever! Nintendo really outdid themselves",
         5
+    )
+
+    let review2_2 = await reviewsData.createReview(
+        game2_id,
+        "Could be better.",
+        { username: "xXPessimistXx", _id: "5" },
+        "6/23/2018",
+        "It was an ok game I guess.",
+        3
+    )
+
+    let review2_3 = await reviewsData.createReview(
+        game2_id,
+        "5 Stars",
+        { username: "mang0", _id: "6" },
+        "6/23/2018",
+        "^^^",
+        5
+    )
+
+    let review2_4 = await reviewsData.createReview(
+        game2_id,
+        "lol",
+        { username: "ok", _id: "100" },
+        "2/15/2019",
+        "this is a review",
+        5
+    )
+
+    /* Game 3 Reviews: Valorant
+    -------------------------------------*/
+    let review3_1 = await reviewsData.createReview(
+        game3_id,
+        "this game is bad",
+        { username: "dude", _id: "101" },
+        "5/1/2021",
+        "its not good",
+        1
+    )
+
+    /* Game 8 Reviews: Hades
+    -------------------------------------*/
+    let review8_1 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever",
+        { username: "TitanSlayer", _id: "7" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        5
+    )
+
+    let review8_2 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever2",
+        { username: "TitanSlayer2", _id: "8" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        4
+    )
+
+    let review8_3 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever3",
+        { username: "TitanSlayer3", _id: "9" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        4
     )
 
     /* Testing Games functions
@@ -165,6 +274,30 @@ const main = async () => {
 
     let delete1 = await gamesData.removeGameById(delete1_id);
     
+    // Testing getGamesByRating
+    let ratings1 = await gamesData.getGamesByRating(2);
+    // console.log(ratings1);
+
+    // Testing getGamesByGenre
+    let genre1 = await gamesData.getGamesByGenre("action");
+    // console.log(genre1);
+
+    // Testing getGamesByPlatform
+    let platform1 = await gamesData.getGamesByPlatform("pc");
+    // console.log("platorm1");
+
+    // Testing getBestGame
+    let best1 = await gamesData.getBestGame();
+    // console.log(best1);
+
+    // Testing getGamesByPrice
+    let price1 = await gamesData.getGamesByPrice("$30.00");
+    // console.log(price1);
+
+    // Testing getBestGameByGenre
+    let bestgenre1 = await gamesData.getBestGameByGenre("Action");
+    // console.log(bestgenre1);
+
     /* Creating Users
     ---------------------------------------------------------------------------*/
     let user1 = await usersData.createUser(
@@ -195,9 +328,30 @@ const main = async () => {
     // Testing updateLastName()
     await usersData.updateLastName(user1_id, "B");
 
+     /* Testing Review functions
+    ---------------------------------------------------------------------------*/
+    //Testing Delete Review();
+    //console.log("review Testing");
+    //let r1 = await reviewsData.getReviewById(game2_id,review2_1._id);
+    //console.log(r1);
+    //let allReviewsBeforeDel = await reviewsData.getAllReviews(game2_id);
+    //console.log(allReviewsBeforeDel);
+    //let del1 = await reviewsData.deleteReview(game2_id,review2_1._id);
+    //console.log(del1);
+    //let allReviewsAfterDel = await reviewsData.getAllReviews(game2_id);
+    // console.log(allReviewsAfterDel);
+    //let updateReviews1 = await reviewsData.updateReview(game2_id,review2_1._id,"sdfd","","lololol",5);
+    //console.log(updateReviews1);
+
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));
     await db.serverConfig.close();
+
+
+
+
+
+
 }
 
 main().catch(console.log);

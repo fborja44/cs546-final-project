@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/public/css/user.css">
+<div class="user-container">
+    {{#if user}}
+    <div class="user">
+        <h1>{{user.username}}'s Profile</h1>
+        <div class="content-container"> 
+            <img id="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
+            <p>{{user.firstName}} {{user.lastName}}</p>
+        </div>
+        <h3>{{user.username}}'s Reviews</h3>
+        {{#each user.reviews}}
+        <div class="review">
+            <!-- REVIEWS DISPLAY -->
+        </div>
+        {{/each}}
+        {{#if reviewsEmpty}}
+            <p id="empty">This user has not written any reviews.</p>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>

@@ -121,6 +121,8 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
         prices: pricesTrim,
         averageRating: 0,
         reviews: [],
+        numLikes: 0,
+        numFollows: 0
     };
 
     const insertInfo = await gameCollection.insertOne(newGame);
@@ -149,7 +151,7 @@ async function getAllGames() {
 }
 
 /**
- * Retrieves a game in the databse with the given id.
+ * Retrieves a game in the database with the given id.
  * @param {string} id String representation of the ObjectId of the game.
  */
 async function getGameById(id) {
@@ -359,6 +361,143 @@ async function removeGameById(id) {
     return true;
 }
 
+/**
+ * Gets all games with a rating greater than or equal to minRating. minRating must be
+ * an integer between 1-5.
+ * @param {number} minRating 
+ */
+async function getGamesByRating(minRating) {
+    if (minRating === null) throw 'A minimum rating must be provided';
+    if (typeof minRating !== 'number' || !Number.isInteger(minRating)) throw `${review || "provided argument"} must be an integer.`;
+    if (minRating < 1 || minRating > 5) throw "The rating must be an integer in the range [1-5]";
+
+    const gameCollection = await games();
+
+    const query = gameCollection.find( { averageRating: { $gte: minRating } } ).toArray();
+    return query;
+}
+
+/**
+ * Gets all games with the specified genre.
+ * @param {string} genre 
+ */
+async function getGamesByGenre(genre) {
+    if (!genre) throw "A genre must be provided";
+    if (typeof genre !== 'string') throw `${genre || "provided argument"} must be a string`;
+    if (genre.trim().length === 0) throw "The genre must not be an empty string";
+    
+    genre = genre.toLowerCase();
+    const query = [];
+    const gameCollection = await games();
+    const gameList = await gameCollection.find({}).toArray();
+    for (const game of gameList) {
+        for (const x of game.genres) {
+            if (x.toLowerCase() === genre) {
+                query.push(game);
+                break;
+            }
+        }
+    }
+    return query;
+}
+
+/**
+ * Gets all games that are on the specified platform.
+ * @param {string} platform
+ */
+ async function getGamesByPlatform(platform) {
+    if (!platform) throw "A platform must be provided";
+    if (typeof platform !== 'string') throw `${platform || "provided argument"} must be a string`;
+    if (platform.trim().length === 0) throw "The publisher must not be an empty string";
+    
+    platform = platform.toLowerCase();
+    const query = [];
+    const gameCollection = await games();
+    const gameList = await gameCollection.find({}).toArray();
+    for (const game of gameList) {
+        for (const x of game.platforms) {
+            if (x.toLowerCase() === platform) {
+                query.push(game);
+                break;
+            }
+        }
+    }
+    return query;
+}
+
+/**
+ * Gets games by searching using a title.
+ * @param {string} title 
+ */
+async function searchGamesByTitle(title) {
+    if (!title) throw "You must provide a title to search for";
+    if (typeof title !== "string") throw "The provided title must be a string";
+    if (title.trim().length === 0) throw "The provided title must not be an empty string";
+
+    const gamesCollection = await games();
+
+    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } ).toArray();
+    if (!searchData) throw `Failed to find game after searching with ${title}`;
+    return searchData;
+}
+
+/**
+ * Gets the game with the highest average rating.
+ */
+async function getBestGame() {
+    const gamesCollection = await games();
+
+    const game = gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
+    return game;
+}
+
+/**
+ * Gets the game with the highest average rating by the specified genre
+ */
+ async function getBestGameByGenre(genre) {
+    // Error checking
+    if (!genre) throw "You must provide a genre";
+    if (typeof genre !== "string") throw "The provided genre must be a string";
+    if (genre.trim().length === 0) throw "The provided genre must not be an empty string";
+    
+    const gamesList = await getGamesByGenre(genre);
+    let query = gamesList[1];
+    for (const game of gamesList) {
+        if (game.averageRating > query.averageRating) {
+            query = game;
+        }
+    }
+
+    return query;
+}
+
+/**
+ * Gets games with a price less than the one specified, ignoring platform.
+ */
+async function getGamesByPrice(searchPrice) {
+    // Error checking
+    if (!searchPrice) throw "The price must be provided.";
+    if (typeof searchPrice !== 'string') throw `${searchPrice || "provided argument"} must be a string.`;
+    if (searchPrice.trim().length === 0) throw "The price must not be an empty string.";
+    if (!validPrice.test(searchPrice)) throw `You must provide a valid price. ex. '$5.00', '$X.XX'.`;
+
+    const list = [];
+
+    const gamesList = await getAllGames();
+    for (const game of gamesList) {
+        for (const obj of game.prices) {
+            if (Number.parseFloat(obj.price.substring(1)) < Number.parseFloat(searchPrice.substring(1))) {
+                list.push(game);
+                break;
+            }
+        }
+    }
+
+    // *********** NEED TO CONVERT PRICES TO NUMBERS; CURRENTLY STORED AS STRINGS
+    // const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
+    return list;
+}
+
 module.exports = {
     createGame,
     getAllGames,
@@ -366,5 +505,12 @@ module.exports = {
     getGameByTitle,
     updateGameRating,
     updateGameById,
-    removeGameById
+    removeGameById,
+    getGamesByRating,
+    getGamesByGenre,
+    getGamesByPlatform,
+    searchGamesByTitle,
+    getBestGame,
+    getBestGameByGenre,
+    getGamesByPrice
 };

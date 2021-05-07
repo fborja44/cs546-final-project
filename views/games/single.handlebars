@@ -6,9 +6,9 @@
             <div class="score">
                 <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
             </div>
-            <img src="{{game.image}}" alt="{{game.title}}">
+            <img src="{{game.image}}" alt="{{game.title}}" title="{{game.title}}">
             <div class="info">
-                <a href="games/{{game.title}}" class="title">{{game.title}}</a>
+                <h1 class="title">{{game.title}}</h1>
                 <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
                 <table>
                     <tr>
@@ -29,18 +29,28 @@
                     </tr>
                 </table>
             </div>
+            <h2>Description:</h2>
             <p id="game-desc">
                 {{game.description}}
             </p>
+            <div class="actions">
+                <p>
+                    <a><img src="/public/img/like.png" alt="">Like</a> [<span></span>{{game.numLikes}}</span>] | 
+                    <a><img src="/public/img/follow.png" alt="">Follow</a> [<span>{{game.numFollows}}</span>] | 
+                    <a><img src="/public/img/wishlist.png" alt="">Wishlist</a> | 
+                    <a><img src="/public/img/comment.png" alt="">Leave a Review</a>
+                </p>
+            </div>
         </div>
         
-        <h1>Reviews</h1>
+        <h1>User Reviews</h1>
         {{#each game.reviews}}
         <div class="review">
             <div class="review-heading">
                 <div class="review-rating">
                     <span>{{rating}}</span>
                 </div>
+                <img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
                 <h2>{{reviewTitle}}</h2>
             </div>
 
@@ -54,8 +64,37 @@
         </div>
         {{/each}}
         {{#if reviewEmpty}}
-        <p id="empty">There are no reviews for this game.</p>
+        <p id="empty">There are no reviews for this game. You can be the first to write one!</p>
         {{/if}}
+        <!-- Should only be shown if user is logged in -->
+        <div>
+            <h3>Create a new Review</h3>
+            <form method="POST" class="new-review-post">
+                <input name="gameTitle" value="{{game.title}}" type="hidden">
+                <div class="form-elem">
+                    <label>Title</label>
+                    <input name="reviewTitle" type="text" placeholder="Give your review a title!">
+                </div>
+                <div id="rating-input" class="form-elem">
+                    <label>Rating</label>
+                    <input name="reviewRating" type="number" min="1" max="5" placeholder="5">
+                </div>
+                <div class="form-elem">
+                    <label>Review</label>
+                    <textarea name="reviewBody" placeholder="Enter your review here!" rows="4" cols="50"></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            {{#if hasErrors}}
+             <ul>
+               {{#each errors}}
+               <li class="reviewErrors">
+                    {{this}}
+               </li>
+              {{/each}}
+            </ul>
+            {{/if}}
+        </div>
     </div>
     {{/if}}
 </div>

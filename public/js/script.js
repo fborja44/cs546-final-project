@@ -15,8 +15,11 @@ for (let i = 0; i < ratings.length; i++) {
         ratings[i].style.background = "#2FE58E";
     } else if (4 > rating && rating >= 2) {
         ratings[i].style.background = "#FBD927";
-    } else if (2 > rating && rating >= 0) {
+    } else if (2 > rating && rating >= 1) {
         ratings[i].style.background = "#FB4027";
+    } else if (rating == "0" || rating === "N/A") {
+        ratings[i].firstElementChild.innerHTML = "N/A";
+        ratings[i].style.background = "black";
     }
 }
 

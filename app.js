@@ -6,6 +6,10 @@ const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 const chalk = require('chalk'); // add colors to output for easier reading
 
+const mongoCollections = require('./config/mongoCollections');
+const dbConnection = require('./config/mongoConnection');
+const games = mongoCollections.games;
+
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
   // Specify helpers which are only registered on this instance.
@@ -71,6 +75,15 @@ app.use(session({
 
   next();
 });
+
+// Database
+const init_db = async () => {
+  const gamesCollection = await games();
+  gamesCollection.createIndex( { title: "text" } );
+}
+
+init_db().catch(console.log);
+
 
 configRoutes(app);
 
