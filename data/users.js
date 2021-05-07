@@ -15,7 +15,7 @@
   * @param {string} password The password of the user used to log in.
   */
  async function createUser(username, firstName, lastName, email, password) {
-	 if(!username || !firstName || !lastName || !email)
+	 if(!username || !firstName || !lastName || !email || !password)
 		 throw "The infomation of username, firstname, lastname and email must be provided."
 	 if(typeof username != 'string' || username.trim() === '')
 		 throw `User Name ${userName} should be a string which is not empty.`
@@ -277,7 +277,7 @@
 		 throw "username should be a string."
 	 const newUsername = username.trim().toLowerCase();
  
-	 const userCollection = await users();
+//	 const userCollection = await users();
 	 const userList = await getAllUsers();
 	 userList.forEach((user) => {
 		 if (newUsername == user.username.toLowerCase()){
@@ -297,7 +297,8 @@
 	 let name = username.trim().toLowerCase();
 	 const userCollection = await users();
 	 const res = await userCollection.findOne({username: name});
-	 if(res === null) throw "Not found. No such username in database."
+	 if(res === null) 
+	 	return null;
 	 res._id = res._id.toString();
 	 return res;
  }

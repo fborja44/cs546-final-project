@@ -113,7 +113,7 @@ h2 {
 
 .review h2 {
     margin: auto 15px auto 15px;
-    padding-top: 10px;
+    padding-top: 12px;
     background: #dcf1f7;
 }
 
@@ -150,6 +150,10 @@ h2 {
 }
 
 /* Game info */
+.game {
+    padding-bottom: 5px;
+}
+
 .info {
     padding: 10px 0 15px 0;
 }
