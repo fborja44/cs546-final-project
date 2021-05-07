@@ -35,7 +35,7 @@ const main = async () => {
         "The Legend of Zelda: Breath of the Wild",
         "https://upload.wikimedia.org/wikipedia/en/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg",
         "Nintendo",
-        ["Adventure", "Action", "Fantasy", "Open World"],
+        ["Adventure", "Fantasy", "Open World"],
         "2017",
         ["Nintendo Switch", "Wii U"],
         "Breath of the Wild is part of the Legend of Zelda franchise and is set at the end of the Zelda timeline; the player controls Link, who awakens from a hundred-year slumber to defeat Calamity Ganon and save the kingdom of Hyrule.",
@@ -99,6 +99,34 @@ const main = async () => {
     )
     let game6_id = game6._id.toString();
 
+    /* Game 7: Skyrim
+    -----------------------------------------------------*/
+    let game7 = await gamesData.createGame(
+        "Skyrim",
+        "https://upload.wikimedia.org/wikipedia/en/1/15/The_Elder_Scrolls_V_Skyrim_cover.png",
+        "Bethesda",
+        ["Adventure", "RPG", "Fantasy"],
+        "2011",
+        ["PC", "Xbox 360", "PlayStation 3", "Nintendo Switch", "Xbox One", "PlayStation 4"],
+        "The Elder Scrolls V: Skyrim is an action role-playing game, playable from either a first or third-person perspective. The player may freely roam over the land of Skyrim which is an open world environment consisting of wilderness expanses, dungeons, caves, cities, towns, fortresses, and villages.",
+        [{ price: "$29.99", platform: "PC" }]
+    )
+    let game7_id = game7._id.toString();
+
+    /* Game 8: Hades
+    -----------------------------------------------------*/
+    let game8 = await gamesData.createGame(
+        "Hades",
+        "https://media.wired.com/photos/5f6cf5ec6f32a729dc0b3a89/master/w_1600%2Cc_limit/Culture_inline_Hades_PackArt.jpg",
+        "Supergiant",
+        ["Action", "Rogue-like", "Fantasy", "Indie"],
+        "2020",
+        ["PC", "Nintendo Switch"],
+        "Hades is a rogue-like dungeon crawler in which you defy the god of the dead as you hack and slash your way out of the Underworld of Greek myth.",
+        [{ price: "$24.99", platform: "PC" }]
+    )
+    let game8_id = game8._id.toString();
+
     /* Creating reviews
     ---------------------------------------------------------------------------*/
     /* Game 1 Reviews: Cyberpunk 2077
@@ -157,6 +185,55 @@ const main = async () => {
         "6/23/2018",
         "^^^",
         5
+    )
+
+    let review2_4 = await reviewsData.createReview(
+        game2_id,
+        "lol",
+        { username: "ok", _id: "100" },
+        "2/15/2019",
+        "this is a review",
+        5
+    )
+
+    /* Game 3 Reviews: Valorant
+    -------------------------------------*/
+    let review3_1 = await reviewsData.createReview(
+        game3_id,
+        "this game is bad",
+        { username: "dude", _id: "101" },
+        "5/1/2021",
+        "its not good",
+        1
+    )
+
+    /* Game 8 Reviews: Hades
+    -------------------------------------*/
+    let review8_1 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever",
+        { username: "TitanSlayer", _id: "7" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        5
+    )
+
+    let review8_2 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever2",
+        { username: "TitanSlayer2", _id: "8" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        4
+    )
+
+    let review8_3 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever3",
+        { username: "TitanSlayer3", _id: "9" },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        4
     )
 
     /* Testing Games functions
