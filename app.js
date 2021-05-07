@@ -62,7 +62,7 @@ app.use(session({
   let method = req.method;
   let route = req.originalUrl;
   let auth;
-  if (req.session.user) {
+  if (req.session.user_id) {
       auth = chalk.green("(Authenticated User)");
   } else {
       auth = chalk.red("(Non-Authenticated User)");

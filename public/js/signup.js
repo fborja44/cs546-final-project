@@ -1,9 +1,10 @@
+
 /*
 * To check inputs of the sign up form, before submission.
 */
 
 $("#signup-form").submit(function(event) {
-    
+
     $("#signupError").empty();
     $("#signupError").hide();
 
@@ -38,5 +39,35 @@ $("#signup-form").submit(function(event) {
         $("#signupError").append(htmlStr);
         $("#signupError").show();
     }
+
 })
 
+$("#login-form").submit(function(event) {
+
+    $("#loginError").empty();
+    $("#loginError").hide();
+
+    let username = $("#username").val().trim();
+    let password = $("#password").val().trim();
+
+    let error = false;
+    let message = null;
+
+    if (!username || !password){
+        error = true;
+        message = "Error: Missing username or password."
+    }
+
+    if (!error && (password.length < 4 || password.length > 10)){
+        error = true;
+        message = "Error: The length of password should between 4 and 10."
+    }
+
+    if (error){
+        event.preventDefault();
+        let htmlStr = `<p class = "signError">${message}</p>`
+        $("#loginError").append(htmlStr);
+        $("#loginError").show();
+    }
+
+})

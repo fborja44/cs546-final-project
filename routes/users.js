@@ -4,6 +4,10 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const path = require('path');
+const xss = require('xss');
+const bcrypt = require('bcrypt');
+
+
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
@@ -35,7 +39,36 @@ router.get('/signup', async (req, res) => {
  * Temporary post (for test)
  */
 router.post('/signup', async (req, res) => {
-    res.render('home_sign', {});
+    const username = xss(req.body.signup_username).toString().toLowerCase().trim();
+    const firstName = xss(req.body.firstName).toString().trim();
+    const lastName = xss(req.body.lastName).toString().trim();
+    const email = xss(req.body.signup_email).toString().trim();
+    const password = xss(req.body.signup_password).toString().trim();
+
+    if(!username || !firstName || !lastName || !email || !password){
+        res.status(400).render('users/signup', { error: "Error 400: Invalid inputs to sign up, all feilds must be supplied."});
+        return;
+    }
+	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	 if (!emailPattern.test(email)){
+        res.status(400).render('general/error', { error: "Error 400: Invaild email."});
+        return;
+     }
+
+     try{
+         let userInfo = await usersData.getUserByUsername(username);
+         if(userInfo){
+            res.status(400).render('users/signup', { error: "Error : Username exists."});
+            return;
+         }
+         let newUser = await usersData.createUser(username, firstName, lastName, email, password);
+         let userId = newUser._id.toString();
+         req.session.user_id = userId;
+         res.render('home', { message: `Welcome ${newUser.username}`});
+     } catch (e){
+        res.status(400).json({ error: 'Creation failed.'});
+     }
+
 });
 
 /**
@@ -49,31 +82,35 @@ router.post('/signup', async (req, res) => {
  * Route to handle user login
  */
 router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    let error = false;
+
+    const username = xss(req.body.username).toString().toLowerCase().trim();
+    const password = xss(req.body.password).toString().trim();
+
+    // Check both username and password
+    if(!username || !password){
+        res.status(401).render('users/login', { error: "Missing username or password."});
+        return;
+    }
     
-    // Check if username was entered
-    if (!username) {
-        res.status(401).render('users/login', { error: "Missing username." });
-        return;
-    }
-    // Check if password was entered
-    if (!password) {
-        res.status(401).render('users/login', { error: "Missing password.", username: username });
-        return;
-    }
-
      // Retrieve user from file
-     let user;
      try {
-         user = await usersData.getUserByUsername(username); // Need to make this function
-         req.session.user_id = user;
+         let userInfo = await usersData.getUserByUsername(username); 
 
+    // User doesn't exist
+        if (!userInfo){
+            res.status(401).render('users/login', { error: "User doesn't exist."});
+            return;
+        }
+        
+        if (await bcrypt.compare(password, userInfo.hashedPassword)){
+            req.session.user_id = userInfo._id;
+            res.render('home', { message: `Welcome ${userInfo.username}`});
+        } else {
+            res.status(401).render('users/login', { error: "Wrong password."});
+        }
     // return to main page?
      } catch (e) {
-    //     // User doesn't exist
-    //     error = true;
-    res.status(401).render('users/login', { title: "Login" });
+        res.status(401).render('users/login', { title: "Login" });
      }
     // NOT DONE
 });
@@ -82,7 +119,9 @@ router.post('/login', async (req, res) => {
  * Route to handle user logout
  */
 router.get('/logout', async (req, res) => {
-    
+    let userInfo = await usersData.getUserById(req.session.user_id);
+    req.session.destroy();
+    res.render('home', { message: `Bye ${userInfo.username}`});
 });
 
 module.exports = router;

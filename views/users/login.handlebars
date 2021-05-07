@@ -2,14 +2,17 @@
     <div class="login-header">
         <h2>User Login</h2>
     </div>
+    <div id = "loginError" class = "loginError" hidden>
+        
+    </div>
     <form method="POST" id="login-form" action="/login">
         <div class="form-elem">
             <label for="username">Username:</label>
-            <input name="username" id="username" type="text" value="{{username}}">
+            <input name="username" id="username" type="text" value="{{username}}" placeholder = "Username">
         </div>
         <div class="form-elem">
             <label for="password">Password:</label>
-            <input name="password" id="password" type="password" value="{{password}}">
+            <input name="password" id="password" type="password" value="{{password}}" placeholder = "password(4-10 characters)">
         </div>
         <button type="submit">Login</button>
     </form>
