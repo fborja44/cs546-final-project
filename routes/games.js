@@ -9,6 +9,7 @@ const mongoCollections = require('../config/mongoCollections');
 const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
 const games = mongoCollections.games;
 const gamesData = data.games;
+const usersData = data.users;
 
 // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
 const validURL = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -329,6 +330,54 @@ router.post('/search', async (req, res) => {
                                             search_type_value: searchData.searchType, 
                                             search_term_value: searchData.searchTerm });
         }
+    }
+});
+
+/**
+ * Adds a game to a user's liked games, and increases the game's like count.
+ */
+ router.post('/like/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        console.log("You must login to like a game."); // CHANGE THIS
+        return;
+    }
+    // User is authenticated
+    // Increment game's like count
+    try {
+        await gamesData.incrementLikes(id);
+    } catch (e) {
+        res.status(500).json({message: e});
+    }
+
+    // USE AJAX TO UPDATE THE COUNT IMMEDIATELY
+    // Add the game to user's likes list
+    try {
+        await usersData.addLikedGame(req.session.user_id, id)
+    } catch (e) {
+        res.status(500).json({message: e});
     }
 });
 

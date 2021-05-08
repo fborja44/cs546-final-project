@@ -5,6 +5,7 @@
  let { ObjectId } = require('mongodb');
  const bcrypt = require('bcryptjs');
  const saltRounds = 16;
+ const gamesData = require('./games'); // games database methods
  
  /**
   * Creates a user in the database using the following parameters:
@@ -302,6 +303,50 @@
 	 res._id = res._id.toString();
 	 return res;
  }
+
+/**
+ * Adds a game id to a user's liked list
+ * @param {*} userId 
+ * @param {*} gameId 
+ * @returns 
+ */
+async function addLikedGame(userId, gameId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+	// Check to make sure user with the userId exists
+	try {
+		let user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	try {
+		let game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	let parsedUserId = ObjectId(userId);
+	let parsedGameId = ObjectId(gameId);
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $addToSet: { likes: parsedGameId } },
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
+	return await getUserById(userId);
+}
+
  module.exports = {
 	 createUser,
 	 getAllUsers,
@@ -317,5 +362,6 @@
 	 updateWishlist,
 	 updateReviews,
 	 removeUserById,
-	 usernameCheck
+	 usernameCheck,
+	 addLikedGame
  };
