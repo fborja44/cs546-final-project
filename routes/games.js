@@ -48,11 +48,11 @@ router.get('/', async (req, res) => {
 /**
  * Renders single game page
  */
- router.get('/:title', async (req, res) => {
-    let title = req.params.title;
+ router.get('/:id', async (req, res) => {
+    let id = req.params.id;
     let errors = [];
 
-    if (!title || title.trim().length === 0) {
+    if (!id || id.trim().length === 0) {
         errors.push('Missing pid.');
     }
 
@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        let game = await gamesData.getGameByTitle(title);
+        let game = await gamesData.getGameById(id);
         res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
     } catch (e) {
         res.status(500).json({message: e});

@@ -45,6 +45,15 @@ app.use(rewriteUnsupportedBrowserMethods);
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
+// Handlebars helpers
+/**
+ * Handlebars helper for string replacement
+ * Source: https://stackoverflow.com/questions/52570039/remove-white-space-between-words-in-a-handlebar-expression
+ */
+handlebarsInstance.handlebars.registerHelper('replace', function(string, search, replace) {
+  return string.replace(search, replace);
+});
+
 // Create session
 app.use(session({
   name: 'AuthCookie',
