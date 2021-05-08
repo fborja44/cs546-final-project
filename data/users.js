@@ -330,15 +330,16 @@ async function addLikedGame(userId, gameId) {
 	}
 
 	// Check to make sure that a game with the gameId exists
+	let game;
 	try {
-		let game = await gamesData.getGameById(gameId);
+		game = await gamesData.getGameById(gameId);
 	} catch (e) {
 		throw `Game with id ${gameId} does not exist.`
 	}
 
 	// Check if game has already been added to likes list
-	for (let game of user.likes) {
-		if (game.toString() === gameId) {
+	for (let x of user.likes) {
+		if (x._id.toString() === gameId) {
 			throw `User has already liked the game with id of ${gameId}`;
 		}
 	}
@@ -346,10 +347,15 @@ async function addLikedGame(userId, gameId) {
 	let parsedUserId = ObjectId(userId);
 	let parsedGameId = ObjectId(gameId);
 
+	let liked_obj = {
+		_id: parsedGameId,
+		title: game.title
+	}
+
 	const userCollection = await users();
 	const updateInfo = await userCollection.updateOne(
         { _id: parsedUserId },
-        { $addToSet: { likes: parsedGameId } }
+        { $addToSet: { likes: liked_obj } }
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
 	return await getUserById(userId);
@@ -389,8 +395,8 @@ async function addLikedGame(userId, gameId) {
 
 	// Check if game has already been added to likes list
 	let x = false;
-	for (let game of user.likes) {
-		if (game.toString() === gameId) {
+	for (let y of user.likes) {
+		if (y._id.toString() === gameId) {
 			x = true;
 			break;
 		}
@@ -403,7 +409,7 @@ async function addLikedGame(userId, gameId) {
 	const userCollection = await users();
 	const updateInfo = await userCollection.updateOne(
         { _id: parsedUserId },
-        { $pull: { likes: parsedGameId } }
+        { $pull: { likes: { _id: parsedGameId } } }
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to remove game from likes.';
 	return await getUserById(userId);

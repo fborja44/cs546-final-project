@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
         let game = await gamesData.getGameById(id);
         res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
     } catch (e) {
-        res.status(500).json({message: e});
+        res.status(404).json({message: e});
     }
 });
 
@@ -376,7 +376,7 @@ router.post('/search', async (req, res) => {
 	}
     let liked = false;
     for (let game of user.likes) {
-		if (game.toString() == id) {
+		if (game._id.toString() == id) {
             liked = true;
 		}
 	}

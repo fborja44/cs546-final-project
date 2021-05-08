@@ -9,41 +9,41 @@
         </div>
         <!-- REVIEWS DISPLAY -->
         <h3>{{user.username}}'s Reviews</h3>
-        {{#each user.reviews}}
-        <div class="review">
-            
-        </div>
-        {{/each}}
+        <ul class="review">
+            {{#each user.reviews}}
+            {{/each}}
+        </ul>
         {{#if reviewsEmpty}}
             <p id="empty">This user has not written any reviews.</p>
         {{/if}}
         <!-- LIKES DISPLAY -->
         <h3>Liked Games</h3>
-        {{#each user.likes}}
-        <div class="like">
-            Game
-        </div>
-        {{/each}}
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
+            {{#each user.likes}}
+                <li>
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
+            {{/each}}
+        </ul>
         {{#if likesEmpty}}
             <p id="empty">This user has not liked any games.</p>
         {{/if}}
         <!-- FOLLOWS DISPLAY -->
         <h3>Followed Games</h3>
-        {{#each user.follows}}
-        <div class="follow">
-            
-        </div>
-        {{/each}}
+        <ul class="follow">
+            {{#each user.follows}}
+            {{/each}}
+        </ul>
         {{#if followsEmpty}}
             <p id="empty">This user has not followed any games.</p>
         {{/if}}
         <!-- WISHLIST DISPLAY -->
         <h3>Wishlisted Games</h3>
-        {{#each user.wishlist}}
-        <div class="wishlist">
-            
-        </div>
-        {{/each}}
+        <ul class="wishlist">
+            {{#each user.wishlist}}
+            {{/each}}
+        </ul>
         {{#if wishlistEmpty}}
             <p id="empty">This user has not added any games to their wishlist.</p>
         {{/if}}
