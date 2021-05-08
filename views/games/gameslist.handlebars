@@ -60,10 +60,16 @@
         </p>
         <div class="actions">
             <p>
-                <a><img src="/public/img/like.png" alt="">Like</a> [<span>{{numLikes}}</span>] | 
-                <a><img src="/public/img/follow.png" alt="">Follow</a> [<span>{{numFollows}}</span>] | 
-                <a><img src="/public/img/wishlist.png" alt="">Wishlist</a> | 
-                <a href="games/{{title}}"><img src="/public/img/comment.png" alt="">Leave a Review</a>
+                <form class="action-form" action="" method="POST">
+                    <button name="like" value="like"><img src="/public/img/like.png" alt="">Like</button>[<span>{{numLikes}}</span>] | 
+                </form>
+                <form class="action-form" action="" method="POST">
+                    <button name="follow" value="follow"><img src="/public/img/follow.png" alt="">Follow</button>[<span>{{numFollows}}</span>] |
+                </form>
+                <form class="action-form" action="" method="POST">
+                    <button name="wishlist" value="wishlist"><img src="/public/img/wishlist.png" alt="">Wishlist</button>| 
+                </form>
+                <a href="games/{{title}}"><img id="comment-img" src="/public/img/comment.png" alt="">Leave a Review</a>
             </p>
         </div>
     </li>
