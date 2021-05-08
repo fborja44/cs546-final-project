@@ -362,22 +362,35 @@ router.post('/search', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         console.log("You must login to like a game."); // CHANGE THIS
-        return;
-    }
-    // User is authenticated
-    // Increment game's like count
-    try {
-        await gamesData.incrementLikes(id);
-    } catch (e) {
-        res.status(500).json({message: e});
+        return res.redirect("/games");
     }
 
-    // USE AJAX TO UPDATE THE COUNT IMMEDIATELY
-    // Add the game to user's likes list
+    // Check if game is already in the user's liked list
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    for (let game of user.likes) {
+		if (game.toString() == id) {
+            return res.redirect("/games"); // REMOVE FROM LIKES LIST INSTEAD
+		}
+	}
+
+    // Try to add the game to the user's liked list
     try {
         await usersData.addLikedGame(req.session.user_id, id)
     } catch (e) {
-        res.status(500).json({message: e});
+        return res.status(500).json({message: e});
+    }
+
+    // Increment game's like count
+    try {
+        await gamesData.incrementLikes(id);
+        return res.redirect("/games");
+    } catch (e) {
+        return res.status(500).json({message: e});
     }
 });
 

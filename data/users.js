@@ -321,9 +321,10 @@ async function addLikedGame(userId, gameId) {
     if (typeof gameId !== "string") throw "The provided game id must be a string";
     if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
 
+	let user;
 	// Check to make sure user with the userId exists
 	try {
-		let user = await getUserById(userId);
+		user = await getUserById(userId);
 	} catch (e) {
 		throw `User with id ${userId} does not exist.`
 	}
@@ -333,6 +334,13 @@ async function addLikedGame(userId, gameId) {
 		let game = await gamesData.getGameById(gameId);
 	} catch (e) {
 		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if game has already been added to likes list
+	for (let game of user.likes) {
+		if (game.toString() === gameId) {
+			throw `User has already liked the game with id of ${gameId}`;
+		}
 	}
 
 	let parsedUserId = ObjectId(userId);
