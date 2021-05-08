@@ -257,6 +257,17 @@ h1 {
     margin: 5px 15px 5px 15px;
 }
 
+.action-form {
+    display: inline;
+}
+
+.action-form button {
+    background: none;
+    font-weight: normal;
+    border: none;
+    padding: 0 0 0 0;
+}
+
 .actions a, .actions span {
     color: black;
     font-size: 14px;
@@ -266,7 +277,7 @@ h1 {
     color: #2473a4;
 }
 
-.actions a:hover {
+.action-form button:hover {
     color: #2473a4;
     cursor: pointer;
 }
@@ -279,9 +290,13 @@ h1 {
     width: 14px;
     height: auto;
     float: none;
-    margin: 0px 5px 0px 0px;
+    margin: 0px 5px 0px 10px;
     padding-top: 2px;
     display: inline;
     position: relative;
     top: 1px;
+}
+
+#comment-img {
+    margin-left: 2px;
 }

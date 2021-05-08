@@ -217,10 +217,26 @@ button:hover {
     cursor: pointer;
 }
 
+#dislike-button {
+    position:absolute;
+    left: 450px;
+}
+
 /* User Actions Styles */
 .actions {
     text-align: right;
     margin: 5px 15px 5px 15px;
+}
+
+.action-form {
+    display: inline;
+}
+
+.action-form button {
+    background: none;
+    font-weight: normal;
+    border: none;
+    padding: 0 0 0 0;
 }
 
 .actions a, .actions span {
@@ -228,7 +244,11 @@ button:hover {
     font-size: 14px;
 }
 
-.actions a:hover {
+.actions span {
+    color: #2473a4;
+}
+
+.action-form button:hover {
     color: #2473a4;
     cursor: pointer;
 }
@@ -241,16 +261,13 @@ button:hover {
     width: 14px;
     height: auto;
     float: none;
-    margin: 0px 5px 0px 0px;
+    margin: 0px 5px 0px 10px;
     padding-top: 2px;
     display: inline;
     position: relative;
     top: 1px;
 }
 
-
-
-#dislike-button {
-    position:absolute;
-    left: 450px;
+#comment-img {
+    margin-left: 2px;
 }
