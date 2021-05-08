@@ -366,32 +366,53 @@ router.post('/search', async (req, res) => {
     }
 
     // Check if game is already in the user's liked list
+    // If it isn't, then add it and increment like count
+    // If it's not, then remove it and decrement the like count
     let user;
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
 		return res.status(404).json({message: e});
 	}
+    let liked = false;
     for (let game of user.likes) {
 		if (game.toString() == id) {
-            return res.redirect("/games"); // REMOVE FROM LIKES LIST INSTEAD
+            liked = true;
 		}
 	}
 
-    // Try to add the game to the user's liked list
-    try {
-        await usersData.addLikedGame(req.session.user_id, id)
-    } catch (e) {
-        return res.status(500).json({message: e});
-    }
+    if (liked) { // Game is already liked; remove
+        try {
+            await usersData.removeLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
 
-    // Increment game's like count
-    try {
-        await gamesData.incrementLikes(id);
-        return res.redirect("/games");
-    } catch (e) {
-        return res.status(500).json({message: e});
+        // Increment game's like count
+        try {
+            await gamesData.decrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+    } else { // Game is not liked; add
+        // Try to add the game to the user's liked list
+        try {
+            await usersData.addLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's like count
+        try {
+            await gamesData.incrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
     }
+    
 });
 
 module.exports = router;
