@@ -36,11 +36,11 @@ router.get('/', async (req, res) => {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in});
     }
 
     if (gamesList.length === 0) {
-        res.render('users/home', { title: "Home", games: games, empty: true});
+        res.render('users/home', { title: "Home", games: games, empty: true, signed_in: req.body.signed_in});
         return;
     }
 
@@ -93,9 +93,9 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
-        res.render('users/home', { title: "Home", games: games });
+        res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in});
     } catch (e) {
-        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' });
+        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in});
     }
     
 });
@@ -111,7 +111,7 @@ router.post('/', async (req, res) => {
  * 
  */
 router.get('/signup', async (req, res) => {
-    res.render('users/signup', { title: "Sign up" });
+    res.render('users/signup', { title: "Sign up" ,signed_in: req.body.signed_in});
 });
 
 /**
@@ -155,7 +155,7 @@ router.post('/signup', async (req, res) => {
  * Route to login form
  */
  router.get('/login', async (req, res) => {
-    res.render('users/login', { title: "Login" });
+    res.render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
 });
 
 /**
@@ -168,7 +168,7 @@ router.post('/login', async (req, res) => {
 
     // Check both username and password
     if(!username || !password){
-        res.status(401).render('users/login', { error: "Missing username or password."});
+        res.status(401).render('users/login', { error: "Missing username or password.",signed_in: req.body.signed_in});
         return;
     }
     
@@ -178,7 +178,7 @@ router.post('/login', async (req, res) => {
 
     // User doesn't exist
         if (!userInfo){
-            res.status(401).render('users/login', { error: "User doesn't exist."});
+            res.status(401).render('users/login', { error: "User doesn't exist.",signed_in: req.body.signed_in});
             return;
         }
         
@@ -187,11 +187,11 @@ router.post('/login', async (req, res) => {
             res.redirect("/");
             // res.render('home', { message: `Welcome ${userInfo.username}`});
         } else {
-            res.status(401).render('users/login', { error: "Wrong password."});
+            res.status(401).render('users/login', { error: "Wrong password.",signed_in: req.body.signed_in});
         }
     // return to main page?
      } catch (e) {
-        res.status(401).render('users/login', { title: "Login" });
+        res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
      }
     // NOT DONE
 });
@@ -207,7 +207,7 @@ router.get('/logout', async (req, res) => {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in});
     }
     res.redirect("/");
     // res.render('home', { message: `Bye ${userInfo.username}`});
@@ -222,12 +222,12 @@ router.get('/users/:id', async (req, res) => {
 
     if (!id) {
         // Display error page. error.handlebars
-        res.status(404).render('general/error', { status: 404, error: "User ID missing." } );
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
     }
 
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0 });
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in });
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }

@@ -82,8 +82,18 @@ app.use(session({
   saveUninitialized: true
 }))
 
+app.use(async (req, res, next) => {
+  if (!req.session.user_id) {
+    req.body.signed_in = false;
+    next();
+  } else {
+    req.body.signed_in = true;
+    next();
+  }
+})
+
 /**
- * Loggin Middleware to help with debugging routes
+ * Logging Middleware to help with debugging routes
  * Logs the following information:
  * - Current Timestamp
  * - Request Method
