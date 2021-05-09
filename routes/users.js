@@ -227,7 +227,7 @@ router.get('/users/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 });
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0 });
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }

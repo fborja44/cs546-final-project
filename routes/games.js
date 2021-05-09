@@ -9,6 +9,7 @@ const mongoCollections = require('../config/mongoCollections');
 const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
 const games = mongoCollections.games;
 const gamesData = data.games;
+const usersData = data.users;
 
 // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
 const validURL = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -47,11 +48,11 @@ router.get('/', async (req, res) => {
 /**
  * Renders single game page
  */
- router.get('/:title', async (req, res) => {
-    let title = req.params.title;
+ router.get('/:id', async (req, res) => {
+    let id = req.params.id;
     let errors = [];
 
-    if (!title || title.trim().length === 0) {
+    if (!id || id.trim().length === 0) {
         errors.push('Missing pid.');
     }
 
@@ -66,10 +67,10 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        let game = await gamesData.getGameByTitle(title);
+        let game = await gamesData.getGameById(id);
         res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
     } catch (e) {
-        res.status(500).json({message: e});
+        res.status(404).json({message: e});
     }
 });
 
@@ -330,6 +331,88 @@ router.post('/search', async (req, res) => {
                                             search_term_value: searchData.searchTerm });
         }
     }
+});
+
+/**
+ * Adds a game to a user's liked games, and increases the game's like count.
+ */
+ router.post('/like/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        console.log("You must login to like a game."); // CHANGE THIS
+        return res.redirect("/games");
+    }
+
+    // Check if game is already in the user's liked list
+    // If it isn't, then add it and increment like count
+    // If it's not, then remove it and decrement the like count
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let liked = false;
+    for (let game of user.likes) {
+		if (game._id.toString() == id) {
+            liked = true;
+		}
+	}
+
+    if (liked) { // Game is already liked; remove
+        try {
+            await usersData.removeLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's like count
+        try {
+            await gamesData.decrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+    } else { // Game is not liked; add
+        // Try to add the game to the user's liked list
+        try {
+            await usersData.addLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's like count
+        try {
+            await gamesData.incrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+    }
+    
 });
 
 module.exports = router;

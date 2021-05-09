@@ -5,6 +5,7 @@
  let { ObjectId } = require('mongodb');
  const bcrypt = require('bcryptjs');
  const saltRounds = 16;
+ const gamesData = require('./games'); // games database methods
  
  /**
   * Creates a user in the database using the following parameters:
@@ -302,6 +303,118 @@
 	 res._id = res._id.toString();
 	 return res;
  }
+
+/**
+ * Adds a game id to a user's liked list
+ * @param {*} userId 
+ * @param {*} gameId 
+ * @returns 
+ */
+async function addLikedGame(userId, gameId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	let game;
+	try {
+		game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if game has already been added to likes list
+	for (let x of user.likes) {
+		if (x._id.toString() === gameId) {
+			throw `User has already liked the game with id of ${gameId}`;
+		}
+	}
+
+	let parsedUserId = ObjectId(userId);
+	let parsedGameId = ObjectId(gameId);
+
+	let liked_obj = {
+		_id: parsedGameId,
+		title: game.title
+	}
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $addToSet: { likes: liked_obj } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
+	return await getUserById(userId);
+}
+
+/**
+ * Removes a game id from a user's liked list
+ * @param {*} userId 
+ * @param {*} gameId 
+ * @returns 
+ */
+ async function removeLikedGame(userId, gameId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	try {
+		let game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if game has already been added to likes list
+	let x = false;
+	for (let y of user.likes) {
+		if (y._id.toString() === gameId) {
+			x = true;
+			break;
+		}
+	}
+	if (x == false) throw `Game with id ${gameId} is not a part of user's liked list.`;
+
+	let parsedUserId = ObjectId(userId);
+	let parsedGameId = ObjectId(gameId);
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $pull: { likes: { _id: parsedGameId } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to remove game from likes.';
+	return await getUserById(userId);
+}
+
  module.exports = {
 	 createUser,
 	 getAllUsers,
@@ -317,5 +430,7 @@
 	 updateWishlist,
 	 updateReviews,
 	 removeUserById,
-	 usernameCheck
+	 usernameCheck,
+	 addLikedGame,
+	 removeLikedGame
  };
