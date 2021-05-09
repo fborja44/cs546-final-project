@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
-        res.render('users/home', { title: "Home", games: games });
+        res.render('users/home', { title: "Home", games: games});
     } catch (e) {
         res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' });
     }
@@ -143,7 +143,7 @@ router.post('/signup', async (req, res) => {
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
          let userId = newUser._id.toString();
          req.session.user_id = userId;
-         res.redirect("/");
+         res.redirect('/');
         //  res.render('users/home', { message: `Welcome ${newUser.username}`});
      } catch (e){
         res.status(400).json({ error: 'Creation failed.'});
@@ -184,16 +184,15 @@ router.post('/login', async (req, res) => {
         
         if (await bcrypt.compare(password, userInfo.hashedPassword)){
             req.session.user_id = userInfo._id;
-            res.redirect("/");
+            res.redirect('/');
             // res.render('home', { message: `Welcome ${userInfo.username}`});
         } else {
             res.status(401).render('users/login', { error: "Wrong password."});
         }
     // return to main page?
      } catch (e) {
-        res.status(401).render('users/login', { title: "Login" });
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong.' });
      }
-    // NOT DONE
 });
 
 /**
@@ -209,15 +208,37 @@ router.get('/logout', async (req, res) => {
         // DISPLAY ERROR PAGE
         return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' });
     }
-    res.redirect("/");
-    // res.render('home', { message: `Bye ${userInfo.username}`});
+    res.redirect('/');
 });
+
+/**
+ * Route to individual user page.
+ */
+router.get('/users', async (req, res) => {
+    if (!req.session.user_id){
+        res.redirect('/');
+        return;
+    }
+    const id = req.session.user_id;
+    const address = `/users/${id}`;
+    res.redirect(address);
+});
+
+
+
 
 /**
  * Route to individual user page. Should be public to all users.
  */
 router.get('/users/:id', async (req, res) => {
-    const id = req.params.id;
+    if (!req.session.user_id || !req.params.id){
+        res.redirect('/');
+        return;
+    }
+    let id = req.params.id;
+    const userId = req.session.user_id;
+    if (id != userId)
+        id = userId;
     let errors = [];
 
     if (!id) {
