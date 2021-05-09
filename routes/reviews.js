@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
       reviewPost.reviewBody,
       parseInt(reviewPost.reviewRating)
     )
-      res.redirect(`/games/${game.title}`);
+      res.redirect(`/games/${game._id}`);
 
   }catch (e) {
     console.log(e);
