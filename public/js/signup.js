@@ -22,9 +22,9 @@ $("#signup-form").submit(function(event) {
         message = "Error: All feilds should be supplied."
     }
 
-    if (!error && (password.length < 4 || password.length > 10)){
+    if (!error && (password.length < 4 || password.length > 20)){
         error = true;
-        message = "Error: The length of password should between 4 and 10."
+        message = "Error: The length of password should between 4 and 20."
     }
 
     const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
