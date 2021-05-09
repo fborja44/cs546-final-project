@@ -32,13 +32,11 @@
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email))
 		 throw "Error: Invaild email."
+	let newPassword = password.trim();
+	if (newPassword.length < 4 || newPassword.length > 20)
+		throw `Password is too long or too short.`
 	 const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-	 if (password.trim().length() < 4 || password.trim().length() > 10)
-        throw `Password is too long or too short.`
-
-
- 
 	 const userCollection = await users();
 	 let newUser = {
 		 username: username.trim().toLowerCase(),

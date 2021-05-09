@@ -125,17 +125,17 @@ router.post('/signup', async (req, res) => {
     const password = xss(req.body.signup_password).toString().trim();
 
     if(!username || !firstName || !lastName || !email || !password){
-        res.status(400).render('users/signup', { error: "Error 400: Invalid inputs to sign up, all feilds must be supplied."});
+        res.status(400).render('users/signup', { error: "Error: Invalid inputs to sign up, all feilds must be supplied."});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email)){
-        res.status(400).render('general/error', { error: "Error 400: Invaild email."});
+        res.status(400).render('general/error', { error: "Error: Invaild email."});
         return;
      }
 
-     if (password.length() < 4 || password.length() > 10){
-        res.status(400).render('general/error', { error: "Error 400: Password is too long or too short."});
+     if (password.length < 4 || password.length > 20){
+        res.status(400).render('general/error', { error: "Error: Password is too long or too short."});
         return;
      }
 
