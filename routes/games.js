@@ -444,7 +444,6 @@ router.post('/search', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        console.log("You must login to like a game."); // CHANGE THIS
         return res.redirect("/games");
     }
 
