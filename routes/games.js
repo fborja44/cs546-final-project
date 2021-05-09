@@ -88,6 +88,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The title must be a string`);
     } else if (gameData.newTitle.trim().length === 0) {
         errors.push("The title must not be an empty string");
+    } else if (gameData.newTitle.trim().length >= 125) {
+        errors.push("The title must be within 125 characters");
     }
 
     // image error checking
@@ -108,6 +110,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The publisher must be a string`);
     } else if (gameData.newPublisher.trim().length === 0) {
         errors.push("The publisher must not be an empty string");
+    } else if (gameData.newPublisher.trim().length >= 125) {
+        errors.push("The publisher must be within 125 characters");
     }
 
     // genres error checking
@@ -122,6 +126,9 @@ router.post('/new', async (req, res) => {
         for (let x of gameData.newGenres) {
             if (x.trim().length === 0) {
                 errors.push("The genres must not have an empty string");
+                break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The genres must be within 50 characters");
                 break;
             }
             genresTrim.push(x.trim());
@@ -158,6 +165,9 @@ router.post('/new', async (req, res) => {
             if (x.trim().length === 0) {
                 errors.push("The platforms must not have an empty string");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The platforms must be within 50 characters");
+                break;
             }
             platformsTrim.push(x.trim());
         }
@@ -182,6 +192,9 @@ router.post('/new', async (req, res) => {
             } else if (!validPrice.test(x.trim())) {
                 errors.push("The prices must be of the correct form");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The prices must be within 50 characters");
+                break;
             }
             let obj = {};
             let values = x.split(" ");
@@ -201,19 +214,12 @@ router.post('/new', async (req, res) => {
         errors.push(`The description must be a string`);
     } else if (gameData.newDesc.trim().length === 0) {
         errors.push("The description must not be an empty string");
+    } else if (gameData.newDesc.trim().length >= 1000) {
+        errors.push("The description must be within 1000 characters");
     }
 
     if (errors.length > 0) { 
-        res.status(400).render('games/newgame', { title: "Add Game", 
-                                    gameTitle: gameData.newTitle.trim(),
-                                    image: gameData.newImage.trim(),
-                                    publisher: gameData.newPublisher.trim(),
-                                    releaseYear: gameData.newReleaseYear.trim(),
-                                    genre: genresTrim[0],
-                                    platform: platformsTrim[0],
-                                    price: gameData.newPrices[0].trim(),
-                                    description: gameData.newDesc.trim(),
-                                    error: errors});
+        res.status(400).render('games/newgame', { title: "Add Game", error: errors});
         return;
     }
 
