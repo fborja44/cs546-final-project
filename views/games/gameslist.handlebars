@@ -34,7 +34,8 @@
         </div>
         <img src="{{image}}" alt="{{title}}" title="{{title}}">
         <div class="info">
-            <a href="games/{{title}}" class="title">{{title}}</a>
+            {{!-- <a href="games/{{replace title " " ""}}" class="title">{{title}}</a> --}}
+            <a href="games/{{_id}}" class="title">{{title}}</a>
             <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>
             <table>
                 <tr>
@@ -60,7 +61,7 @@
         </p>
         <div class="actions">
             <p>
-                <form class="action-form" action="" method="POST">
+                <form class="action-form" action="/games/like/{{_id}}" method="POST">
                     <button name="like" value="like"><img src="/public/img/like.png" alt="">Like</button>[<span>{{numLikes}}</span>] | 
                 </form>
                 <form class="action-form" action="" method="POST">

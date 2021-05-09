@@ -503,6 +503,7 @@ async function getGamesByPrice(searchPrice) {
     const gamesList = await getAllGames();
     for (const game of gamesList) {
         for (const obj of game.prices) {
+            // Convert price from "$X.XX" to a float
             if (Number.parseFloat(obj.price.substring(1)) < Number.parseFloat(searchPrice.substring(1))) {
                 list.push(game);
                 break;
@@ -510,9 +511,51 @@ async function getGamesByPrice(searchPrice) {
         }
     }
 
-    // *********** NEED TO CONVERT PRICES TO NUMBERS; CURRENTLY STORED AS STRINGS
-    // const gamesList = gamesCollection.find( { prices: { price: { $lte: searchPrice } } } ).toArray();
     return list;
+}
+
+/**
+ * Increments a game's like count.
+ * @param {*} id The id of the game
+ */
+async function incrementLikes(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedId = ObjectId(id.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $inc: { numLikes: 1 } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+
+    return await this.getGameById(id.trim());
+}
+
+/**
+ * Decrements a game's like count.
+ * @param {*} id The id of the game
+ */
+ async function decrementLikes(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedId = ObjectId(id.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $inc: { numLikes: -1 } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+
+    return await this.getGameById(id.trim());
 }
 
 module.exports = {
@@ -529,5 +572,7 @@ module.exports = {
     searchGamesByTitle,
     getBestGame,
     getBestGameByGenre,
-    getGamesByPrice
+    getGamesByPrice,
+    incrementLikes,
+    decrementLikes
 };
