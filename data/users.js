@@ -27,10 +27,16 @@
 		 throw `Email ${email} should be a string which is not empty.`
 	 if(typeof password != 'string' || password.trim() === '')
 		 throw `Password ${password} should be a string which is not empty.`
+		 
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email))
 		 throw "Error: Invaild email."
 	 const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+	 if (password.trim().length() < 4 || password.trim().length() > 10)
+        throw `Password is too long or too short.`
+
+
  
 	 const userCollection = await users();
 	 let newUser = {
