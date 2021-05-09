@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const path = require('path');
+const xss = require('xss');
 
 const mongoCollections = require('../config/mongoCollections');
 const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
@@ -78,7 +79,7 @@ router.get('/', async (req, res) => {
  * Adds a new game to the games collection.
  */
 router.post('/new', async (req, res) => {
-    let gameData = req.body;
+    let gameData = xss(req.body);
     let errors = [];
 
     // title error checking
@@ -238,7 +239,7 @@ router.post('/new', async (req, res) => {
  * Searches for games in the games collection.
  */
 router.post('/search', async (req, res) => {
-    let searchData = req.body;
+    let searchData = xss(req.body);
     let errors = [];
 
     if (!searchData.searchTerm) {

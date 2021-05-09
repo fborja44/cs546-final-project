@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data/');
 const path = require('path');
+const xss = require('xss');
 const reviewsData = data.reviews;
 const gamesData = data.games;
 
@@ -12,7 +13,7 @@ router.post('/', async (req, res) => {
   var yyyy = today.getFullYear();
   today = mm + '/' + dd + '/' + yyyy;
 
-  let reviewPost = req.body;
+  let reviewPost = xss(req.body);
   let errors = [];
   let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
   if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {

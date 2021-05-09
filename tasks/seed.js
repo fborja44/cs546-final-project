@@ -305,7 +305,7 @@ const main = async () => {
         "Francis",
         "Borja",
         "fborja@stevens.edu",
-        "supersecret"
+        "supersec"
     )
     let user1_id = user1._id.toString();
 
