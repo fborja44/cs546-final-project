@@ -134,6 +134,11 @@ router.post('/signup', async (req, res) => {
         return;
      }
 
+     if (password.length() < 4 || password.length() > 10){
+        res.status(400).render('general/error', { error: "Error 400: Password is too long or too short."});
+        return;
+     }
+
      try{
          let userInfo = await usersData.getUserByUsername(username);
          if(userInfo){
