@@ -66,6 +66,13 @@ h3 {
     padding: 10px 0 10px 0;
 }
 
+
+.lists {
+    font-style: italic;
+    margin: 0 15px 0 15px;
+    padding: 10px 0 10px 0;
+}
+
 ul {
     margin: 0 0 0 0;
 }

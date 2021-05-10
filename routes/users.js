@@ -219,13 +219,13 @@ router.get('/logout', async (req, res) => {
 /**
  * Route to individual user page.
  */
-router.get('/users', async (req, res) => {
+router.get('/private', async (req, res) => {
     if (!req.session.user_id){
         res.redirect('/');
         return;
     }
     const id = req.session.user_id;
-    const address = `/users/${id}`;
+    const address = `/private/${id}`;
     res.redirect(address);
 });
 
@@ -233,9 +233,9 @@ router.get('/users', async (req, res) => {
 
 
 /**
- * Route to individual user page. Should be public to all users.
+ * Route to individual user page. Private.
  */
-router.get('/users/:id', async (req, res) => {
+router.get('/private/:id', async (req, res) => {
     if (!req.session.user_id || !req.params.id){
         res.redirect('/');
         return;
@@ -253,10 +253,32 @@ router.get('/users/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in });
+
+        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0});
+
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }
 });
 
+/**
+ * Route to individual user page. Should be public to all users.
+ */
+router.get('/users/:id', async (req, res) => {
+
+    const id = req.params.id;
+    let errors = [];
+
+    if (!id) {
+        // Display error page. error.handlebars
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." } );
+    }
+
+    try {
+        const user = await usersData.getUserById(id);
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 });
+    } catch (e) {
+        res.status(404).render('general/error', { status: 404, error: "User not found." } );
+    }
+});
 module.exports = router;
