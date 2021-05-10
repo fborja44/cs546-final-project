@@ -79,7 +79,7 @@ app.use(session({
 /*
 * To check that users can only see their own profile.
 */
-app.use('/users/:id', (req, res, next) => {
+app.use('/private/:id', (req, res, next) => {
   if (!req.session.user_id) {
     res.redirect('/login');
     return;
@@ -88,7 +88,7 @@ app.use('/users/:id', (req, res, next) => {
   }
 });
 
-app.use('/users', (req, res, next) => {
+app.use('/private', (req, res, next) => {
   if (!req.session.user_id) {
     res.redirect('/login');
     return;

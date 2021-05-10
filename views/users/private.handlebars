@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="/public/css/user.css">
+<div class="user-container">
+    {{#if user}}
+    <div class="user">
+        <h1>{{user.username}}'s Profile</h1>
+        <div class="content-container"> 
+            <img id="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
+            <p>{{user.firstName}} {{user.lastName}}</p>
+            <p>Email: {{user.email}}</p>
+        </div>
+        <h3>{{user.username}}'s Likes</h3>
+        {{#each user.likes}}
+        <div class="review">
+            <!-- Need route /games/:id -->        
+        </div>
+        {{/each}}
+        {{#if likesEmpty}}
+            <p class = "lists">There is no games in Likes.</p>
+        {{/if}}
+        <h3>{{user.username}}'s Follows</h3>
+        {{#each user.follows}}
+        <div class="likes">
+            <!-- Need route /games/:id -->  
+        </div>
+        {{/each}}
+        {{#if followsEmpty}}
+            <p class = "lists">There is no games in Follows.</p>
+        {{/if}}
+        <h3>{{user.username}}'s Wishlist</h3>
+        {{#each user.wishlist}}
+        <div class="review">
+            <!-- Need route /games/:id -->  
+        </div>
+        {{/each}}
+        {{#if wishEmpty}}
+            <p class = "lists">There is no games in wishlist.</p>
+        {{/if}}
+        <h3>{{user.username}}'s Reviews</h3>
+        {{#each user.reviews}}
+        <div class="review">
+            <!-- REVIEWS DISPLAY -->
+        </div>
+        {{/each}}
+        {{#if reviewsEmpty}}
+            <p id="empty">This user has not written any reviews.</p>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>
