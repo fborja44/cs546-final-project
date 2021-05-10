@@ -52,7 +52,8 @@
         <!-- Description -->
         <div class="form-elem">
             <label for ="description-input">Description:</label>
-            <input id="description-input" type="text" name="newDesc" value={{description}}>
+            {{!-- <input id="description-input" type="text" name="newDesc" value={{description}}> --}}
+            <textarea name="newDesc" rows="10" cols="72" id="description-input"></textarea>
         </div>
         <div class="center">
             <button id="new-submit" type="submit">Submit</button>

@@ -10,6 +10,11 @@ const mongoCollections = require('./config/mongoCollections');
 const dbConnection = require('./config/mongoConnection');
 const games = mongoCollections.games;
 
+const data = require('./data/');
+const usersData = data.users;
+const gamesData = data.games;
+const reviewsData = data.reviews;
+
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
   // Specify helpers which are only registered on this instance.
@@ -45,6 +50,30 @@ app.use(rewriteUnsupportedBrowserMethods);
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
+// Handlebars helpers
+/**
+ * Handlebars helper for string replacement
+ * Source: https://stackoverflow.com/questions/52570039/remove-white-space-between-words-in-a-handlebar-expression
+ */
+// handlebarsInstance.handlebars.registerHelper('replace', function(string, search, replace) {
+//   return string.replace(search, replace);
+// });
+
+/**
+ * Handlebars helper to retrieve game using id
+ * note: doesn't display properly on webpage since asynchronous and results in a promise
+ * but the result is correct
+ */
+// handlebarsInstance.handlebars.registerHelper('getGameById', async function(gameId) {
+//   try {
+//     let game = await gamesData.getGameById(gameId.toString());
+//     console.log(game.title);
+//     return game.title;
+//   } catch (e) {
+//     return "Failed to get game title";
+//   }
+// });
+
 // Create session
 app.use(session({
   name: 'AuthCookie',
@@ -53,8 +82,18 @@ app.use(session({
   saveUninitialized: true
 }))
 
+app.use(async (req, res, next) => {
+  if (!req.session.user_id) {
+    req.body.signed_in = false;
+    next();
+  } else {
+    req.body.signed_in = true;
+    next();
+  }
+})
+
 /**
- * Loggin Middleware to help with debugging routes
+ * Logging Middleware to help with debugging routes
  * Logs the following information:
  * - Current Timestamp
  * - Request Method

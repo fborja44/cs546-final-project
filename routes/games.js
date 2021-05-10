@@ -10,6 +10,7 @@ const mongoCollections = require('../config/mongoCollections');
 const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
 const games = mongoCollections.games;
 const gamesData = data.games;
+const usersData = data.users;
 
 // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
 const validURL = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -27,7 +28,7 @@ const validPrice = /^.+: \$\d+.\d\d$/; // price format
 router.get('/', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0});
+        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -39,7 +40,7 @@ router.get('/', async (req, res) => {
  router.get('/new', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/newgame', { title: "Add Game" });
+        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -48,11 +49,11 @@ router.get('/', async (req, res) => {
 /**
  * Renders single game page
  */
- router.get('/:title', async (req, res) => {
-    let title = req.params.title;
+ router.get('/:id', async (req, res) => {
+    let id = req.params.id;
     let errors = [];
 
-    if (!title || title.trim().length === 0) {
+    if (!id || id.trim().length === 0) {
         errors.push('Missing pid.');
     }
 
@@ -67,10 +68,10 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        let game = await gamesData.getGameByTitle(title);
-        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
+        let game = await gamesData.getGameById(id);
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in});
     } catch (e) {
-        res.status(500).json({message: e});
+        res.status(404).json({message: e});
     }
 });
 
@@ -88,6 +89,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The title must be a string`);
     } else if (gameData.newTitle.trim().length === 0) {
         errors.push("The title must not be an empty string");
+    } else if (gameData.newTitle.trim().length >= 125) {
+        errors.push("The title must be within 125 characters");
     }
 
     // image error checking
@@ -108,6 +111,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The publisher must be a string`);
     } else if (gameData.newPublisher.trim().length === 0) {
         errors.push("The publisher must not be an empty string");
+    } else if (gameData.newPublisher.trim().length >= 125) {
+        errors.push("The publisher must be within 125 characters");
     }
 
     // genres error checking
@@ -122,6 +127,9 @@ router.post('/new', async (req, res) => {
         for (let x of gameData.newGenres) {
             if (x.trim().length === 0) {
                 errors.push("The genres must not have an empty string");
+                break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The genres must be within 50 characters");
                 break;
             }
             genresTrim.push(x.trim());
@@ -158,6 +166,9 @@ router.post('/new', async (req, res) => {
             if (x.trim().length === 0) {
                 errors.push("The platforms must not have an empty string");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The platforms must be within 50 characters");
+                break;
             }
             platformsTrim.push(x.trim());
         }
@@ -182,6 +193,9 @@ router.post('/new', async (req, res) => {
             } else if (!validPrice.test(x.trim())) {
                 errors.push("The prices must be of the correct form");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The prices must be within 50 characters");
+                break;
             }
             let obj = {};
             let values = x.split(" ");
@@ -201,20 +215,12 @@ router.post('/new', async (req, res) => {
         errors.push(`The description must be a string`);
     } else if (gameData.newDesc.trim().length === 0) {
         errors.push("The description must not be an empty string");
+    } else if (gameData.newDesc.trim().length >= 1000) {
+        errors.push("The description must be within 1000 characters");
     }
 
     if (errors.length > 0) { 
-        let gamesList = await gamesData.getAllGames();
-        res.status(400).render('games/newgame', { title: "Add Game", 
-                                    gameTitle: gameData.newTitle.trim(),
-                                    image: gameData.newImage.trim(),
-                                    publisher: gameData.newPublisher.trim(),
-                                    releaseYear: gameData.newReleaseYear.trim(),
-                                    genre: genresTrim[0],
-                                    platform: platformsTrim[0],
-                                    price: gameData.newPrices[0].trim(),
-                                    description: gameData.newDesc.trim(),
-                                    error: errors});
+        res.status(400).render('games/newgame', { title: "Add Game", error: errors});
         return;
     }
 
@@ -227,9 +233,20 @@ router.post('/new', async (req, res) => {
                                                 platformsTrim,
                                                 gameData.newDesc.trim(),
                                                 pricesTrim);
-        res.redirect(`/games/${gameData.newTitle.trim()}`);
+        res.redirect(`/games/${newGame.title.trim()}`);
     } catch (e) {
-        res.status(500).json({error: e});
+        errors.push(e);
+        res.status(500).render('games/newgame', { title: "Add Game", 
+                gameTitle: gameData.newTitle.trim(),
+                image: gameData.newImage.trim(),
+                publisher: gameData.newPublisher.trim(),
+                releaseYear: gameData.newReleaseYear.trim(),
+                genre: genresTrim[0],
+                platform: platformsTrim[0],
+                price: gameData.newPrices[0].trim(),
+                description: gameData.newDesc.trim(),
+                error: errors, signed_in: req.body.signed_in});
+        return;
     }
 
 });
@@ -261,7 +278,7 @@ router.post('/search', async (req, res) => {
                                         gamesEmpty: gamesList.length === 0, 
                                         error: errors, 
                                         search_type_value: searchData.searchType, 
-                                        search_term_value: searchData.searchTerm });
+                                        search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         return;
     }
     
@@ -273,14 +290,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList , 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         }
     } else if (searchData.searchType === "genre") {
         try {
@@ -289,14 +306,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     } else if (searchData.searchType === "platform") {
         try {
@@ -305,14 +322,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     } else if (searchData.searchType === "price") {
         try {
@@ -321,16 +338,146 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     }
+});
+
+/**
+ * Adds a game to a user's liked games, and increases the game's like count.
+ */
+ router.post('/like/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        console.log("You must login to like a game."); // CHANGE THIS
+        return res.redirect("/games");
+    }
+
+    // Check if game is already in the user's liked list
+    // If it isn't, then add it and increment like count
+    // If it's not, then remove it and decrement the like count
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let liked = false;
+    for (let game of user.likes) {
+		if (game._id.toString() == id) {
+            liked = true;
+		}
+	}
+
+    if (liked) { // Game is already liked; remove
+        try {
+            await usersData.removeLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's like count
+        try {
+            await gamesData.decrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+    } else { // Game is not liked; add
+        // Try to add the game to the user's liked list
+        try {
+            await usersData.addLikedGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's like count
+        try {
+            await gamesData.incrementLikes(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+    }
+    
+});
+
+/**
+ * Checks if a game is liked by the user
+ * Responds with true if it is, false if not
+ */
+ router.get('/like/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        return res.redirect("/games");
+    }
+
+    // Check if game is n the user's liked list
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let liked = false;
+    for (let game of user.likes) {
+		if (game._id.toString() == id) {
+            liked = true;
+		}
+	}
+    return res.json({liked: liked});
 });
 
 module.exports = router;

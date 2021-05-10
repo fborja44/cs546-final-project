@@ -13,16 +13,28 @@ router.post('/', async (req, res) => {
   var yyyy = today.getFullYear();
   today = mm + '/' + dd + '/' + yyyy;
 
-  let reviewPost = xss(req.body);
+  //let reviewPost = xss(req.body);
+  let reviewPost = req.body;
   let errors = [];
+
   let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
+
+
   if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {
     errors.push('No title provided');
   }
 
+  if(reviewPost.reviewTitle.length > 85){
+    errors.push("Title can't exceed 85 characters.");
+  }
   if (!reviewPost.reviewBody || reviewPost.reviewBody.trim().length===0) {
     errors.push('No body provided');
   }
+
+  if (reviewPost.reviewBody.length >125) {
+    errors.push("Body can't exceed 125 characters.");
+  }
+
 
   if (!reviewPost.reviewRating) {
     errors.push('No rating provided');
@@ -41,13 +53,12 @@ router.post('/', async (req, res) => {
   try {
     const newReview = await reviewsData.createReview(
       game._id,
-      reviewPost.reviewTitle,
+      xss(reviewPost.reviewTitle),
       {username:"idk",_id: "234982374"},
       today.toString(),
-      reviewPost.reviewBody,
-      parseInt(reviewPost.reviewRating)
-    )
-      res.redirect(`/games/${game.title}`);
+      xss(reviewPost.reviewBody),
+       5)
+      res.redirect(`/games/${game._id}`);
 
   }catch (e) {
     console.log(e);

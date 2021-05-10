@@ -309,6 +309,14 @@ const main = async () => {
     )
     let user1_id = user1._id.toString();
 
+    let user2 = await usersData.createUser(
+        "naomi",
+        "Naomi",
+        "Zheng",
+        "nzheng1@stevens.edu",
+        "password"
+    )
+
     /* Testing Users functions
     ---------------------------------------------------------------------------*/
     // Testing getAllUsers()
