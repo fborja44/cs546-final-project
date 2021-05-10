@@ -19,7 +19,7 @@ $("#signup-form").submit(function(event) {
 
     if (!username || !password || !email || !firstName || !lastName){
         error = true;
-        message = "Error: All feilds should be supplied."
+        message = "Error: All fields should be supplied."
     }
 
     if (!error && (password.length < 4 || password.length > 20)){

@@ -110,6 +110,23 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
 
     const gameCollection = await games();
 
+    const gamesList = await gameCollection.find({}).toArray();
+    for (let x of gamesList) {
+        if (x.title.trim().toLowerCase().replace(" ", "") === title.trim().toLowerCase().replace(" ", "")) {
+            throw "There may not be any duplicate games";
+        }
+    }
+
+    title = title.trim();
+    let titleSplit = title.split(" ");
+    title = "";
+    for (let x of titleSplit) {
+        if (x !== '') {
+            title = title.concat(x.concat(" "));
+        }
+    }
+    title = title.trim();
+
     let newGame = {
         title: title.trim(),
         image: image.trim(),
@@ -171,7 +188,7 @@ async function getGameById(id) {
 
 /**
  * Retrieves a game in the databse with the given title
- * @param {string} tile String representation of the ObjectId of the game.
+ * @param {string} title String representation of the ObjectId of the game.
  */
  async function getGameByTitle(title) {
     if (!title) throw "You must provide an id to search for";

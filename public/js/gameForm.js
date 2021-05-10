@@ -176,6 +176,12 @@
                 titleError = false;
                 error = true;
             }
+            if (title.trim().length >= 125 && titleError) {
+                errorsMsg.push("The title must be less than 125 characters");
+                errorList.push("title");
+                titleError = false;
+                error = true;
+            }
 
             // Image error checking
             if (!image && imageError) {
@@ -218,6 +224,12 @@
             }
             if (publisher.trim().length === 0 && publisherError) {
                 errorsMsg.push("The publisher must not be an empty string");
+                errorList.push("publisher");
+                publisherError = false;
+                error = true;
+            }
+            if (publisher.trim().length >= 125 && publisherError) {
+                errorsMsg.push("The publisher must be less than 125 characters");
                 errorList.push("publisher");
                 publisherError = false;
                 error = true;
@@ -279,13 +291,13 @@
             let genreIndex = [];
             let genreEmptyString = false;
             for (let i = 0; i < genres.length; i++) {
-                if (genres[i].trim().length === 0 && genreError) {
+                if ((genres[i].trim().length === 0 || genres[i].trim().length >= 50) && genreError) {
                     genreIndex.push(i+1);
                     genreEmptyString = true;
                 }
             }
             if (genreEmptyString) {
-                errorsMsg.push("The genres must not have an empty string");
+                errorsMsg.push("The genres must not be an empty string and within 50 characters");
                 errorList.push("genres");
                 genreError = false;
                 error = true;
@@ -307,13 +319,13 @@
             let platformIndex = [];
             let platformEmptyString = false;
             for (let i = 0; i < platforms.length; i++) {
-                if (platforms[i].trim().length === 0 && platformError) {
+                if ((platforms[i].trim().length === 0 || platforms[i].trim().length >= 50) && platformError) {
                     platformIndex.push(i+1);
                     platformEmptyString = true;
                 }
             }
             if (platformEmptyString) {
-                errorsMsg.push("The platforms must not have an empty string");
+                errorsMsg.push("The platforms must not be an empty string and within 50 characters");
                 errorList.push("platforms");
                 platformError = false;
                 error = true;
@@ -362,6 +374,12 @@
             }
             if (description.trim().length === 0 && descriptionError) {
                 errorsMsg.push("The description must not be an empty string");
+                errorList.push("description");
+                descriptionError = false;
+                error = true;
+            }
+            if (description.trim().length >= 1000) {
+                errorsMsg.push("The description must be less than 1000 characters");
                 errorList.push("description");
                 descriptionError = false;
                 error = true;

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <link rel="icon" href="/public/img/logo_favicon.png">
     {{!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="/public/css/site.css">
 </head>
@@ -16,9 +17,13 @@
                 <li><a href="/">Homepage</a></li>
                 <li><a href="/games">Game List</a></li>
                 <li><a class = "profile" id = "usersProfile" href= "/users">Profile</a></li>
+                {{#unless signed_in}}
                 <li><a class = "signLink" id = "loginLink" href="/login">Login</a></li>
                 <li><a class = "signLink" id = "signupLink" href="/signup">Sign up</a></li>
+                {{/unless}}
+                {{#if signed_in}}
                 <li ><a href="/logout" id = "LogoutLink" >Logout</a></li>
+                {{/if}}
             </ul>
         </nav>
 </header>
@@ -29,6 +34,7 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
+    <script src="/public/js/signup.js"></script>
     <footer>
         <p class="left">VGReviews</p>
         <p class="right"> <a href="https://github.com/fborja44/cs546-final-project">Source Code</a> | Stevens Institute of Technology</p>

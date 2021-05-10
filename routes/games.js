@@ -28,7 +28,7 @@ const validPrice = /^.+: \$\d+.\d\d$/; // price format
 router.get('/', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0});
+        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
  router.get('/new', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/newgame', { title: "Add Game" });
+        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameById(id);
-        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 });
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in});
     } catch (e) {
         res.status(404).json({message: e});
     }
@@ -89,6 +89,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The title must be a string`);
     } else if (gameData.newTitle.trim().length === 0) {
         errors.push("The title must not be an empty string");
+    } else if (gameData.newTitle.trim().length >= 125) {
+        errors.push("The title must be within 125 characters");
     }
 
     // image error checking
@@ -109,6 +111,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The publisher must be a string`);
     } else if (gameData.newPublisher.trim().length === 0) {
         errors.push("The publisher must not be an empty string");
+    } else if (gameData.newPublisher.trim().length >= 125) {
+        errors.push("The publisher must be within 125 characters");
     }
 
     // genres error checking
@@ -123,6 +127,9 @@ router.post('/new', async (req, res) => {
         for (let x of gameData.newGenres) {
             if (x.trim().length === 0) {
                 errors.push("The genres must not have an empty string");
+                break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The genres must be within 50 characters");
                 break;
             }
             genresTrim.push(x.trim());
@@ -159,6 +166,9 @@ router.post('/new', async (req, res) => {
             if (x.trim().length === 0) {
                 errors.push("The platforms must not have an empty string");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The platforms must be within 50 characters");
+                break;
             }
             platformsTrim.push(x.trim());
         }
@@ -183,6 +193,9 @@ router.post('/new', async (req, res) => {
             } else if (!validPrice.test(x.trim())) {
                 errors.push("The prices must be of the correct form");
                 break;
+            } else if (x.trim().length >= 50) {
+                errors.push("The prices must be within 50 characters");
+                break;
             }
             let obj = {};
             let values = x.split(" ");
@@ -202,20 +215,12 @@ router.post('/new', async (req, res) => {
         errors.push(`The description must be a string`);
     } else if (gameData.newDesc.trim().length === 0) {
         errors.push("The description must not be an empty string");
+    } else if (gameData.newDesc.trim().length >= 1000) {
+        errors.push("The description must be within 1000 characters");
     }
 
     if (errors.length > 0) { 
-        let gamesList = await gamesData.getAllGames();
-        res.status(400).render('games/newgame', { title: "Add Game", 
-                                    gameTitle: gameData.newTitle.trim(),
-                                    image: gameData.newImage.trim(),
-                                    publisher: gameData.newPublisher.trim(),
-                                    releaseYear: gameData.newReleaseYear.trim(),
-                                    genre: genresTrim[0],
-                                    platform: platformsTrim[0],
-                                    price: gameData.newPrices[0].trim(),
-                                    description: gameData.newDesc.trim(),
-                                    error: errors});
+        res.status(400).render('games/newgame', { title: "Add Game", error: errors});
         return;
     }
 
@@ -228,9 +233,20 @@ router.post('/new', async (req, res) => {
                                                 platformsTrim,
                                                 gameData.newDesc.trim(),
                                                 pricesTrim);
-        res.redirect(`/games/${gameData.newTitle.trim()}`);
+        res.redirect(`/games/${newGame.title.trim()}`);
     } catch (e) {
-        res.status(500).json({error: e});
+        errors.push(e);
+        res.status(500).render('games/newgame', { title: "Add Game", 
+                gameTitle: gameData.newTitle.trim(),
+                image: gameData.newImage.trim(),
+                publisher: gameData.newPublisher.trim(),
+                releaseYear: gameData.newReleaseYear.trim(),
+                genre: genresTrim[0],
+                platform: platformsTrim[0],
+                price: gameData.newPrices[0].trim(),
+                description: gameData.newDesc.trim(),
+                error: errors, signed_in: req.body.signed_in});
+        return;
     }
 
 });
@@ -262,7 +278,7 @@ router.post('/search', async (req, res) => {
                                         gamesEmpty: gamesList.length === 0, 
                                         error: errors, 
                                         search_type_value: searchData.searchType, 
-                                        search_term_value: searchData.searchTerm });
+                                        search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         return;
     }
     
@@ -274,14 +290,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList , 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         }
     } else if (searchData.searchType === "genre") {
         try {
@@ -290,14 +306,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     } else if (searchData.searchType === "platform") {
         try {
@@ -306,14 +322,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     } else if (searchData.searchType === "price") {
         try {
@@ -322,14 +338,14 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm });
+                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
         }
     }
 });
