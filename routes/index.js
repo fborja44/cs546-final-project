@@ -7,7 +7,7 @@ const path = require('path');
 // Put all the routes together
 const constructorMethod = (app) => {
   app.use('/games', gamesRoutes);
-  app.use('/games/:title',reviewsRoutes);
+  app.use('/games/:id',reviewsRoutes);
   app.use('/', usersRoutes);
 
 

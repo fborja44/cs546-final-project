@@ -28,11 +28,15 @@
 		 throw `Email ${email} should be a string which is not empty.`
 	 if(typeof password != 'string' || password.trim() === '')
 		 throw `Password ${password} should be a string which is not empty.`
+		 
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email))
 		 throw "Error: Invaild email."
+	let newPassword = password.trim();
+	if (newPassword.length < 4 || newPassword.length > 20)
+		throw `Password is too long or too short.`
 	 const hashedPassword = await bcrypt.hash(password, saltRounds);
- 
+
 	 const userCollection = await users();
 	 let newUser = {
 		 username: username.trim().toLowerCase(),

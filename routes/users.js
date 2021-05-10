@@ -93,7 +93,11 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
+<<<<<<< HEAD
         res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in});
+=======
+        res.render('users/home', { title: "Home", games: games});
+>>>>>>> main
     } catch (e) {
         res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in});
     }
@@ -125,12 +129,17 @@ router.post('/signup', async (req, res) => {
     const password = xss(req.body.signup_password).toString().trim();
 
     if(!username || !firstName || !lastName || !email || !password){
-        res.status(400).render('users/signup', { error: "Error 400: Invalid inputs to sign up, all feilds must be supplied."});
+        res.status(400).render('users/signup', { error: "Error: Invalid inputs to sign up, all feilds must be supplied."});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email)){
-        res.status(400).render('general/error', { error: "Error 400: Invaild email."});
+        res.status(400).render('general/error', { error: "Error: Invaild email."});
+        return;
+     }
+
+     if (password.length < 4 || password.length > 20){
+        res.status(400).render('general/error', { error: "Error: Password is too long or too short."});
         return;
      }
 
@@ -143,7 +152,7 @@ router.post('/signup', async (req, res) => {
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
          let userId = newUser._id.toString();
          req.session.user_id = userId;
-         res.redirect("/");
+         res.redirect('/');
         //  res.render('users/home', { message: `Welcome ${newUser.username}`});
      } catch (e){
         res.status(400).json({ error: 'Creation failed.'});
@@ -184,16 +193,19 @@ router.post('/login', async (req, res) => {
         
         if (await bcrypt.compare(password, userInfo.hashedPassword)){
             req.session.user_id = userInfo._id;
-            res.redirect("/");
+            res.redirect('/');
             // res.render('home', { message: `Welcome ${userInfo.username}`});
         } else {
             res.status(401).render('users/login', { error: "Wrong password.",signed_in: req.body.signed_in});
         }
     // return to main page?
      } catch (e) {
+<<<<<<< HEAD
         res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
+=======
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong.' });
+>>>>>>> main
      }
-    // NOT DONE
 });
 
 /**
@@ -209,15 +221,37 @@ router.get('/logout', async (req, res) => {
         // DISPLAY ERROR PAGE
         return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in});
     }
-    res.redirect("/");
-    // res.render('home', { message: `Bye ${userInfo.username}`});
+    res.redirect('/');
 });
+
+/**
+ * Route to individual user page.
+ */
+router.get('/users', async (req, res) => {
+    if (!req.session.user_id){
+        res.redirect('/');
+        return;
+    }
+    const id = req.session.user_id;
+    const address = `/users/${id}`;
+    res.redirect(address);
+});
+
+
+
 
 /**
  * Route to individual user page. Should be public to all users.
  */
 router.get('/users/:id', async (req, res) => {
-    const id = req.params.id;
+    if (!req.session.user_id || !req.params.id){
+        res.redirect('/');
+        return;
+    }
+    let id = req.params.id;
+    const userId = req.session.user_id;
+    if (id != userId)
+        id = userId;
     let errors = [];
 
     if (!id) {

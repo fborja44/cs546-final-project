@@ -115,6 +115,51 @@ app.use(async (req, res, next) => {
   next();
 });
 
+/*
+* To check that users can only see their own profile.
+*/
+app.use('/users/:id', (req, res, next) => {
+  if (!req.session.user_id) {
+    res.redirect('/login');
+    return;
+  } else {
+    next();
+  }
+});
+
+app.use('/users', (req, res, next) => {
+  if (!req.session.user_id) {
+    res.redirect('/login');
+    return;
+  } else {
+    next();
+  } 
+});
+
+app.use('/signup', (req, res, next) => {
+  if (req.session.user_id){
+    res.status(401).render('users/signup', { error: "You have already Sign up."});
+  }else{
+    next();
+  }
+});
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user_id){
+    res.status(401).render('users/login', { error: "You have already Login."});
+  }else{
+    next();
+  }
+});
+
+app.use('/logout', (req, res, next) => {
+  if (!req.session.user_id){
+    res.status(401).render('users/login', { error: "Please Login first."});
+  }else{
+    next();
+  }
+});
+
 // Database
 const init_db = async () => {
   const gamesCollection = await games();

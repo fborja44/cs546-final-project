@@ -13,7 +13,7 @@
         </div>
         <div class="form-elem">
             <label for="signup_password">Password:</label>
-            <input name="signup_password" id="signup-password" type="password" value="{{signup_password}}" placeholder = "password(4-10 characters)">
+            <input name="signup_password" id="signup-password" type="password" value="{{signup_password}}" placeholder = "password(4-20 characters)">
         </div>
         <div class="form-elem">
             <label for="signup_email">Email:</label>
@@ -32,7 +32,7 @@
 </div>
 
 {{#if error}}
-    <div class="error">
+    <div class="login-error">
         <p>Error: {{error}}</p>
     </div>
 {{/if}}

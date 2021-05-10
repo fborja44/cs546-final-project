@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data/');
 const path = require('path');
+const xss = require('xss');
 const reviewsData = data.reviews;
 const gamesData = data.games;
 
@@ -12,9 +13,13 @@ router.post('/', async (req, res) => {
   var yyyy = today.getFullYear();
   today = mm + '/' + dd + '/' + yyyy;
 
+  //let reviewPost = xss(req.body);
   let reviewPost = req.body;
   let errors = [];
+
   let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
+
+
   if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {
     errors.push('No title provided');
   }
@@ -48,13 +53,12 @@ router.post('/', async (req, res) => {
   try {
     const newReview = await reviewsData.createReview(
       game._id,
-      reviewPost.reviewTitle,
+      xss(reviewPost.reviewTitle),
       {username:"idk",_id: "234982374"},
       today.toString(),
-      reviewPost.reviewBody,
-      parseInt(reviewPost.reviewRating)
-    )
-      res.redirect(`/games/${game.title}`);
+      xss(reviewPost.reviewBody),
+       5)
+      res.redirect(`/games/${game._id}`);
 
   }catch (e) {
     console.log(e);

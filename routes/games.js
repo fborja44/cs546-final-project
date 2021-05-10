@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const path = require('path');
+const xss = require('xss');
 
 const mongoCollections = require('../config/mongoCollections');
 const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
@@ -78,7 +79,7 @@ router.get('/', async (req, res) => {
  * Adds a new game to the games collection.
  */
 router.post('/new', async (req, res) => {
-    let gameData = req.body;
+    let gameData = xss(req.body);
     let errors = [];
 
     // title error checking
@@ -254,7 +255,7 @@ router.post('/new', async (req, res) => {
  * Searches for games in the games collection.
  */
 router.post('/search', async (req, res) => {
-    let searchData = req.body;
+    let searchData = xss(req.body);
     let errors = [];
 
     if (!searchData.searchTerm) {
@@ -429,6 +430,54 @@ router.post('/search', async (req, res) => {
         }
     }
     
+});
+
+/**
+ * Checks if a game is liked by the user
+ * Responds with true if it is, false if not
+ */
+ router.get('/like/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        return res.redirect("/games");
+    }
+
+    // Check if game is n the user's liked list
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let liked = false;
+    for (let game of user.likes) {
+		if (game._id.toString() == id) {
+            liked = true;
+		}
+	}
+    return res.json({liked: liked});
 });
 
 module.exports = router;
