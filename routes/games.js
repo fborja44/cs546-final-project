@@ -28,7 +28,7 @@ const validPrice = /^.+: \$\d+.\d\d$/; // price format
 router.get('/', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in});
+        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in, partial:'likes'});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
  router.get('/new', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in});
+        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameById(id);
-        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in});
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in, partial:'likes'});
     } catch (e) {
         res.status(404).json({message: e});
     }
@@ -478,6 +478,71 @@ router.post('/search', async (req, res) => {
 		}
 	}
     return res.json({liked: liked});
+});
+
+router.post('/wishlist/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        console.log("You must login to wishlist a game."); // CHANGE THIS
+        return res.redirect("/games");
+    }
+
+    // Check if game is already in the user's wishlist list
+    // If it isn't, then add it and increment like count
+    // If it's not, then remove it and decrement the like count
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+
+    let wishlisted = false;
+    for (let game of user.wishlist) {
+		if (game._id.toString() == id) {
+            wishlisted = true;
+		}
+	}
+
+    // Game is not liked; add
+    // Try to add the game to the user's liked list
+    if (wishlisted) {
+        try {
+            await usersData.removeWishlistedGame(req.session.user_id, id)
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+    } else {
+        try {
+            await usersData.addWishlistGame(req.session.user_id, id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+    }
 });
 
 module.exports = router;

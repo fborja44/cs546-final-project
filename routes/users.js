@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
-        res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in});
+        res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in, partial: 'slides'});
     } catch (e) {
         res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in});
     }
@@ -111,7 +111,7 @@ router.post('/', async (req, res) => {
  * 
  */
 router.get('/signup', async (req, res) => {
-    res.render('users/signup', { title: "Sign up" ,signed_in: req.body.signed_in});
+    res.render('users/signup', { title: "Sign up" ,signed_in: req.body.signed_in, partial:'signup'});
 });
 
 /**
@@ -160,7 +160,7 @@ router.post('/signup', async (req, res) => {
  * Route to login form
  */
  router.get('/login', async (req, res) => {
-    res.render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
+    res.render('users/login', { title: "Login" ,signed_in: req.body.signed_in, partial:'signup'});
 });
 
 /**
@@ -253,7 +253,7 @@ router.get('/users/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in });
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'gameForm'});
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }
