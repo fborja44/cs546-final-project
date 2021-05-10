@@ -253,13 +253,9 @@ router.get('/private/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-<<<<<<< HEAD
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'gameForm'});
-=======
 
-        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0});
+        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'gameForm'});
 
->>>>>>> main
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }
