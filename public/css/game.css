@@ -230,12 +230,14 @@ button:hover {
 
 .action-form {
     display: inline;
+    padding: 0 0 0 0;
 }
 
 .action-form button {
     background: none;
     font-weight: normal;
     border: none;
+    margin-left: 0;
     padding: 0 0 0 0;
 }
 

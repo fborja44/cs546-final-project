@@ -70,14 +70,14 @@ ul {
     margin: 0 0 0 0;
 }
 
-li {
+.user-li {
     color: black;
     margin: 5px 0 5px 0;
     list-style-type: none;
     position: relative;
 }
 
-li::before {
+.user-li::before {
     position: absolute;
     content: '\2022';
     left: -20px;

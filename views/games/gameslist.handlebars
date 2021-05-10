@@ -28,7 +28,7 @@
 <!-- Iterate Through Games List collection -->
 <ul id="games-list">
     {{#each games}}
-    <li class="games">
+    <li class="games" id="{{_id}}">
         <div class="score">
             <span class="score-span">{{averageRating}}</span>
         </div>
@@ -61,8 +61,8 @@
         </p>
         <div class="actions">
             <p>
-                <form class="action-form" action="/games/like/{{_id}}" method="POST">
-                    <button name="like" value="like"><img src="/public/img/like.png" alt="">Like</button>[<span>{{numLikes}}</span>] | 
+                <form class="action-form like-form" action="/games/like/{{_id}}" method="POST">
+                    <button name="like" value="like"><img id="like-{{_id}}" src="/public/img/like.png" alt="">Like</button>[<span>{{numLikes}}</span>] | 
                 </form>
                 <form class="action-form" action="" method="POST">
                     <button name="follow" value="follow"><img src="/public/img/follow.png" alt="">Follow</button>[<span>{{numFollows}}</span>] |
