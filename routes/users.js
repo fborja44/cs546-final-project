@@ -93,11 +93,7 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
-<<<<<<< HEAD
         res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in});
-=======
-        res.render('users/home', { title: "Home", games: games});
->>>>>>> main
     } catch (e) {
         res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in});
     }
@@ -200,11 +196,7 @@ router.post('/login', async (req, res) => {
         }
     // return to main page?
      } catch (e) {
-<<<<<<< HEAD
         res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
-=======
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong.' });
->>>>>>> main
      }
 });
 
