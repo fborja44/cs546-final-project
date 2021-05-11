@@ -222,7 +222,13 @@ button:hover {
     left: 450px;
 }
 
+/*reviews button-container*/
+.button-container{
+    margin: 5px 15px 5px 15px;
+}
+
 /* User Actions Styles */
+
 .actions {
     text-align: right;
     margin: 5px 15px 5px 15px;
@@ -269,6 +275,49 @@ button:hover {
     position: relative;
     top: 1px;
 }
+
+.action-form {
+    display: inline;
+    padding: 0 0 0 0;
+}
+
+.action-form button {
+    background: none;
+    font-weight: normal;
+    border: none;
+    margin-left: 0;
+    padding: 0 0 0 0;
+}
+
+.actions a, .actions span {
+    color: black;
+    font-size: 14px;
+}
+
+.actions span {
+    color: #2473a4;
+}
+
+.action-form button:hover {
+    color: #2473a4;
+    cursor: pointer;
+}
+
+.actions p {
+    margin: auto;
+}
+
+.actions img {
+    width: 14px;
+    height: auto;
+    float: none;
+    margin: 0px 5px 0px 10px;
+    padding-top: 2px;
+    display: inline;
+    position: relative;
+    top: 1px;
+}
+
 
 #comment-img {
     margin-left: 2px;
