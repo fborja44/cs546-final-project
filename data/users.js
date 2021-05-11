@@ -535,6 +535,7 @@ async function addLikedGame(userId, gameId) {
 }
 
 
+
 /**
  * Adds a game id to a user's liked list
  * @param {*} userId
@@ -645,6 +646,7 @@ async function addDislikedReview(userId, gameId,reviewId) {
 	for (let x of user.reviewLikes) {
 		if (x.gameId.toString() === gameId && x.reviewId.toString() == reviewId) {
 			throw `User has already disliked the review with id of ${reviewId}`;
+
 		}
 	}
 
@@ -661,6 +663,7 @@ async function addDislikedReview(userId, gameId,reviewId) {
 	const userCollection = await users();
 	const updateInfo = await userCollection.updateOne(
         { _id: parsedUserId },
+
         { $addToSet: { reviewDislikes: liked_obj } }
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
@@ -814,8 +817,9 @@ async function addDislikedReview(userId, gameId,reviewId) {
 	 addWishlistGame,
 	 removeLikedGame,
 	 removeWishlistedGame,
-     addLikedReview,
-     removeLikedReview,
-     addDislikedReview,
-     removeDislikedReview
+    addLikedReview,
+    removeLikedReview,
+    addDislikedReview,
+    removeDislikedReview
  };
+

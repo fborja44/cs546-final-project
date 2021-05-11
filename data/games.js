@@ -558,6 +558,44 @@ async function incrementLikes(id) {
     return await this.getGameById(id.trim());
 }
 
+async function incrementFollow(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedId = ObjectId(id.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $inc: { numFollows: 1 } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+
+    return await this.getGameById(id.trim());
+}
+
+ async function decrementFollow(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id !== "string") throw "The provided id must be a string";
+    if (id.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedId = ObjectId(id.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        { _id: parsedId },
+        { $inc: { numFollows: -1 } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+
+    return await this.getGameById(id.trim());
+}
+
+
+
 module.exports = {
     createGame,
     getAllGames,
@@ -574,5 +612,7 @@ module.exports = {
     getBestGameByGenre,
     getGamesByPrice,
     incrementLikes,
-    decrementLikes
+    decrementLikes,
+    incrementFollow,
+    decrementFollow
 };
