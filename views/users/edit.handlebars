@@ -1,0 +1,34 @@
+<div class="login-container" >
+    <div class="login-header" >
+        <h2>Update personal profile</h2>
+    </div>
+    <div id = "editError" class = "signError" hidden>
+        
+    </div>
+    <form method="POST" id="editform" action = "/private/edit">
+        
+        <div class="form-elem">
+            <label for="editpassword">Password:</label>
+            <input name="editpassword" id="editpassword" type="password" value="{{edit-password}}" placeholder = "password(4-20 characters)">
+        </div>
+        <div class="form-elem">
+            <label for="editemail">Email:</label>
+            <input name="editemail" id="editemail" type="email" value="{{edit-email}}" placeholder = "New Email">
+        </div>
+        <div class="form-elem">
+            <label for="editfirstName">First name:</label>
+            <input name="editfirstName" id="editfirstName" type="text" value="{{edit-firstName}}" placeholder = "New First Name">
+        </div>
+        <div class="form-elem">
+            <label for="editlastName">Last name:</label>
+            <input name="editlastName" id="editlastName" type="text" value="{{edit-lastName}}" placeholder = "New Last Name">
+        </div>
+        <button type="submit">Update</button>
+    </form>
+</div>
+
+{{#if error}}
+    <div class="login-error">
+        <p>Error: {{error}}</p>
+    </div>
+{{/if}}

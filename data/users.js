@@ -141,7 +141,7 @@
 	 if(!newName || typeof newName != 'string' ||newName.trim() == '')
 		 throw "No last name provided."
 	 const newInfo = newName.trim();
- 
+
 	 const userCollection = await users();
 	 return await userCollection
 		 .updateOne({_id: parsedId}, {$set: {lastName: newInfo}})
@@ -178,6 +178,8 @@
 	 let parsedId = ObjectId(id);
 	 if(!newPassword || typeof newPassword != 'string' || newPassword.trim() == '')
 		 throw "No password provided."
+	 if (newPassword && (newPassword.length < 4 || newPassword.length > 20))
+			throw "Password is too long or too short.";
  
 	 const newInfo = await bcrypt.hash(newPassword.trim(), saltRounds);
 	 

@@ -127,6 +127,15 @@ app.use('/private/:id', (req, res, next) => {
   }
 });
 
+app.use('/private/edit', (req, res, next) => {
+  if (!req.session.user_id) {
+    res.redirect('/login');
+    return;
+  } else {
+    next();
+  }
+});
+
 app.use('/private', (req, res, next) => {
   if (!req.session.user_id) {
     res.redirect('/login');
