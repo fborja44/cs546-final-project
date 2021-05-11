@@ -149,6 +149,11 @@ h2 {
     margin: 10px 25px 5px 25px;
 }
 
+.game-img {
+    min-height: 110px;
+    max-height: 160px;
+}
+
 /* Game info */
 .game {
     padding-bottom: 5px;
