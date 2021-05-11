@@ -3,31 +3,15 @@
     {{#if user}}
     <div class="user">
         <h1>{{user.username}}'s Profile</h1>
-        <div class="content-container"> 
+        <div class="content-container">
             <img id="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
             <p>{{user.firstName}} {{user.lastName}}</p>
         </div>
-
         <!-- REVIEWS DISPLAY -->
         <h3>{{user.username}}'s Reviews</h3>
         <ul class="review">
             {{#each user.reviews}}
-
-            <div class="review">
-            <div class="review-heading">
-                <div class="review-rating">
-                    <span>{{rating}}</span>
-                </div>
-                <a class="game-link" href="/games/{{gameId}}">{{reviewTitle}}</a>
-            </div>
-
-            <p>Author: {{author.username}}</p>
-            <p>Date: {{reviewDate}}</p>
-            <p>Review: {{review}}</p>
-             </div>
-            
             {{/each}}
-
         </ul>
         {{#if reviewsEmpty}}
             <p id="empty">This user has not written any reviews.</p>

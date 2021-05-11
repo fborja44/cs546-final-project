@@ -501,9 +501,6 @@ router.post('/search', async (req, res) => {
     return res.json({liked: liked});
 });
 
-<<<<<<< HEAD
-module.exports = router;
-=======
 router.post('/wishlist/:id', async (req, res) => {
     // Parse the game id
     let id = req.params.id;
@@ -570,4 +567,3 @@ router.post('/wishlist/:id', async (req, res) => {
 });
 
 module.exports = router;
->>>>>>> origin
