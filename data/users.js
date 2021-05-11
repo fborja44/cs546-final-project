@@ -47,7 +47,9 @@
 		 likes: [],
 		 follows: [],
 		 wishlist: [],
-		 reviews: []
+		 reviews: [],
+         reviewLikes:[],
+         reviewDislikes:[]
 	 };
  
 	 const insertInfo = await userCollection.insertOne(newUser);
@@ -419,6 +421,272 @@ async function addLikedGame(userId, gameId) {
 	return await getUserById(userId);
 }
 
+
+/**
+ * Adds a game id to a user's liked list
+ * @param {*} userId
+ * @param {*} gameId
+ * @returns
+ */
+async function addLikedReview(userId, gameId,reviewId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+    // Check gameId
+	if (!reviewId) throw "You must provide a review id";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided review id must not be an empty string";
+
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	let game;
+	try {
+		game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if game has already been added to likes list
+	for (let x of user.reviewLikes) {
+		if (x.gameId.toString() === gameId && x.reviewId.toString() == reviewId) {
+			throw `User has already liked the review with id of ${reviewId}`;
+		}
+	}
+
+	let parsedUserId = ObjectId(userId);
+	let parsedGameId = ObjectId(gameId);
+    let parsedReviewId = ObjectId(reviewId);
+
+	let liked_obj = {
+		gameId: parsedGameId,
+        reviewId: parsedReviewId,
+		title: game.title
+	}
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $addToSet: { reviewLikes: liked_obj } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
+	return await getUserById(userId);
+}
+
+
+
+/**
+ * Adds a game id to a user's liked list
+ * @param {*} userId
+ * @param {*} gameId
+ * @returns
+ */
+async function addDislikedReview(userId, gameId,reviewId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+    // Check gameId
+	if (!reviewId) throw "You must provide a review id";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided review id must not be an empty string";
+
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	let game;
+	try {
+		game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	//Check if game has already been added to dislikes list so that it can be removed
+	for (let x of user.reviewLikes) {
+		if (x.gameId.toString() === gameId && x.reviewId.toString() == reviewId) {
+			throw `User has already disliked the review with id of ${reviewId}`;
+		}
+	}
+
+	let parsedUserId = ObjectId(userId);
+	let parsedGameId = ObjectId(gameId);
+    let parsedReviewId = ObjectId(reviewId);
+
+	let liked_obj = {
+		gameId: parsedGameId,
+        reviewId: parsedReviewId,
+		title: game.title
+	}
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $addToSet: { reviewDislikes: liked_obj } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to add game to likes.';
+	return await getUserById(userId);
+}
+
+
+
+
+/**
+ * Removes a game id from a user's liked list
+ * @param {*} userId
+ * @param {*} gameId
+ * @returns
+ */
+ async function removeLikedReview(userId, gameId,reviewId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+
+    // Check reviewId
+	if (!gameId) throw "You must provide a review id";
+    if (typeof gameId !== "string") throw "The provided review id must be a string";
+    if (gameId.trim().length === 0) throw "The provided review id must not be an empty string";
+
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	try {
+		let game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if review has already been added to likes list
+	let x = false;
+	for (let y of user.reviewLikes) {
+		if (y.gameId.toString() === gameId && y.reviewId.toString() === reviewId) {
+			x = true;
+			break;
+		}
+	}
+	if (x == false) throw `Review with id ${reviewId} is not a part of user's liked list.`;
+
+	let parsedUserId = ObjectId(userId);
+    let parsedReviewId = ObjectId(reviewId);
+	// let parsedGameId = ObjectId(gameId);
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $pull: { reviewLikes: {reviewId: parsedReviewId} } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to remove game from likes.';
+	return await getUserById(userId);
+}
+
+/**
+ * Removes a game id from a user's liked list
+ * @param {*} userId
+ * @param {*} gameId
+ * @returns
+ */
+ async function removeDislikedReview(userId, gameId,reviewId) {
+	// Check userId
+	if (!userId) throw "You must provide an user id";
+    if (typeof userId !== "string") throw "The provided user id must be a string";
+    if (userId.trim().length === 0) throw "The provided user id must not be an empty string";
+
+	// Check gameId
+	if (!gameId) throw "You must provide a game id";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided game id must not be an empty string";
+
+
+    // Check reviewId
+	if (!gameId) throw "You must provide a review id";
+    if (typeof gameId !== "string") throw "The provided review id must be a string";
+    if (gameId.trim().length === 0) throw "The provided review id must not be an empty string";
+
+
+	let user;
+	// Check to make sure user with the userId exists
+	try {
+		user = await getUserById(userId);
+	} catch (e) {
+		throw `User with id ${userId} does not exist.`
+	}
+
+	// Check to make sure that a game with the gameId exists
+	try {
+		let game = await gamesData.getGameById(gameId);
+	} catch (e) {
+		throw `Game with id ${gameId} does not exist.`
+	}
+
+	// Check if review has already been added to dislikes list so that it can be removed
+ 	let x = false;
+	for (let y of user.reviewDislikes) {
+		if (y.gameId.toString() === gameId && y.reviewId.toString() === reviewId) {
+			x = true;
+			break;
+		}
+	}
+	if (x == false) throw `Review with id ${reviewId} is not a part of user's liked list.`;
+
+	let parsedUserId = ObjectId(userId);
+    let parsedReviewId = ObjectId(reviewId);
+	// let parsedGameId = ObjectId(gameId);
+
+	const userCollection = await users();
+	const updateInfo = await userCollection.updateOne(
+        { _id: parsedUserId },
+        { $pull: { reviewDislikes: {reviewId: parsedReviewId} } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to remove game from likes.';
+	return await getUserById(userId);
+}
+
+
+
+
+
+
+
  module.exports = {
 	 createUser,
 	 getAllUsers,
@@ -436,5 +704,9 @@ async function addLikedGame(userId, gameId) {
 	 removeUserById,
 	 usernameCheck,
 	 addLikedGame,
-	 removeLikedGame
+	 removeLikedGame,
+     addLikedReview,
+     removeLikedReview,
+     addDislikedReview,
+     removeDislikedReview
  };
