@@ -439,7 +439,7 @@ router.post('/search', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         console.log("You must login to like a game."); // CHANGE THIS
-        return res.redirect("/games");
+        return res.redirect("/login");
     }
 
     // Check if game is already in the user's liked list
@@ -521,7 +521,7 @@ router.post('/search', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        return res.redirect("/games");
+        return res.json({liked: false});
     }
 
     // Check if game is n the user's liked list
@@ -566,7 +566,7 @@ router.post('/wishlist/:id', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         console.log("You must login to wishlist a game."); // CHANGE THIS
-        return res.redirect("/games");
+        return res.redirect("/login");
     }
 
     // Check if game is already in the user's wishlist list
@@ -634,7 +634,7 @@ router.post('/wishlist/:id', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        return res.redirect("/games");
+        return res.json({wishlisted: false});
     }
 
     // Check if game is n the user's wish list
@@ -679,7 +679,7 @@ router.post('/follow/:id', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         console.log("You must login to follow a game."); // CHANGE THIS
-        return res.redirect("/games");
+        return res.redirect("/login");
     }
 
     // Check if game is already in the user's follow list
@@ -757,7 +757,7 @@ router.get('/follow/:id', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        return res.redirect("/games");
+        return res.json({followed: false});
     }
 
     // Check if game is n the user's wish list
