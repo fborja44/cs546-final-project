@@ -52,7 +52,9 @@ router.get('/:id/:reviewId', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/:gameId', async (req, res) => {
+  let gameId = req.params.id;
+
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1); //January is 0!
@@ -62,6 +64,10 @@ router.post('/', async (req, res) => {
   //let reviewPost = xss(req.body);
   let reviewPost = req.body;
   let errors = [];
+
+  if (!gameId || gameId.trim().length === 0) {
+      errors.push('Missing id.');
+  }
 
   let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
 
