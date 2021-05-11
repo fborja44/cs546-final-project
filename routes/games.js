@@ -79,7 +79,27 @@ router.get('/', async (req, res) => {
  * Adds a new game to the games collection.
  */
 router.post('/new', async (req, res) => {
-    let gameData = xss(req.body);
+    let gameData = {};
+    gameData.newTitle = xss(req.body.newTitle);
+    gameData.newImage = xss(req.body.newImage);
+    gameData.newPublisher = xss(req.body.newPublisher);
+    gameData.newGenres = [];
+    gameData.newReleaseYear = xss(req.body.newReleaseYear);
+    gameData.newPlatforms = [];
+    gameData.newPrices = [];
+    gameData.newDesc = xss(req.body.newDesc);
+    for (let x of req.body.newGenres) {
+        let strippedVal = xss(x);
+        gameData.newGenres.push(strippedVal);
+    }
+    for (let x of req.body.newPlatforms) {
+        let strippedVal = xss(x);
+        gameData.newPlatforms.push(strippedVal);
+    }
+    for (let x of req.body.newPrices) {
+        let strippedVal = xss(x);
+        gameData.newPrices.push(strippedVal);
+    }
     let errors = [];
 
     // title error checking
@@ -233,7 +253,7 @@ router.post('/new', async (req, res) => {
                                                 platformsTrim,
                                                 gameData.newDesc.trim(),
                                                 pricesTrim);
-        res.redirect(`/games/${newGame.title.trim()}`);
+        res.redirect(`/games/${newGame._id}`);
     } catch (e) {
         errors.push(e);
         res.status(500).render('games/newgame', { title: "Add Game", 
