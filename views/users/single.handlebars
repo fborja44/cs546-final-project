@@ -20,7 +20,7 @@
             <p id="empty">This user has not written any reviews.</p>
         {{/if}}
         <!-- LIKES DISPLAY -->
-        {{!-- <h3>Liked Games</h3>
+        <h3>Liked Games</h3>
         <ul class="like">
             <!-- {{!getGameById this}} -->
             {{#each user.likes}}
@@ -34,13 +34,17 @@
         {{/if}}
         <!-- FOLLOWS DISPLAY -->
         <h3>Followed Games</h3>
-        <ul class="follow">
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
             {{#each user.follows}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
             {{/each}}
         </ul>
         {{#if followsEmpty}}
             <p id="empty">This user has not followed any games.</p>
-        {{/if}} --}}
+        {{/if}}
         <!-- WISHLIST DISPLAY -->
         <h3>Wishlisted Games</h3>
         <ul class="wishlist">

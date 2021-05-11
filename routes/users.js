@@ -106,7 +106,9 @@ router.get('/private/edit', async (req, res) => {
         res.redirect('/');
         return;
     }
-    res.render('users/edit',  {signed_in: req.body.signed_in, partial:'gameForm'});
+
+    res.render('users/edit',  {signed_in: req.body.signed_in, partial:"gameForm"});
+
  
 });
 
@@ -305,7 +307,7 @@ router.get('/private/:id', async (req, res) => {
     try {
         const user = await usersData.getUserById(id);
 
-        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'gameForm'});
+        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'signup'});
 
 
     } catch (e) {
@@ -325,10 +327,12 @@ router.get('/users/:id', async (req, res) => {
         // Display error page. error.handlebars
         res.status(404).render('general/error', { status: 404, error: "User ID missing." } );
     }
-
+    let signin = false;
+    if (req.session.user_id)
+        signin = true;
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 , partial:"gameForm"});
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0,  signed_in: req.body.signed_in, partial:"gameForm"});
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }
