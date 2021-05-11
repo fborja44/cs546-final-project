@@ -6,6 +6,52 @@ const xss = require('xss');
 const reviewsData = data.reviews;
 const gamesData = data.games;
 
+router.get('/:id/:reviewId', async (req, res) => {
+    // Parse the game and review id
+    let gameId = req.params.id;
+    let reviewId = req.params.reviewId;
+    let errors = [];
+
+    if (!gameId || gameId.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (!reviewId || reviewId.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({messge: errors})
+        return;
+    }
+
+    // Check if game exists with gameId
+    let game;
+    try {
+        game = await gamesData.getGameById(gameId);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if review exists with reviewId
+    let review;
+    try {
+        review = await reviewsData.getReviewById(gameId, reviewId);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    try {
+        res.render('games/review', { title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+    } catch (e) {
+        res.status(500).json({message: e});
+    }
+});
+
+
 router.post('/', async (req, res) => {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');

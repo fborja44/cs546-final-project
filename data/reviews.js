@@ -107,7 +107,7 @@ async function getAllReviews(gameId) {
 }
 
 /**
- *Gets a Review by id
+ *Gets a Review by id given a game id
  * @param {string} gameId
  * @param {string} reviewId
  */
@@ -127,10 +127,30 @@ async function getReviewById(gameId,reviewId){
             return game.reviews[i];
         }
     }
-
     throw "no review with that id";
-
 }
+
+/**
+ * Searches for and returns a review in the database through all of the games
+ * @param {string} gameId
+ * @param {string} reviewId
+ */
+ async function getReview(reviewId){
+    if (!reviewId) throw "A reviewId must be provided";
+    if (typeof reviewId !== 'string') throw `${reviewId || "provided argument"} must be a string`;
+    if (reviewId.trim().length === 0) throw "The reviewId must not be an empty string";
+
+    const gamesList = await gamesData.getAllGames();
+    for (const game of gamesList) {
+        for (let i = 0; i < game.reviews.length; i++){
+            if (game.reviews[i]._id == reviewId){
+                return game.reviews[i];
+            }
+        }
+    }
+    throw "no review with that id";
+}
+
 /**
  * Updates a review
  * @param {string} gameId
@@ -252,6 +272,7 @@ module.exports = {
     createReview,
     getAllReviews,
     getReviewById,
+    getReview,
     updateReview,
     deleteReview
 }

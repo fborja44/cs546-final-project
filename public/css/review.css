@@ -7,7 +7,7 @@ main {
     align-items: center;
 }
 
-.game-container {
+.review-container {
     background: white;
     width: 1000px;
     margin: auto auto 42px auto;
@@ -19,25 +19,9 @@ th {
     text-align: left;
 }
 
-.game {
-    background: white;
-    color: black;
-    list-style: none;
-
-    /* margin: 20px auto 0 auto; */
-    margin: 0 auto 0 auto;
-    width: 1000px;
-    /* border-radius: 5px; */
-    /* border-bottom: 1px solid black; */
-    box-shadow: .1px 4px 5px #919aa1;
-    font-size: 14px;
-    font-family: "Poppins";
-}
-
-#game-desc {
-    margin: 0 15px 0 15px;
-    padding-bottom: 15px;
-    font-style: italic;
+#return {
+    float: right;
+    margin: 25px 30px 10px 30px;
 }
 
 h1 {
@@ -57,7 +41,7 @@ h3 {
     background-image: linear-gradient(to right, #2473a4, #18415b);
     font-weight: normal;
 
-    border-top: 1px solid black;
+    border-top: 2px solid black;
     border-bottom: 2px solid black;
 }
 
@@ -83,6 +67,7 @@ h2 {
     margin: 0 15px 0 0 !important;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    float: left;
 }
 
 .review-rating {
@@ -115,70 +100,6 @@ h2 {
     margin: auto 15px auto 15px;
     padding-top: 12px;
     background: #dcf1f7;
-}
-
-/* Game score */
-.score {
-    background: #2FE58E;
-    float: left;
-    
-    color: white;
-    text-align: center;
-    vertical-align: middle;
-    
-    font-weight: bold;
-    font-size: 36px;
-
-    width: 100px;
-    height: 100px;
-
-    margin: 35px 0 0 25px;
-}
-
-.score span {
-    display: block;
-    padding-top: 24px;
-}
-
-/* Game image */
-.game img {
-    width: 110px;
-    display: block;
-    float: left;
-
-    margin: 10px 25px 5px 25px;
-}
-
-/* Game info */
-.game {
-    padding-bottom: 5px;
-}
-
-.info {
-    padding: 10px 0 15px 0;
-}
-
-.title {
-    color: black;
-    font-weight: bold;
-    font-size: 28px;
-    /* text-decoration: underline; */
-    background: none;
-    border: none;
-    padding: 0 0 0 0;
-}
-
-/* .title:hover {
-    color: #18415b;
-} */
-
-.info p {
-    margin: 0 0 0 0;
-    font-size: 20px;
-}
-
-.info p span {
-    font-style: italic;
 }
 
 #empty {
@@ -220,54 +141,6 @@ button:hover {
 #dislike-button {
     position:absolute;
     left: 450px;
-}
-
-/* User Actions Styles */
-.actions {
-    text-align: right;
-    margin: 5px 15px 5px 15px;
-}
-
-.action-form {
-    display: inline;
-    padding: 0 0 0 0;
-}
-
-.action-form button {
-    background: none;
-    font-weight: normal;
-    border: none;
-    margin-left: 0;
-    padding: 0 0 0 0;
-}
-
-.actions a, .actions span {
-    color: black;
-    font-size: 14px;
-}
-
-.actions span {
-    color: #2473a4;
-}
-
-.action-form button:hover {
-    color: #2473a4;
-    cursor: pointer;
-}
-
-.actions p {
-    margin: auto;
-}
-
-.actions img {
-    width: 14px;
-    height: auto;
-    float: none;
-    margin: 0px 5px 0px 10px;
-    padding-top: 2px;
-    display: inline;
-    position: relative;
-    top: 1px;
 }
 
 #comment-img {
