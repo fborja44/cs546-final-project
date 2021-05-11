@@ -40,19 +40,15 @@
             <table>
                 <tr>
                     <th>Genres:</th>
-                    <td>{{genres}}</td>
+                    <td>{{stringOfArray genres}}</td>
                 </tr>
                 <tr>
                     <th>Platforms:</th>
-                    <td>{{platforms}}</td>
+                    <td>{{stringOfArray platforms}}</td>
                 </tr>
                 <tr>
                     <th>Prices:</th>
-                    <td>
-                        {{#each prices}}
-                        {{platform}}: {{price}}
-                        {{/each}}
-                    </td>
+                    <td>{{stringOfPrices prices}}</td>
                 </tr>
             </table>
         </div>
