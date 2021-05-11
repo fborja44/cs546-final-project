@@ -107,7 +107,7 @@ router.get('/private/edit', async (req, res) => {
         return;
     }
 
-    res.render('users/edit',  {signed_in: req.body.signed_in, partial:"gameForm"});
+    res.render('users/edit',  {signed_in: req.body.signed_in, partial:"editUser"});
 
  
 });
@@ -226,7 +226,7 @@ router.post('/login', async (req, res) => {
 
     // Check both username and password
     if(!username || !password){
-        res.status(401).render('users/login', { error: "Missing username or password.",signed_in: req.body.signed_in, partial:"signup"});
+        res.status(401).render('users/login', { error: "Missing username or password.",username: username, signed_in: req.body.signed_in, partial:"signup"});
         return;
     }
     
@@ -235,21 +235,21 @@ router.post('/login', async (req, res) => {
          let userInfo = await usersData.getUserByUsername(username); 
 
     // User doesn't exist
-        if (!userInfo){
-            res.status(401).render('users/login', { error: "User doesn't exist.",signed_in: req.body.signed_in, partial:"signup"});
-            return;
-        }
-        
-        if (await bcrypt.compare(password, userInfo.hashedPassword)){
-            req.session.user_id = userInfo._id;
-            res.redirect('/');
-            // res.render('home', { message: `Welcome ${userInfo.username}`});
-        } else {
-            res.status(401).render('users/login', { error: "Wrong password.",signed_in: req.body.signed_in, partial:"signup"});
-        }
+    if (!userInfo){
+        res.status(401).render('users/login', { error: "Wrong username or password.",username: username,signed_in: req.body.signed_in, partial:"signup"});
+        return;
+    }
+    
+    if (await bcrypt.compare(password, userInfo.hashedPassword)){
+        req.session.user_id = userInfo._id;
+        res.redirect('/');
+        // res.render('home', { message: `Welcome ${userInfo.username}`});
+    } else {
+        res.status(401).render('users/login', { error: "Wrong username or password.",username: username,signed_in: req.body.signed_in, partial:"signup"});
+    }
     // return to main page?
      } catch (e) {
-        res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in, partial:"signup"});
+        res.status(401).render('users/login', { title: "Login" ,username:username,signed_in: req.body.signed_in, partial:"signup"});
      }
 });
 

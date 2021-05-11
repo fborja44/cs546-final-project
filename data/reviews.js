@@ -25,6 +25,7 @@
     if (!reviewTitle) throw "A reviewTitle must be provided";
     if (typeof reviewTitle !== 'string') throw `${reviewTitle || "provided argument"} must be a string`;
     if (reviewTitle.trim().length === 0) throw "The reviewTitle must not be an empty string";
+    if (reviewTitle.trim().length >= 50) throw "The reviewTitle must be less than 50 characters";
 
     // author error checking
     if (!author) throw "An author must be provided";
