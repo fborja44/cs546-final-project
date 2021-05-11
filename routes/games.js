@@ -287,7 +287,7 @@ router.post('/search', async (req, res) => {
     if (!searchType) { // should never happen but should still check
         errors.push("Search type not specified.");
     } else if (searchType.trim().length === 0) {
-        errors.push("Search type must non-empty.");
+        errors.push("Search type must be non-empty.");
     }
 
     // maybe update to make it so search type is remembered after search?
