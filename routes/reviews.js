@@ -51,7 +51,8 @@ router.post('/', async (req, res) => {
           title:game.title,
           game:game,
           errors: errors,
-          hasErrors: true
+          hasErrors: true,
+          partial: 'gameList'
       });
       return;
   }
