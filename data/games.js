@@ -30,18 +30,19 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     if (!title) throw "A title must be provided";
     if (typeof title !== 'string') throw `${title || "provided argument"} must be a string`;
     if (title.trim().length === 0) throw "The title must not be an empty string";
+    if (title.trim().length >= 50) throw "The title must be less than 50 characters";
 
     // image error checking
     if (!image) throw "An image must be provided";
     if (typeof image !== 'string') throw `${image || "provided argument"} must be a string`;
     if (image.trim().length === 0) throw "The image must not be an empty string";
-    
     if (!validURL.test(image)) throw `${image || "provided argument"} must be a valid url`;
 
     // publisher error checking
     if (!publisher) throw "A publisher must be provided";
     if (typeof publisher !== 'string') throw `${publisher || "provided argument"} must be a string`;
     if (publisher.trim().length === 0) throw "The publisher must not be an empty string";
+    if (publisher.trim().length >= 50) throw "The publisher must be less than 50 characters";
 
     // genres error checking
     if (!genres) throw "A genres array must be provided";
@@ -51,6 +52,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     for (let x of genres) {
         if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
         if (x.trim().length === 0) throw "The genre must not be an empty string";
+        if (x.trim().length >= 50) throw "The genre must be less than 50 characters";
         genresTrim.push(x.trim());
     }
 
@@ -72,6 +74,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     for (let x of platforms) {
         if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
         if (x.trim().length === 0) throw "The platform must not be an empty string";
+        if (x.trim().length >= 50) throw "The platform must be less than 50 characters";
         platformsTrim.push(x.trim());
     }
 
@@ -79,6 +82,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     if (!description) throw "A description must be provided";
     if (typeof description !== 'string') throw `${description || "provided argument"} must be a string`;
     if (description.trim().length === 0) throw "The description must not be an empty string";
+    if (description.trim().length >= 1000) throw "The description must be less than 1000 characters";
 
     // prices error checking
     if (!prices) throw "A prices array must be provided";
@@ -96,6 +100,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
         if (!x.price) throw "The price must be provided";
         if (typeof x.price !== 'string') throw `${x.price || "provided argument"} must be a string`;
         if (x.price.trim().length === 0) throw "The price must not be an empty string";
+        if (x.price.trim().length >= 100) throw "The price must be less than 100 characters";
         if (!validPrice.test(x.price)) throw `${x.price || "provided argument"} must be a valid price`;
         obj.price = x.price.trim();
 
@@ -103,6 +108,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
         if (!x.platform) throw "The platform must be provided";
         if (typeof x.platform !== 'string') throw `${x.platform || "provided argument"} must be a string`;
         if (x.platform.trim().length === 0) throw "The platform must not be an empty string";
+        if (x.platform.trim().length >= 50) throw "The platform must be less than 50 characters";
         obj.platform = x.platform.trim();
 
         pricesTrim.push(obj);
@@ -192,8 +198,8 @@ async function getGameById(id) {
  */
  async function getGameByTitle(title) {
     if (!title) throw "You must provide an id to search for";
-    if (typeof title !== "string") throw "The provided id must be a string";
-    if (title.trim().length === 0) throw "The provided must not be an empty string";
+    if (typeof title !== "string") throw "The provided title must be a string";
+    if (title.trim().length === 0) throw "The provided title must not be an empty string";
 
     const gameCollection = await games();
     const game = await gameCollection.findOne({ title: title });
@@ -224,7 +230,7 @@ async function getGameById(id) {
         { $set: { averageRating: rating } }
     )
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-        throw new Error(`Failed to update game's rating.`);
+        throw `Failed to update game's rating.`;
     return await this.getGameById(id);
 }
 
@@ -240,12 +246,6 @@ async function updateGameById(id, updatedGame) {
     if (id.trim().length === 0) throw "The provided id must not be an empty string";
     let parsedId = ObjectId(id.trim());
 
-    // // method error checking
-    // if (!method) throw "A method must be provided";
-    // if (typeof method !== 'string') throw "The method must be a string";
-    // if (id.trim().length === 0) throw "The method must not be an empty string";
-    // let method = method.trim();
-
     // updatedGame error checking
     if (!updatedGame) throw "updatedGame must be provided";
 
@@ -255,6 +255,7 @@ async function updateGameById(id, updatedGame) {
         let title = updatedGame.title;
         if (typeof title !== 'string') throw `${title || "provided argument"} must be a string`;
         if (title.trim().length === 0) throw "The title must not be an empty string";
+        if (title.trim().length >= 50) throw "The title must be less than 50 characters";
         updatedGameData.title = title.trim();
     }
 
@@ -270,6 +271,7 @@ async function updateGameById(id, updatedGame) {
         let publisher = updatedGame.publisher;
         if (typeof publisher !== 'string') throw `${publisher || "provided argument"} must be a string`;
         if (publisher.trim().length === 0) throw "The publisher must not be an empty string";
+        if (publisher.trim().length >= 50) throw "The publisher must be less than 50 characters";
         updatedGameData.publisher = publisher.trim();
     }
 
@@ -281,6 +283,7 @@ async function updateGameById(id, updatedGame) {
         for (let x of genres) {
             if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
             if (x.trim().length === 0) throw "The genre must not be an empty string";
+            if (x.trim().length >= 50) throw "The genre must be less than 50 characters";
             genresTrim.push(x.trim());
         }
         updatedGameData.genres = genresTrim;
@@ -306,6 +309,7 @@ async function updateGameById(id, updatedGame) {
         for (let x of platforms) {
             if (typeof x !== 'string') throw `${x || "provided argument"} must be a string`;
             if (x.trim().length === 0) throw "The platform must not be an empty string";
+            if (x.trim().length >= 50) throw "The platform must be less than 50 characters";
             platformsTrim.push(x.trim());
         }
         updatedGameData.platforms = platformsTrim;
@@ -315,6 +319,7 @@ async function updateGameById(id, updatedGame) {
         let description = updatedGame.description;
         if (typeof description !== 'string') throw `${description || "provided argument"} must be a string`;
         if (description.trim().length === 0) throw "The description must not be an empty string";
+        if (description.trim().length >= 1000) throw "The description must be less than 1000 characters";
         updatedGameData.description = description.trim();
     }
 
@@ -334,6 +339,7 @@ async function updateGameById(id, updatedGame) {
             if (!x.price) throw "The price must be provided";
             if (typeof x.price !== 'string') throw `${x.price || "provided argument"} must be a string`;
             if (x.price.trim().length === 0) throw "The price must not be an empty string";
+            if (x.price.trim().length >= 100) throw "The price must be less than 100 characters";
             if (!validPrice.test(x.price)) throw `${x.price || "provided argument"} must be a valid price`;
             obj.price = x.price.trim();
 
@@ -341,6 +347,7 @@ async function updateGameById(id, updatedGame) {
             if (!x.platform) throw "The platform must be provided";
             if (typeof x.platform !== 'string') throw `${x.platform || "provided argument"} must be a string`;
             if (x.platform.trim().length === 0) throw "The platform must not be an empty string";
+            if (x.platform.trim().length >= 50) throw "The platform must be less than 50 characters";
             obj.platform = x.platform.trim();
 
             pricesTrim.push(obj);
@@ -360,7 +367,7 @@ async function updateGameById(id, updatedGame) {
 }
 
 /**
- * Deletes a game from the databse with the given id.
+ * Deletes a game from the database with the given id.
  * @param {string} id String representation of the ObjectId of the game.
  */
 async function removeGameById(id) {
@@ -571,7 +578,7 @@ async function incrementFollow(id) {
         { _id: parsedId },
         { $inc: { numFollows: 1 } }
     );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's follows.";
 
     return await this.getGameById(id.trim());
 }
@@ -589,7 +596,7 @@ async function incrementFollow(id) {
         { _id: parsedId },
         { $inc: { numFollows: -1 } }
     );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's likes.";
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update game's follows.";
 
     return await this.getGameById(id.trim());
 }

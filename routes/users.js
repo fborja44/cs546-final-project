@@ -107,7 +107,7 @@ router.get('/private/edit', async (req, res) => {
         return;
     }
 
-    res.render('users/edit',  {signed_in: req.body.signed_in, partial:"gameForm"});
+    res.render('users/edit',  {signed_in: req.body.signed_in, partial:"editUser"});
 
  
 });

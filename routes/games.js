@@ -39,7 +39,6 @@ router.get('/', async (req, res) => {
  */
  router.get('/new', async (req, res) => {
     try {
-        let gamesList = await gamesData.getAllGames();
         res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
     } catch (e) {
         res.status(500).json({message: e});
@@ -50,11 +49,11 @@ router.get('/', async (req, res) => {
  * Renders single game page
  */
  router.get('/:id', async (req, res) => {
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
-        errors.push('Missing pid.');
+        errors.push('Missing id.');
     }
 
     if (errors.length > 0) {
@@ -109,8 +108,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The title must be a string`);
     } else if (gameData.newTitle.trim().length === 0) {
         errors.push("The title must not be an empty string");
-    } else if (gameData.newTitle.trim().length >= 125) {
-        errors.push("The title must be within 125 characters");
+    } else if (gameData.newTitle.trim().length >= 50) {
+        errors.push("The title must be within 50 characters");
     }
 
     // image error checking
@@ -131,8 +130,8 @@ router.post('/new', async (req, res) => {
         errors.push(`The publisher must be a string`);
     } else if (gameData.newPublisher.trim().length === 0) {
         errors.push("The publisher must not be an empty string");
-    } else if (gameData.newPublisher.trim().length >= 125) {
-        errors.push("The publisher must be within 125 characters");
+    } else if (gameData.newPublisher.trim().length >= 50) {
+        errors.push("The publisher must be within 50 characters");
     }
 
     // genres error checking
@@ -211,7 +210,7 @@ router.post('/new', async (req, res) => {
                 errors.push("The prices must be of the correct type. `Platform: $X.XX`");
                 break;
             } else if (!validPrice.test(x.trim())) {
-                errors.push("The prices must be of the correct form");
+                errors.push("The prices must be of the correct form. `Platform: $X.XX`");
                 break;
             } else if (x.trim().length >= 50) {
                 errors.push("The prices must be within 50 characters");
@@ -311,14 +310,24 @@ router.post('/search', async (req, res) => {
                                             games: searchList , 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
+                                            search_term_value: searchTerm, 
+                                            title_selected: true,
+                                            genre_selected: false,
+                                            platform_selected: false,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in , partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
+                                            search_term_value: searchTerm, 
+                                            title_selected: true,
+                                            genre_selected: false,
+                                            platform_selected: false,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in , partial:"gameList"});
         }
     } else if (searchType === "genre") {
         try {
@@ -327,14 +336,24 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
+                                            search_term_value: searchTerm, 
+                                            title_selected: false,
+                                            genre_selected: true,
+                                            platform_selected: false,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in , partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                            search_term_value: searchTerm , 
+                                            title_selected: false,
+                                            genre_selected: true,
+                                            platform_selected: false,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in, partial:"gameList"});
         }
     } else if (searchType === "platform") {
         try {
@@ -343,14 +362,24 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                            search_term_value: searchTerm , 
+                                            title_selected: false,
+                                            genre_selected: false,
+                                            platform_selected: true,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in, partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                            search_term_value: searchTerm , 
+                                            title_selected: flase,
+                                            genre_selected: false,
+                                            platform_selected: true,
+                                            price_selected: false,
+                                            signed_in: req.body.signed_in, partial:"gameList"});
         }
     } else if (searchType === "price") {
         try {
@@ -359,14 +388,24 @@ router.post('/search', async (req, res) => {
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                            search_term_value: searchTerm , 
+                                            title_selected: false,
+                                            genre_selected: false,
+                                            platform_selected: false,
+                                            price_selected: true,
+                                            signed_in: req.body.signed_in, partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
                                             search_type_value: searchType, 
-                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                            search_term_value: searchTerm ,
+                                            title_selected: false,
+                                            genre_selected: false,
+                                            platform_selected: false,
+                                            price_selected: true,
+                                            signed_in: req.body.signed_in, partial:"gameList"});
         }
     }
 });
@@ -376,7 +415,7 @@ router.post('/search', async (req, res) => {
  */
  router.post('/like/:id', async (req, res) => {
     // Parse the game id
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -459,7 +498,7 @@ router.post('/search', async (req, res) => {
  */
  router.get('/like/:id', async (req, res) => {
     // Parse the game id
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -503,7 +542,7 @@ router.post('/search', async (req, res) => {
 
 router.post('/wishlist/:id', async (req, res) => {
     // Parse the game id
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -572,7 +611,7 @@ router.post('/wishlist/:id', async (req, res) => {
  */
  router.get('/wishlist/:id', async (req, res) => {
     // Parse the game id
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -598,7 +637,7 @@ router.post('/wishlist/:id', async (req, res) => {
         return res.redirect("/games");
     }
 
-    // Check if game is n the user's liked list
+    // Check if game is n the user's wish list
     let user;
 	try {
 		user = await usersData.getUserById(req.session.user_id);
@@ -616,7 +655,7 @@ router.post('/wishlist/:id', async (req, res) => {
 
 router.post('/follow/:id', async (req, res) => {
     // Parse the game id
-    let id = req.params.id;
+    let id = xss(req.params.id);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -691,6 +730,50 @@ router.post('/follow/:id', async (req, res) => {
         }
     }
     
+});
+
+router.get('/wishlist/:id', async (req, res) => {
+    // Parse the game id
+    let id = xss(req.params.id);
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        return res.redirect("/games");
+    }
+
+    // Check if game is n the user's wish list
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let followed = false;
+    for (let game of user.follows) {
+		if (game._id.toString() == id) {
+            followed = true;
+		}
+	}
+    return res.json({followed: followed});
 });
 
 module.exports = router;
