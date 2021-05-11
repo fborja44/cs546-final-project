@@ -66,6 +66,13 @@ h3 {
     padding: 10px 0 10px 0;
 }
 
+
+.lists {
+    font-style: italic;
+    margin: 0 15px 0 15px;
+    padding: 10px 0 10px 0;
+}
+
 ul {
     margin: 0 0 0 0;
 }
@@ -91,4 +98,13 @@ ul {
 
 .game-link:hover {
     color: #2473a4;
+}
+
+.update {
+    text-align: center;
+    color: black;
+}
+
+.update :hover{
+    text-decoration: underline;
 }

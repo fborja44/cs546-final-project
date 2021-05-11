@@ -16,7 +16,7 @@
             <ul class="nav_links">
                 <li><a href="/">Homepage</a></li>
                 <li><a href="/games">Game List</a></li>
-                <li><a class = "profile" id = "usersProfile" href= "/users">Profile</a></li>
+                <li><a class = "profile" id = "usersProfile" href= "/private">Profile</a></li>
                 {{#unless signed_in}}
                 <li><a class = "signLink" id = "loginLink" href="/login">Login</a></li>
                 <li><a class = "signLink" id = "signupLink" href="/signup">Sign up</a></li>
@@ -34,18 +34,18 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
-    <script src="/public/js/signup.js"></script>
+    {{!-- <script src="/public/js/signup.js"></script> --}}
     <footer>
         <p class="left">VGReviews</p>
         <p class="right"> <a href="https://github.com/fborja44/cs546-final-project">Source Code</a> | Stevens Institute of Technology</p>
     </footer>
-    <script src="/public/js/signup.js"></script>
-    <script src="/public/js/script.js"></script>
-    <script src="/public/js/gameForm.js"></script>
+    {{!-- <script src="/public/js/signup.js"></script> --}}
+    {{!-- <script src="/public/js/script.js"></script> --}}
+    {{!-- <script src="/public/js/gameForm.js"></script> --}}
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-    <script src="/public/js/slides.js"></script>
-    <script src="/public/js/likes.js"></script>
-
+    {{!-- <script src="/public/js/slides.js"></script> --}}
+    {{!-- <script src="/public/js/likes.js"></script> --}}
+    {{> (lookup . 'partial') }}
 </body>
 </html>

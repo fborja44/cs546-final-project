@@ -58,6 +58,9 @@
         <h3>Wishlisted Games</h3>
         <ul class="wishlist">
             {{#each user.wishlist}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
             {{/each}}
         </ul>
         {{#if wishlistEmpty}}
