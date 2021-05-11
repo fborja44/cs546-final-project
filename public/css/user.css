@@ -99,3 +99,12 @@ ul {
 .game-link:hover {
     color: #2473a4;
 }
+
+.update {
+    text-align: center;
+    color: black;
+}
+
+.update :hover{
+    text-decoration: underline;
+}

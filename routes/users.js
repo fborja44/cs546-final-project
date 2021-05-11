@@ -100,11 +100,62 @@ router.get('/', async (req, res) => {
     
 });
 
+
+router.get('/private/edit', async (req, res) => {
+    if (!req.session.user_id){
+        res.redirect('/');
+        return;
+    }
+    res.render('users/edit',  {signed_in: req.body.signed_in, partial:'gameForm'});
+ 
+});
+
+
 /**
  * 
  */
-router.post('/', async (req, res) => {
-    
+router.post('/private/edit', async (req, res) => {
+
+    const firstName = xss(req.body.editfirstName).toString().trim();
+    const lastName = xss(req.body.editlastName).toString().trim();
+    const email = xss(req.body.editemail).toString().trim();
+    const password = xss(req.body.editpassword).toString().trim();
+
+    if(!firstName && !lastName && !email && !password){
+        res.status(400).render('users/edit', { error: "Nothing will be changed, at least one field must be supplied."});
+        return;
+    }
+	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	 if (email && !emailPattern.test(email)){
+        res.status(400).render('users/edit', { error: "Invaild email."});
+        return;
+     }
+
+     if (password && (password.length < 4 || password.length > 20)){
+        res.status(400).render('users/edit', { error: "Password is too long or too short."});
+        return;
+     }
+
+     try{
+         let userInfo = await usersData.getUserById(req.session.user_id);
+         if(!userInfo){
+            res.status(400).render('users/edit', { error: "User Not found."});
+            return;
+         }
+        
+        if(firstName)
+            await usersData.updateFirstName(userInfo._id, firstName);
+        if(lastName)
+            await usersData.updateLastName(userInfo._id, lastName);
+        if(email)
+            await usersData.updateEmail(userInfo._id, email);
+        if(password)
+            await usersData.updatePassword(userInfo._id, password);
+
+         res.redirect('/private');
+     } catch (e){
+        res.status(400).json({ error: 'Creation failed.'});
+     }
 });
 
 /**
@@ -255,6 +306,7 @@ router.get('/private/:id', async (req, res) => {
         const user = await usersData.getUserById(id);
 
         res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'gameForm'});
+
 
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
