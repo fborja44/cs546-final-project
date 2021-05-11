@@ -9,13 +9,16 @@
             <p>Email: {{user.email}}</p>
         </div>
         <h3>{{user.username}}'s Likes</h3>
-        {{#each user.likes}}
-        <div class="review">
-            <!-- Need route /games/:id -->        
-        </div>
-        {{/each}}
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
+            {{#each user.likes}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
+            {{/each}}
+        </ul>
         {{#if likesEmpty}}
-            <p class = "lists">There is no games in Likes.</p>
+            <p id="empty">This user has not liked any games.</p>
         {{/if}}
         <h3>{{user.username}}'s Follows</h3>
         {{#each user.follows}}
@@ -27,14 +30,16 @@
             <p class = "lists">There is no games in Follows.</p>
         {{/if}}
         <h3>{{user.username}}'s Wishlist</h3>
-        {{#each user.wishlist}}
-        <div class="review">
-            <!-- Need route /games/:id -->  
-        </div>
-        {{/each}}
-        {{#if wishEmpty}}
-            <p class = "lists">There is no games in wishlist.</p>
-        {{/if}}
+            <ul class="wishlist">
+                {{#each user.wishlist}}
+                    <li class="user-li">
+                        <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+            {{#if wishlistEmpty}}
+                <p id="empty">This user has not added any games to their wishlist.</p>
+            {{/if}}
         <h3>{{user.username}}'s Reviews</h3>
         {{#each user.reviews}}
         <div class="review">
