@@ -62,8 +62,7 @@ router.post('/', async (req, res) => {
 	 } catch (e) {
 	   return res.status(404).json({message: e});
 	 }
-  console.log("Review Rating");
-  console.log(parseInt(reviewPost.reviewRating));
+
   try {
     const newReview = await reviewsData.createReview(
       game._id,
@@ -76,8 +75,6 @@ router.post('/', async (req, res) => {
       //adding the newly written review to the users database
     user.reviews.push(newReview);
     await usersData.updateReviews(user._id,user.reviews);
-    console.log("USER REVIEWS");
-    console.log(user.reviews);
     return res.redirect(`/games/${game._id}`);
 
   }catch (e) {

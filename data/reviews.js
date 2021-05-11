@@ -56,10 +56,16 @@
 
     const gameCollection = await games();
 
-    let newReview = {
+    let gameInfo;
+    try{ gameInfo = await gamesData.getGameById(gameId)
+       }catch(e){
+           throw "Invalid gameId. Can not get game by Id"
+       }
+     let newReview = {
         _id: ObjectId(),
         gameId: gameId,
         reviewTitle: reviewTitle.trim(),
+        gameTitle: gameInfo.title,
         author: {
             username: author.username.trim(),
             _id: author._id.trim()

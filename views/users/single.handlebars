@@ -11,18 +11,9 @@
         <h3>{{user.username}}'s Reviews</h3>
         <ul class="review">
             {{#each user.reviews}}
-            <div class="review">
-            <div class="review-heading">
-                <div class="review-rating">
-                    <span>{{rating}}</span>
-                </div>
-                <a class="game-link" href="/games/{{gameId}}">{{reviewTitle}}</a>
-            </div>
-
-            <p>Author: {{author.username}}</p>
-            <p>Date: {{reviewDate}}</p>
-            <p>Review: {{review}}</p>
-             </div>
+             <li class="user-li">
+                <a class="game-link" href="/games/{{gameId}}">{{gameTitle}}: {{reviewTitle}}</a>
+            </li>
             {{/each}}
         </ul>
         {{#if reviewsEmpty}}
