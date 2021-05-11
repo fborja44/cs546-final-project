@@ -31,12 +31,16 @@
         {{/if}}
         <!-- FOLLOWS DISPLAY -->
         <h3>Followed Games</h3>
-        <ul class="follow">
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
             {{#each user.follows}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
             {{/each}}
         </ul>
         {{#if followsEmpty}}
-            <p id="empty">This user has not followed any games.</p>
+            <p id="empty">This user has not liked any games.</p>
         {{/if}}
         <!-- WISHLIST DISPLAY -->
         <h3>Wishlisted Games</h3>
