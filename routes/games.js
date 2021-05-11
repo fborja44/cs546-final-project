@@ -732,7 +732,7 @@ router.post('/follow/:id', async (req, res) => {
     
 });
 
-router.get('/wishlist/:id', async (req, res) => {
+router.get('/follow/:id', async (req, res) => {
     // Parse the game id
     let id = xss(req.params.id);
     let errors = [];
