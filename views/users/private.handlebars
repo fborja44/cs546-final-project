@@ -7,6 +7,9 @@
             <img id="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
             <p>{{user.firstName}} {{user.lastName}}</p>
             <p>Email: {{user.email}}</p>
+            <div class="update">
+                <a id = "editProfile" class = "update" href="/private/edit">Edit Profile</a>
+            </div>
         </div>
         <h3>{{user.username}}'s Likes</h3>
         <ul class="like">
@@ -23,13 +26,16 @@
         <h3>{{user.username}}'s Follows</h3>
         {{#each user.follows}}
         <div class="likes">
-            <!-- Need route /games/:id -->  
+            <li class="user-li">
+                <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+            </li>
         </div>
         {{/each}}
         {{#if followsEmpty}}
             <p class = "lists">There is no games in Follows.</p>
         {{/if}}
         <h3>{{user.username}}'s Wishlist</h3>
+
             <ul class="wishlist">
                 {{#each user.wishlist}}
                     <li class="user-li">
@@ -44,6 +50,9 @@
         {{#each user.reviews}}
         <div class="review">
             <!-- REVIEWS DISPLAY -->
+            <li class="user-li">
+                <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+            </li>
         </div>
         {{/each}}
         {{#if reviewsEmpty}}
