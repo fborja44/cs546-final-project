@@ -13,7 +13,7 @@ const constructorMethod = (app) => {
 
   // Catch all method
   app.use('*', (req, res) => {
-      res.status(404).render('general/error', { status: 404, error: 'Route not found.' });
+      res.status(404).render('general/error', { status: 404, error: 'Route not found.' , partial:"script"});
   });
 };
 

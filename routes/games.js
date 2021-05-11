@@ -28,7 +28,7 @@ const validPrice = /^.+: \$\d+.\d\d$/; // price format
 router.get('/', async (req, res) => {
     try {
         let gamesList = await gamesData.getAllGames();
-        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in, partial:'likes'});
+        res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
     } catch (e) {
         res.status(500).json({message: e});
     }
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameById(id);
-        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in, partial:'likes'});
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , signed_in: req.body.signed_in, partial:'gameList'});
     } catch (e) {
         res.status(404).json({message: e});
     }
@@ -220,7 +220,7 @@ router.post('/new', async (req, res) => {
     }
 
     if (errors.length > 0) { 
-        res.status(400).render('games/newgame', { title: "Add Game", error: errors});
+        res.status(400).render('games/newgame', { title: "Add Game", error: errors, partial:"gameForm"});
         return;
     }
 
@@ -245,7 +245,7 @@ router.post('/new', async (req, res) => {
                 platform: platformsTrim[0],
                 price: gameData.newPrices[0].trim(),
                 description: gameData.newDesc.trim(),
-                error: errors, signed_in: req.body.signed_in});
+                error: errors, signed_in: req.body.signed_in, partial:"gameForm"});
         return;
     }
 
@@ -255,18 +255,19 @@ router.post('/new', async (req, res) => {
  * Searches for games in the games collection.
  */
 router.post('/search', async (req, res) => {
-    let searchData = xss(req.body);
+    let searchTerm = xss(req.body.searchTerm);
+    let searchType = xss(req.body.searchType);
     let errors = [];
 
-    if (!searchData.searchTerm) {
+    if (!searchTerm) {
         errors.push("No search term provided.");
-    } else if (searchData.searchTerm.trim().length === 0) {
+    } else if (searchTerm.trim().length === 0) {
         errors.push("Search term must be non-empty.");
     }
 
-    if (!searchData.searchType) { // should never happen but should still check
+    if (!searchType) { // should never happen but should still check
         errors.push("Search type not specified.");
-    } else if (searchData.searchType.trim().length === 0) {
+    } else if (searchType.trim().length === 0) {
         errors.push("Search type must non-empty.");
     }
 
@@ -277,75 +278,75 @@ router.post('/search', async (req, res) => {
                                         games: gamesList , 
                                         gamesEmpty: gamesList.length === 0, 
                                         error: errors, 
-                                        search_type_value: searchData.searchType, 
-                                        search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                        search_type_value: searchType, 
+                                        search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         return;
     }
     
     // Change search depending on specified search type
-    if (searchData.searchType === "title") {
+    if (searchType === "title") {
         try {
-            let searchList = await gamesData.searchGamesByTitle(searchData.searchTerm);
+            let searchList = await gamesData.searchGamesByTitle(searchTerm);
             res.render('games/gameslist', { title: "Games", 
                                             games: searchList , 
                                             gamesEmpty: searchList.length === 0,                                        
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
         }
-    } else if (searchData.searchType === "genre") {
+    } else if (searchType === "genre") {
         try {
-            let searchList = await gamesData.getGamesByGenre(searchData.searchTerm);
+            let searchList = await gamesData.getGamesByGenre(searchTerm);
             res.render('games/gameslist', { title: "Games", 
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm, signed_in: req.body.signed_in });
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm, signed_in: req.body.signed_in , partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         }
-    } else if (searchData.searchType === "platform") {
+    } else if (searchType === "platform") {
         try {
-            let searchList = await gamesData.getGamesByPlatform(searchData.searchTerm);
+            let searchList = await gamesData.getGamesByPlatform(searchTerm);
             res.render('games/gameslist', { title: "Games", 
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         }
-    } else if (searchData.searchType === "price") {
+    } else if (searchType === "price") {
         try {
-            let searchList = await gamesData.getGamesByPrice(searchData.searchTerm);
+            let searchList = await gamesData.getGamesByPrice(searchTerm);
             res.render('games/gameslist', { title: "Games", 
                                             games: searchList, 
                                             gamesEmpty: searchList.length === 0,                                        
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         } catch (e) {
             res.render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
-                                            search_type_value: searchData.searchType, 
-                                            search_term_value: searchData.searchTerm , signed_in: req.body.signed_in});
+                                            search_type_value: searchType, 
+                                            search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
         }
     }
 });

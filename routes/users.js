@@ -36,11 +36,11 @@ router.get('/', async (req, res) => {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in});
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"script"});
     }
 
     if (gamesList.length === 0) {
-        res.render('users/home', { title: "Home", games: games, empty: true, signed_in: req.body.signed_in});
+        res.render('users/home', { title: "Home", games: games, empty: true, signed_in: req.body.signed_in, partial:"home"});
         return;
     }
 
@@ -93,9 +93,9 @@ router.get('/', async (req, res) => {
     
     // Render the route
     try {
-        res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in, partial: 'slides'});
+        res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in, partial: 'home'});
     } catch (e) {
-        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in});
+        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in, partial:'home'});
     }
     
 });
@@ -135,14 +135,14 @@ router.post('/signup', async (req, res) => {
      }
 
      if (password.length < 4 || password.length > 20){
-        res.status(400).render('general/error', { error: "Error: Password is too long or too short."});
+        res.status(400).render('general/error', { error: "Error: Password is too long or too short.", partial:"signup"});
         return;
      }
 
      try{
          let userInfo = await usersData.getUserByUsername(username);
          if(userInfo){
-            res.status(400).render('users/signup', { error: "Error : Username exists."});
+            res.status(400).render('users/signup', { error: "Error : Username exists.", partial:"signup"});
             return;
          }
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
@@ -173,7 +173,7 @@ router.post('/login', async (req, res) => {
 
     // Check both username and password
     if(!username || !password){
-        res.status(401).render('users/login', { error: "Missing username or password.",signed_in: req.body.signed_in});
+        res.status(401).render('users/login', { error: "Missing username or password.",signed_in: req.body.signed_in, partial:"signup"});
         return;
     }
     
@@ -183,7 +183,7 @@ router.post('/login', async (req, res) => {
 
     // User doesn't exist
         if (!userInfo){
-            res.status(401).render('users/login', { error: "User doesn't exist.",signed_in: req.body.signed_in});
+            res.status(401).render('users/login', { error: "User doesn't exist.",signed_in: req.body.signed_in, partial:"signup"});
             return;
         }
         
@@ -192,11 +192,11 @@ router.post('/login', async (req, res) => {
             res.redirect('/');
             // res.render('home', { message: `Welcome ${userInfo.username}`});
         } else {
-            res.status(401).render('users/login', { error: "Wrong password.",signed_in: req.body.signed_in});
+            res.status(401).render('users/login', { error: "Wrong password.",signed_in: req.body.signed_in, partial:"signup"});
         }
     // return to main page?
      } catch (e) {
-        res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in});
+        res.status(401).render('users/login', { title: "Login" ,signed_in: req.body.signed_in, partial:"signup"});
      }
 });
 
@@ -211,7 +211,7 @@ router.get('/logout', async (req, res) => {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in});
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"signup"});
     }
     res.redirect('/');
 });
@@ -276,7 +276,7 @@ router.get('/users/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 });
+        res.render('users/single', { title: user.username, user: user, reviewsEmpty: user.reviews.length === 0 , partial:"gameForm"});
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
     }
