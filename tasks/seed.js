@@ -207,6 +207,29 @@ const main = async () => {
         1
     )
 
+    /* Game 4 Reviews: Emerald
+    -------------------------------------*/
+    let review4_1 = await reviewsData.createReview(
+        game4_id,
+        "title",
+        { username: "guy", _id: "103" },
+        "1/1/2000",
+        "dope",
+        4
+    )
+
+    
+    /* Game 6 Reviews: NBA 2K20
+    -----------------------------------------------------*/
+    let review6_1 = await reviewsData.createReview(
+        game6_id,
+        "kd is a snake",
+        { username: "kdburneraccount", _id: "102" },
+        "8/23/2020",
+        "sssss",
+        2
+    )
+
     /* Game 8 Reviews: Hades
     -------------------------------------*/
     let review8_1 = await reviewsData.createReview(
@@ -305,7 +328,7 @@ const main = async () => {
         "Francis",
         "Borja",
         "fborja@stevens.edu",
-        "supersec"
+        "supersecret"
     )
     let user1_id = user1._id.toString();
 

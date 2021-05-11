@@ -566,6 +566,7 @@ router.post('/wishlist/:id', async (req, res) => {
     }
 });
 
+
 router.post('/follow/:id', async (req, res) => {
     // Parse the game id
     let id = req.params.id;
@@ -646,3 +647,4 @@ router.post('/follow/:id', async (req, res) => {
 });
 
 module.exports = router;
+

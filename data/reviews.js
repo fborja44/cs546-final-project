@@ -51,14 +51,21 @@
 
     // rating error checking
     if (rating === null) throw "A rating must be provided";
-    if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${review || "provided argument"} must be an integer.`;
+    if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${rating || "provided argument"} must be an integer.`;
     if (rating < 1 || rating > 5) throw "The rating must be an integer in the range [1-5]";
 
     const gameCollection = await games();
 
-    let newReview = {
+    let gameInfo;
+    try{ gameInfo = await gamesData.getGameById(gameId)
+       }catch(e){
+           throw "Invalid gameId. Can not get game by Id"
+       }
+     let newReview = {
         _id: ObjectId(),
+        gameId: gameId,
         reviewTitle: reviewTitle.trim(),
+        gameTitle: gameInfo.title,
         author: {
             username: author.username.trim(),
             _id: author._id.trim()
@@ -66,7 +73,9 @@
         reviewDate: reviewDate,
         review: review.trim(),
         replies: [],
-        rating: rating
+        rating: rating,
+        reviewLikes:0,
+        reviewDislikes:0
     }
     parsedGameId = ObjectId(gameId);
 
@@ -107,7 +116,7 @@ async function getAllReviews(gameId) {
 }
 
 /**
- *Gets a Review by id
+ *Gets a Review by id given a game id
  * @param {string} gameId
  * @param {string} reviewId
  */
@@ -127,10 +136,30 @@ async function getReviewById(gameId,reviewId){
             return game.reviews[i];
         }
     }
-
     throw "no review with that id";
-
 }
+
+/**
+ * Searches for and returns a review in the database through all of the games
+ * @param {string} gameId
+ * @param {string} reviewId
+ */
+ async function getReview(reviewId){
+    if (!reviewId) throw "A reviewId must be provided";
+    if (typeof reviewId !== 'string') throw `${reviewId || "provided argument"} must be a string`;
+    if (reviewId.trim().length === 0) throw "The reviewId must not be an empty string";
+
+    const gamesList = await gamesData.getAllGames();
+    for (const game of gamesList) {
+        for (let i = 0; i < game.reviews.length; i++){
+            if (game.reviews[i]._id == reviewId){
+                return game.reviews[i];
+            }
+        }
+    }
+    throw "no review with that id";
+}
+
 /**
  * Updates a review
  * @param {string} gameId
@@ -223,7 +252,6 @@ async function updateReview(gameId,reviewId, reviewTitle, reviewDate, review, ra
  * Deletes a review
  * @param {string} gameId
  * @param {string} reviewId
- *
  */
 async function deleteReview(gameId,reviewId){
     // gameId error checking
@@ -248,10 +276,138 @@ async function deleteReview(gameId,reviewId){
     return "successful delete";
 }
 
+
+/**
+ * Increments a review's like count.
+ * @param gameId The id of the game
+ * @param reviewId The id of the review
+ */
+async function incrementLike(gameId,reviewId) {
+    if (!gameId) throw "You must provide an game id to search for";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (!reviewId) throw "You must provide an review id to search for";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedGameId = ObjectId(gameId.trim());
+    let parsedReviewId = ObjectId(reviewId.trim());
+   
+    const updateInfo = await gameCollection.updateOne(
+        {_id:parsedGameId,"reviews._id":parsedReviewId},
+        { $inc: {"reviews.$.reviewLikes":1 }}
+    );
+
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update reviews likes.";
+
+
+    return await this.getReviewById(gameId,reviewId);
+}
+
+
+/**
+ * Increments a review's like count.
+ * @param gameId The id of the game
+ * @param reviewId The id of the review
+ */
+async function incrementDislike(gameId,reviewId) {
+    if (!gameId) throw "You must provide an game id to search for";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (!reviewId) throw "You must provide an review id to search for";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+    let parsedGameId = ObjectId(gameId.trim());
+    let parsedReviewId = ObjectId(reviewId.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        {_id:parsedGameId,"reviews._id":parsedReviewId},
+        { $inc: {"reviews.$.reviewDislikes":1 }}
+    );
+
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update reviews likes.";
+
+
+    return await this.getReviewById(gameId,reviewId);
+}
+
+
+/**
+ * Decrements a review's like count.
+ * @param gameId The id of the game
+ * @param reviewId The id of the review
+ */
+ async function decrementLike(gameId,reviewId) {
+    if (!gameId) throw "You must provide an game id to search for";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (!reviewId) throw "You must provide an review id to search for";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+
+    let parsedGameId = ObjectId(gameId.trim());
+    let parsedReviewId = ObjectId(reviewId.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        {_id:parsedGameId,"reviews._id":parsedReviewId},
+        { $inc: {"reviews.$.reviewLikes":-1 }}
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update reviews likes.";
+
+    return await this.getReviewById(gameId,reviewId);
+}
+
+
+
+/**
+ * Decrements a review's dislike count.
+ * @param gameId The id of the game
+ * @param reviewId The id of the review
+ */
+ async function decrementDislike(gameId,reviewId) {
+    if (!gameId) throw "You must provide an game id to search for";
+    if (typeof gameId !== "string") throw "The provided game id must be a string";
+    if (gameId.trim().length === 0) throw "The provided must not be an empty string";
+
+    if (!reviewId) throw "You must provide an review id to search for";
+    if (typeof reviewId !== "string") throw "The provided review id must be a string";
+    if (reviewId.trim().length === 0) throw "The provided must not be an empty string";
+
+    const gameCollection = await games();
+
+
+    let parsedGameId = ObjectId(gameId.trim());
+    let parsedReviewId = ObjectId(reviewId.trim());
+
+    const updateInfo = await gameCollection.updateOne(
+        {_id:parsedGameId,"reviews._id":parsedReviewId},
+        { $inc: {"reviews.$.reviewDislikes":-1 }}
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Failed to update reviews likes.";
+
+    return await this.getReviewById(gameId,reviewId);
+}
+
 module.exports = {
     createReview,
     getAllReviews,
     getReviewById,
+    getReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    incrementLike,
+    incrementDislike,
+    decrementLike,
+    decrementDislike
 }

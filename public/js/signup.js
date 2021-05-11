@@ -58,9 +58,9 @@ $("#login-form").submit(function(event) {
         message = "Error: Missing username or password."
     }
 
-    if (!error && (password.length < 4 || password.length > 10)){
+    if (!error && (password.length < 4 || password.length > 20)){
         error = true;
-        message = "Error: The length of password should between 4 and 10."
+        message = "Error: The length of password should between 4 and 20."
     }
 
     if (error){

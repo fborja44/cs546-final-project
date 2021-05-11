@@ -168,8 +168,10 @@ button:hover {
 }
 
 /* Game image */
-.games img {
+.game-img {
     width: 110px;
+    min-height: 110px;
+    max-height: 160px;
     display: block;
     float: left;
 
