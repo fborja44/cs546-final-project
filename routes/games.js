@@ -566,4 +566,85 @@ router.post('/wishlist/:id', async (req, res) => {
     }
 });
 
+
+router.post('/follow/:id', async (req, res) => {
+    // Parse the game id
+    let id = req.params.id;
+    let errors = [];
+
+    if (!id || id.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    if (errors.length > 0) {
+        // console.log("error.");
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if game exists with id
+    try {
+        let game = await gamesData.getGameById(id);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+    }
+
+    // Make sure user is authenticated
+    if (!req.session.user_id) {
+        // User is not authenticated
+        console.log("You must login to follow a game."); // CHANGE THIS
+        return res.redirect("/games");
+    }
+
+    // Check if game is already in the user's follow list
+    // If it isn't, then add it and increment follow count
+    // If it's not, then remove it and decrement the follow count
+    let user;
+	try {
+		user = await usersData.getUserById(req.session.user_id);
+	} catch (e) {
+		return res.status(404).json({message: e});
+	}
+    let follow = false;
+    for (let game of user.follows) {
+		if (game._id.toString() == id) {
+            follow = true;
+		}
+	}
+
+    if (follow) { // Game is already follows; remove
+        try {
+            await usersData.removeFollowGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's follow count
+        try {
+            await gamesData.decrementFollow(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+    } else { // Game is not followed; add
+        // Try to add the game to the user's follows list
+        try {
+            await usersData.addFollowGame(req.session.user_id, id)
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+
+        // Increment game's follow count
+        try {
+            await gamesData.incrementFollow(id);
+            return res.redirect("/games");
+        } catch (e) {
+            return res.status(500).json({message: e});
+        }
+    }
+    
+});
+
 module.exports = router;
+

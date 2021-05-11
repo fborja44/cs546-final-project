@@ -24,15 +24,16 @@
             <p id="empty">This user has not liked any games.</p>
         {{/if}}
         <h3>{{user.username}}'s Follows</h3>
-        {{#each user.follows}}
-        <div class="likes">
-            <li class="user-li">
-                <a class="game-link" href="/games/{{_id}}">{{title}}</a>
-            </li>
-        </div>
-        {{/each}}
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
+            {{#each user.follows}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
+            {{/each}}
+        </ul>
         {{#if followsEmpty}}
-            <p class = "lists">There is no games in Follows.</p>
+            <p id="empty">This user has not followed any games.</p>
         {{/if}}
         <h3>{{user.username}}'s Wishlist</h3>
 
@@ -47,14 +48,13 @@
                 <p id="empty">This user has not added any games to their wishlist.</p>
             {{/if}}
         <h3>{{user.username}}'s Reviews</h3>
-        {{#each user.reviews}}
-        <div class="review">
-            <!-- REVIEWS DISPLAY -->
-            <li class="user-li">
+        <ul class="review">
+            {{#each user.reviews}}
+             <li class="user-li">
                 <a class="game-link" href="/games/{{gameId}}">{{gameTitle}}: {{reviewTitle}}</a>
             </li>
-        </div>
-        {{/each}}
+            {{/each}}
+        </ul>
         {{#if reviewsEmpty}}
             <p id="empty">This user has not written any reviews.</p>
         {{/if}}
