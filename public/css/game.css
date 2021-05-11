@@ -140,6 +140,17 @@ h2 {
     padding-top: 24px;
 }
 
+.reply-link {
+    color: black;
+    margin-right: 15px;
+    float: right;
+    font-size: 14px;
+}
+
+.reply-link:hover {
+    color: #2473a4;
+}
+
 /* Game image */
 .game img {
     width: 110px;
