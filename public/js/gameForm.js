@@ -176,8 +176,8 @@
                 titleError = false;
                 error = true;
             }
-            if (title.trim().length >= 125 && titleError) {
-                errorsMsg.push("The title must be less than 125 characters");
+            if (title.trim().length >= 50 && titleError) {
+                errorsMsg.push("The title must be less than 50 characters");
                 errorList.push("title");
                 titleError = false;
                 error = true;
@@ -228,8 +228,8 @@
                 publisherError = false;
                 error = true;
             }
-            if (publisher.trim().length >= 125 && publisherError) {
-                errorsMsg.push("The publisher must be less than 125 characters");
+            if (publisher.trim().length >= 50 && publisherError) {
+                errorsMsg.push("The publisher must be less than 50 characters");
                 errorList.push("publisher");
                 publisherError = false;
                 error = true;
@@ -347,13 +347,13 @@
             let priceIndex = [];
             let priceEmptyString = false;
             for (let i = 0; i < prices.length; i++) {
-                if ((prices[i].trim().length === 0 || !validPrice.test(prices[i].trim())) && priceError) {
+                if ((prices[i].trim().length === 0 || !validPrice.test(prices[i].trim() || prices[i].trim().length >= 100)) && priceError) {
                     priceIndex.push(i+1);
                     priceEmptyString = true;
                 }
             }
             if (priceEmptyString) {
-                errorsMsg.push("The prices must be of the proper form");
+                errorsMsg.push("The prices must be of the proper form and less than 100 characters");
                 errorList.push("prices");
                 priceError = false;
                 error = true;

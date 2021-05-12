@@ -74,6 +74,37 @@ app.set('view engine', 'handlebars');
 //   }
 // });
 
+/**
+ * Handlebars helper to convert an array into a list of strings separated by commas
+ */
+handlebarsInstance.handlebars.registerHelper('stringOfArray', function(array) {
+  let string = ``;
+  for (let i = 0; i < array.length; i++) {
+    if (i == array.length-1) {
+      string += array[i];
+    } else {
+      string += array[i] + `, `;
+    }
+  }
+  return string;
+});
+
+/**
+ * Handlebars helper to properly display prices array
+ */
+ handlebarsInstance.handlebars.registerHelper('stringOfPrices', function(priceArray) {
+  let string = ``;
+  for (let i = 0; i < priceArray.length; i++) {
+    if (i == priceArray.length-1) {
+      string += `${priceArray[i].platform}: ${priceArray[i].price}`;
+    } else {
+      string += `${priceArray[i].platform}: ${priceArray[i].price}, `;
+    }
+  }
+  return string;
+});
+
+
 // Create session
 app.use(session({
   name: 'AuthCookie',

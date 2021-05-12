@@ -8,7 +8,7 @@
             <p>{{user.firstName}} {{user.lastName}}</p>
         </div>
         <!-- REVIEWS DISPLAY -->
-        <h3>{{user.username}}'s Reviews</h3>
+        <h2>{{user.username}}'s Reviews</h2>
         <ul class="review">
             {{#each user.reviews}}
              <li class="user-li">
@@ -20,7 +20,7 @@
             <p id="empty">This user has not written any reviews.</p>
         {{/if}}
         <!-- LIKES DISPLAY -->
-        <h3>Liked Games</h3>
+        <h2>Liked Games</h2>
         <ul class="like">
             <!-- {{!getGameById this}} -->
             {{#each user.likes}}
@@ -33,16 +33,20 @@
             <p id="empty">This user has not liked any games.</p>
         {{/if}}
         <!-- FOLLOWS DISPLAY -->
-        <h3>Followed Games</h3>
-        <ul class="follow">
+        <h2>Followed Games</h2>
+        <ul class="like">
+            <!-- {{!getGameById this}} -->
             {{#each user.follows}}
+                <li class="user-li">
+                    <a class="game-link" href="/games/{{_id}}">{{title}}</a>
+                </li>
             {{/each}}
         </ul>
         {{#if followsEmpty}}
             <p id="empty">This user has not followed any games.</p>
         {{/if}}
         <!-- WISHLIST DISPLAY -->
-        <h3>Wishlisted Games</h3>
+        <h2>Wishlisted Games</h2>
         <ul class="wishlist">
             {{#each user.wishlist}}
                 <li class="user-li">

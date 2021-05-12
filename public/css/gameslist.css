@@ -55,6 +55,7 @@ select {
 }
 
 #game-search button {
+    color: white;
     border-radius: 0 5px 5px 0;
 }
 
@@ -115,7 +116,7 @@ button:hover {
 
 .form-error p {
     margin: 0 0 0 0;
-    color: white;
+    color: black;
 }
 
 /** List styles **/
@@ -149,7 +150,7 @@ button:hover {
     background: #2FE58E;
     float: left;
     
-    color: white;
+    color: black;
     text-align: center;
     vertical-align: middle;
     
@@ -249,6 +250,10 @@ h1 {
     border-width: 3px;
 }
 
+.error-elem {
+    color:red;
+}
+
 .hidden {
     display: none;
 }
@@ -299,6 +304,6 @@ h1 {
     top: 1px;
 }
 
-#comment-img {
+.comment-img {
     margin-left: 2px;
 }

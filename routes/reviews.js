@@ -7,7 +7,7 @@ const reviewsData = data.reviews;
 const gamesData = data.games;
 const usersData = data.users;
 
-router.get('/:id/:reviewId', async (req, res) => {
+router.get('/:id/review/:reviewId', async (req, res) => {
     // Parse the game and review id
     let gameId = req.params.id;
     let reviewId = req.params.reviewId;
