@@ -16,7 +16,7 @@ $("#review-form").submit(function(event) {
 
     if(!gameTitle || !gameId){
         error = true;
-        message = "Emmm... it is interesting... Nothing to submit."
+        message = "Emmm... it is interesting... No title."
     }
 
     if (!error && (!title || !rating || !review)){
@@ -32,7 +32,7 @@ $("#review-form").submit(function(event) {
 
     if (error){
         event.preventDefault();
-        let htmlStr = `<li class="reviewErrors">${message}</li>`;
+        let htmlStr = `<p class = "reviewErrors">${message}</p>`;
         $("#reviewError").append(htmlStr);
         $("#reviewError").show();
     }

@@ -51,7 +51,6 @@ router.get('/', async (req, res) => {
  router.get('/:id', async (req, res) => {
     let id = xss(req.params.id);
     let errors = [];
-
     if (!id || id.trim().length === 0) {
         errors.push('Missing id.');
     }
