@@ -120,7 +120,7 @@ router.post('/:gameId', async (req, res) => {
       // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        errors.push("You must login to like a review.");
+        errors.push("You must login to write a review.");
     }
 
     if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {
