@@ -9,8 +9,8 @@ const usersData = data.users;
 
 router.get('/:id/:reviewId', async (req, res) => {
     // Parse the game and review id
-    let gameId = req.params.id;
-    let reviewId = req.params.reviewId;
+    let gameId = xss(req.params.id);
+    let reviewId = xss(req.params.reviewId);
     let errors = [];
 
     if (!gameId || gameId.trim().length === 0) {
@@ -53,14 +53,13 @@ router.get('/:id/:reviewId', async (req, res) => {
 });
 
 router.post('/:gameId', async (req, res) => {
-    let gameId = req.params.gameId;
+    let gameId = xss(req.params.gameId);
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
 
-    //let reviewPost = xss(req.body);
     let reviewPost = req.body;
     let errors = [];
 
