@@ -17,7 +17,7 @@
   */
  async function createReview(gameId, reviewTitle, author, reviewDate, review, rating) {
     // gameId error checking
-    if (!gameId) throw "A title must be provided";
+    if (!gameId) throw "A gameId must be provided";
     if (typeof gameId !== 'string') throw `${gameId || "provided argument"} must be a string`;
     if (gameId.trim().length === 0) throw "The gameId must not be an empty string";
 

@@ -139,7 +139,6 @@ router.post('/:gameId', async (req, res) => {
  */
 router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
-   console.log("in Likes");
    let reviewId = req.params.reviewId;
    let gameId = req.params.gameId;
     //let body = req.body;
