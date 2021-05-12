@@ -3,7 +3,7 @@
 <div class="center">
     <form id="game-search" method="POST" action="/games/search">
         <label for="search-type">Search By:</label>
-        <select id="search-type" name="searchType" required>
+        <select id="search-type" name="searchType">
             {{#if title_selected}}
             <option id="title-option" value="title" selected>Title</option>
             <option id="genre-option" value="genre">Genre</option>
@@ -88,7 +88,6 @@
             {{description}}
         </p>
         <div class="actions">
-            <p>
                 <form class="action-form like-form" action="/games/like/{{_id}}" method="POST">
                     <button name="like" value="like"><img id="like-{{_id}}" src="/public/img/like.png" alt="Like Icon">Like</button>[<span>{{numLikes}}</span>] | 
                 </form>
@@ -98,8 +97,7 @@
                 <form class="action-form" action="/games/wishlist/{{_id}}" method="POST">
                     <button name="wishlist" value="wishlist" id="wishlist-{{_id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button>| 
                 </form>
-                <a href="games/{{_id}}"><img id="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
-            </p>
+                <a href="games/{{_id}}"><img class="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
         </div>
     </li>
     {{/each}}
