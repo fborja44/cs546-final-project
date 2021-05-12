@@ -87,7 +87,7 @@
         <!-- Should only be shown if user is logged in -->
         <div>
             <h3>Create a new Review</h3>
-            <form method="POST" action="/games/{{game._id}}" class="new-review-post">
+            <form id = "review-form" method="POST" action="/games/{{game._id}}" class="new-review-post">
                 <input name="gameTitle" value="{{game.title}}" type="hidden">
                 <input name="gameId" value="{{game._id}}" type="hidden">
                 <div class="form-elem">
@@ -104,8 +104,11 @@
                 </div>
                 <button id="review-submit-button" type="submit">Submit</button>
             </form>
+            <div id = "reviewError" class = "signError" hidden>
+        
+            </div>
             {{#if hasErrors}}
-             <ul>
+             <ul id = "reviewList">
                {{#each errors}}
                <li class="reviewErrors">
                     {{this}}
