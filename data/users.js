@@ -955,19 +955,12 @@ async function removeFollowGame(userId, gameId) {
 	 addWishlistGame,
 	 removeLikedGame,
 	 removeWishlistedGame,
-<<<<<<< HEAD
      addLikedReview,
      removeLikedReview,
      addDislikedReview,
      removeDislikedReview,
-     deleteReview
-=======
-    addLikedReview,
-    removeLikedReview,
-    addDislikedReview,
-	removeDislikedReview,
-	addFollowGame,
-	removeFollowGame
->>>>>>> main
+     deleteReview,
+	 addFollowGame,
+	 removeFollowGame
  };
 
