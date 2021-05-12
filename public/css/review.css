@@ -7,6 +7,7 @@ main {
     align-items: center;
 }
 
+
 .review-container {
     background: white;
     width: 1000px;
@@ -48,6 +49,12 @@ h3 {
 h2 {
     margin: 0 0 0 15px;
     font-size: 18px;
+}
+
+
+/*reviews button-container*/
+.button-container{
+    margin: 5px 15px 5px 15px;
 }
 
 /** Review Styles **/
@@ -108,6 +115,79 @@ h2 {
     padding: 10px 0 10px 0;
 }
 
+
+/* User Actions Styles */
+
+.actions {
+    text-align: right;
+    margin: 5px 15px 5px 15px;
+}
+
+.action-form {
+    display: inline;
+    padding: 0 0 0 0;
+}
+
+.action-form button {
+    background: none;
+    font-weight: normal;
+    border: none;
+    margin-left: 0;
+    padding: 0 0 0 0;
+}
+
+.actions a, .actions span {
+    color: black;
+    font-size: 14px;
+}
+
+.actions span {
+    color: #2473a4;
+}
+
+.action-form button:hover {
+    color: #2473a4;
+    cursor: pointer;
+}
+
+.actions p {
+    margin: auto;
+}
+
+.action-form {
+    display: inline;
+    padding: 0 0 0 0;
+}
+
+.action-form button {
+    background: none;
+    font-weight: normal;
+    border: none;
+    margin-left: 0;
+    padding: 0 0 0 0;
+}
+
+.actions a, .actions span {
+    color: black;
+    font-size: 14px;
+}
+
+.actions span {
+    color: #2473a4;
+}
+
+.action-form button:hover {
+    color: #2473a4;
+    cursor: pointer;
+}
+
+.actions p {
+    margin: auto;
+}
+
+
+
+
 /** Reply Form **/
 form {
     padding: 0px 15px 15px 0;
@@ -138,10 +218,10 @@ button:hover {
     cursor: pointer;
 }
 
-#dislike-button {
-    position:absolute;
-    left: 450px;
-}
+
+
+
+
 
 #comment-img {
     margin-left: 2px;

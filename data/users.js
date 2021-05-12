@@ -244,7 +244,7 @@
 		 });
  }
 
- async function updateReviews(id, reviews) {
+ async function addReviews(id, reviews) {
 	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
 	 if(id.trim() === '') throw "The input is an empty string."
 	 if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
@@ -256,6 +256,35 @@
 	 const userCollection = await users();
 	 return await userCollection
 		 .updateOne({_id: parsedId}, {$set: {reviews: reviews}})
+		 .then(async function (){
+			 return await module.exports.getUserById(id);
+		 });
+ }
+
+ /**
+  * remove review from user db
+  * @param {string} id String representation of the ObjectId of the user.
+  * @param {array} reviews array of the reviews
+  * @param {string} reviewId id of the review the person is trying to delete
+  */
+ async function deleteReview(id, reviews,reviewId) {
+	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
+	 if(id.trim() === '') throw "The input is an empty string."
+	 if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
+	 let parsedId = ObjectId(id);
+
+     if(!reviewId || typeof reviewId != 'string') throw "Id should be provied and it is a string."
+	 if(reviewId.trim() === '') throw "The input is an empty string."
+	 if(!ObjectId.isValid(reviewId)) throw "Invalid ObjectId."
+
+
+	 if(!reviews || !Array.isArray(reviews))
+		 throw "Reviews list is not an array."
+    
+     let updatedReviewList = reviews.filter(review => review._id.toString() != reviewId.toString())
+	 const userCollection = await users();
+	 return await userCollection
+		 .updateOne({_id: parsedId}, {$set: {reviews: updatedReviewList}})
 		 .then(async function (){
 			 return await module.exports.getUserById(id);
 		 });
@@ -807,7 +836,7 @@ async function addDislikedReview(userId, gameId,reviewId) {
 	 updateLikes,
 	 updateFollows,
 	 updateWishlist,
-	 updateReviews,
+	 addReviews,
 	 removeUserById,
 	 usernameCheck,
 	 addLikedGame,
@@ -817,5 +846,6 @@ async function addDislikedReview(userId, gameId,reviewId) {
      addLikedReview,
      removeLikedReview,
      addDislikedReview,
-     removeDislikedReview
+     removeDislikedReview,
+     deleteReview
  };
