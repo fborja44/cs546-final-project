@@ -31,7 +31,7 @@ main {
 }
 
 h1 {
-    color: white;
+    color: black;
     padding: 10px 15px 10px 15px;
     margin: auto;
     background-image: linear-gradient(to right, #2473a4, #18415b);
@@ -40,8 +40,8 @@ h1 {
     border-bottom: 2px solid black;
 }
 
-h3 {
-    color: white;
+h2 {
+    color: black;
     padding: 5px 15px 5px 15px;
     margin: auto;
     background-image: linear-gradient(to right, #2473a4, #18415b);
