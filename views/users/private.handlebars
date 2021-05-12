@@ -11,18 +11,7 @@
                 <a id = "editProfile" class = "update" href="/private/edit">Edit Profile</a>
             </div>
         </div>
-        <h3>{{user.username}}'s Reviews</h3>
-        <ul class="review">
-            {{#each user.reviews}}
-             <li class="user-li">
-                <a class="game-link" href="/games/{{gameId}}">{{gameTitle}}: {{reviewTitle}}</a>
-            </li>
-            {{/each}}
-        </ul>
-        {{#if reviewsEmpty}}
-            <p id="empty">This user has not written any reviews.</p>
-        {{/if}}
-        <h3>{{user.username}}'s Likes</h3>
+        <h2>{{user.username}}'s Likes</h2>
         <ul class="like">
             <!-- {{!getGameById this}} -->
             {{#each user.likes}}
@@ -34,7 +23,7 @@
         {{#if likesEmpty}}
             <p id="empty">This user has not liked any games.</p>
         {{/if}}
-        <h3>{{user.username}}'s Follows</h3>
+        <h2>{{user.username}}'s Follows</h2>
         <ul class="like">
             <!-- {{!getGameById this}} -->
             {{#each user.follows}}
@@ -46,7 +35,7 @@
         {{#if followsEmpty}}
             <p id="empty">This user has not followed any games.</p>
         {{/if}}
-        <h3>{{user.username}}'s Wishlist</h3>
+        <h2>{{user.username}}'s Wishlist</h2>
 
             <ul class="wishlist">
                 {{#each user.wishlist}}
@@ -58,7 +47,17 @@
             {{#if wishlistEmpty}}
                 <p id="empty">This user has not added any games to their wishlist.</p>
             {{/if}}
-        
+        <h2>{{user.username}}'s Reviews</h2>
+        <ul class="review">
+            {{#each user.reviews}}
+             <li class="user-li">
+                <a class="game-link" href="/games/{{gameId}}">{{gameTitle}}: {{reviewTitle}}</a>
+            </li>
+            {{/each}}
+        </ul>
+        {{#if reviewsEmpty}}
+            <p id="empty">This user has not written any reviews.</p>
+        {{/if}}
     </div>
     {{/if}}
 </div>

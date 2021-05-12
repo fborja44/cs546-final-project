@@ -42,7 +42,7 @@ li,a,button {
     font-weight: 500;
     font-size:16px;
     text-decoration: none;
-    color: #edf0f1;
+    color: black;
 
 }
 
@@ -60,7 +60,7 @@ li,a,button {
 }
 
 .nav_links li a:hover {
-    color: #0088a9
+    color: white
 }
 
 /** Footer Styles **/
@@ -82,7 +82,7 @@ footer p {
     font-weight: 500;
     font-size: 12px;
     text-decoration: none;
-    color: #edf0f1;
+    color: black;
 
     margin-right: 20px;
 }
@@ -172,7 +172,7 @@ footer p.right {
 
 .login-error p {
     margin: 0 0 0 0;
-    color: white;
+    color: rgb(165, 143, 143);
 }
 
 
