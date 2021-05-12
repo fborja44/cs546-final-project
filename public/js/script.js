@@ -23,9 +23,11 @@ for (let i = 0; i < ratings.length; i++) {
         ratings[i].style.background = "#FB4027";
     } else if (rating == "0" || rating === "N/A") {
         ratings[i].firstElementChild.innerHTML = "N/A";
+        ratings[i].style.color = "white";
         ratings[i].style.background = "black";
     } else {
         ratings[i].firstElementChild.innerHTML = "N/A";
+        ratings[i].style.color = "white";
         ratings[i].style.background = "black";
     }
 }
@@ -48,9 +50,11 @@ for (let i = 0; i < ratings.length; i++) {
         ratings[i].style.background = "#FB4027";
     } else if (rating == "0" || rating === "N/A") {
         ratings[i].firstElementChild.innerHTML = "N/A";
+        ratings[i].style.color = "white";
         ratings[i].style.background = "black";
     } else {
         ratings[i].firstElementChild.innerHTML = "N/A";
+        ratings[i].style.color = "white";
         ratings[i].style.background = "black";
     }
 }

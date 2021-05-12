@@ -58,15 +58,15 @@
         <div class="actions">
             <p>
                 <form class="action-form like-form" action="/games/like/{{_id}}" method="POST">
-                    <button name="like" value="like"><img id="like-{{_id}}" src="/public/img/like.png" alt="">Like</button>[<span>{{numLikes}}</span>] | 
+                    <button name="like" value="like"><img id="like-{{_id}}" src="/public/img/like.png" alt="Like Icon">Like</button>[<span>{{numLikes}}</span>] | 
                 </form>
                 <form class="action-form" action="/games/follow/{{_id}}" method="POST">
-                    <button name="follow" value="follow"><img id="follow-{{_id}}" src="/public/img/follow.png" alt="">Follow</button>[<span>{{numFollows}}</span>] |
+                    <button name="follow" value="follow"><img id="follow-{{_id}}" src="/public/img/follow.png" alt="Follow Icon">Follow</button>[<span>{{numFollows}}</span>] |
                 </form>
                 <form class="action-form" action="/games/wishlist/{{_id}}" method="POST">
-                    <button name="wishlist" value="wishlist"><img src="/public/img/wishlist.png" alt="">Wishlist</button>| 
+                    <button name="wishlist" value="wishlist"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button>| 
                 </form>
-                <a href="games/{{_id}}"><img id="comment-img" src="/public/img/comment.png" alt="">Leave a Review</a>
+                <a href="games/{{_id}}"><img id="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
             </p>
         </div>
     </li>
