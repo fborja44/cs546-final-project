@@ -1,44 +1,3 @@
-$("#edit-form").submit(function(event) {
-
-    $("#editError").empty();
-    $("#editError").hide();
-
-    let password = $("#editpassword").val().trim();
-    let email = $("#editemail").val().trim();
-    let firstName = $("#editfirstName").val().trim();
-    let lastName = $("#editlastName").val().trim();
-
-    let error = false;
-    let message = null;
-
-    if (!password && !email && !firstName && !lastName){
-        error = true;
-        message = "Error: Nothing will be changed."
-    }
-
-    if (password && !error && (password.length < 4 || password.length > 20)){
-        error = true;
-        message = "Error: The length of password should between 4 and 20."
-    }
-
-    const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    if (email && !error && !emailPattern.test(email)){
-        error = true;
-        message = "Error: Invaild email address."
-    }
-
-    if (error){
-        event.preventDefault();
-        let htmlStr = `<p class = "signError">${message}</p>`
-        $("#editError").append(htmlStr);
-        $("#editpError").show();
-    }
-
-})
-
-
-
-
 (function () {
 
     // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
@@ -217,8 +176,8 @@ $("#edit-form").submit(function(event) {
                 titleError = false;
                 error = true;
             }
-            if (title.trim().length >= 125 && titleError) {
-                errorsMsg.push("The title must be less than 125 characters");
+            if (title.trim().length >= 50 && titleError) {
+                errorsMsg.push("The title must be less than 50 characters");
                 errorList.push("title");
                 titleError = false;
                 error = true;
@@ -269,8 +228,8 @@ $("#edit-form").submit(function(event) {
                 publisherError = false;
                 error = true;
             }
-            if (publisher.trim().length >= 125 && publisherError) {
-                errorsMsg.push("The publisher must be less than 125 characters");
+            if (publisher.trim().length >= 50 && publisherError) {
+                errorsMsg.push("The publisher must be less than 50 characters");
                 errorList.push("publisher");
                 publisherError = false;
                 error = true;
@@ -388,13 +347,13 @@ $("#edit-form").submit(function(event) {
             let priceIndex = [];
             let priceEmptyString = false;
             for (let i = 0; i < prices.length; i++) {
-                if ((prices[i].trim().length === 0 || !validPrice.test(prices[i].trim())) && priceError) {
+                if ((prices[i].trim().length === 0 || !validPrice.test(prices[i].trim() || prices[i].trim().length >= 100)) && priceError) {
                     priceIndex.push(i+1);
                     priceEmptyString = true;
                 }
             }
             if (priceEmptyString) {
-                errorsMsg.push("The prices must be of the proper form");
+                errorsMsg.push("The prices must be of the proper form and less than 100 characters");
                 errorList.push("prices");
                 priceError = false;
                 error = true;

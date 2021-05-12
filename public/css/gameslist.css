@@ -250,6 +250,10 @@ h1 {
     border-width: 3px;
 }
 
+.error-elem {
+    color:red;
+}
+
 .hidden {
     display: none;
 }

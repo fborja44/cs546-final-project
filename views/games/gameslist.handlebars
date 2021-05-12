@@ -4,10 +4,38 @@
     <form id="game-search" method="POST" action="/games/search">
         <label for="search-type">Search By:</label>
         <select id="search-type" name="searchType" required>
+            {{#if title_selected}}
+            <option id="title-option" value="title" selected>Title</option>
+            <option id="genre-option" value="genre">Genre</option>
+            <option id="platform-option" value="platform">Platform</option>
+            <option id="price-option" value="price">Price</option>
+            {{else}}
+            {{#if genre_selected}}
+            <option id="title-option" value="title">Title</option>
+            <option id="genre-option" value="genre" selected>Genre</option>
+            <option id="platform-option" value="platform">Platform</option>
+            <option id="price-option" value="price">Price</option>
+            {{else}}
+            {{#if platform_selected}}
+            <option id="title-option" value="title">Title</option>
+            <option id="genre-option" value="genre">Genre</option>
+            <option id="platform-option" value="platform" selected>Platform</option>
+            <option id="price-option" value="price">Price</option>
+            {{else}}
+            {{#if price_selected}}
+            <option id="title-option" value="title">Title</option>
+            <option id="genre-option" value="genre">Genre</option>
+            <option id="platform-option" value="platform">Platform</option>
+            <option id="price-option" value="price" selected>Price</option>
+            {{else}}
             <option id="title-option" value="title">Title</option>
             <option id="genre-option" value="genre">Genre</option>
             <option id="platform-option" value="platform">Platform</option>
             <option id="price-option" value="price">Price</option>
+            {{/if}}
+            {{/if}}
+            {{/if}}
+            {{/if}}
         </select>
         <label for ="search">Search:</label>
         <input id="search" type="text" name="searchTerm" placeholder="Search for game(s)..." value="{{search_term_value}}">
@@ -61,10 +89,10 @@
                     <button name="like" value="like"><img id="like-{{_id}}" src="/public/img/like.png" alt="Like Icon">Like</button>[<span>{{numLikes}}</span>] | 
                 </form>
                 <form class="action-form" action="/games/follow/{{_id}}" method="POST">
-                    <button name="follow" value="follow"><img id="follow-{{_id}}" src="/public/img/follow.png" alt="Follow Icon">Follow</button>[<span>{{numFollows}}</span>] |
+                    <button name="follow" value="follow" id="follow-{{_id}}"><img src="/public/img/follow.png" alt="Follow Icon">Follow</button>[<span>{{numFollows}}</span>] |
                 </form>
                 <form class="action-form" action="/games/wishlist/{{_id}}" method="POST">
-                    <button name="wishlist" value="wishlist"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button>| 
+                    <button name="wishlist" value="wishlist" id="wishlist-{{_id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button>| 
                 </form>
                 <a href="games/{{_id}}"><img id="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
             </p>

@@ -35,10 +35,10 @@
                         <button name="like" value="like"><img id="like-{{game._id}}" src="/public/img/like.png" alt="Like Icon">Like</button> [<span>{{game.numLikes}}</span>] |
                     </form>
                     <form class="action-form" action="/games/follow/{{game._id}}" method="POST">
-                        <button name="follow" value="follow"><img id="follow-{{game._id}}" src="/public/img/follow.png" alt="Follow Icon">Follow</button> [<span>{{game.numFollows}}</span>] |
+                        <button name="follow" value="follow" id="follow-{{game._id}}"><img src="/public/img/follow.png" alt="Follow Icon">Follow</button> [<span>{{game.numFollows}}</span>] |
                     </form>
-                    <form class="action-form" action="/games/wishlist/{{_id}}" method="POST">
-                        <button name="wishlist" value="wishlist"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button> |
+                    <form class="action-form" action="/games/wishlist/{{game._id}}" method="POST">
+                        <button name="wishlist" value="wishlist" id="wishlist-{{game._id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button> |
                     </form>
                     <a><img src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
                 </p>

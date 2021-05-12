@@ -52,7 +52,6 @@
         <!-- Description -->
         <div class="form-elem">
             <label for ="description-input">Description:</label>
-            {{!-- <input id="description-input" type="text" name="newDesc" value={{description}}> --}}
             <textarea name="newDesc" rows="10" cols="72" id="description-input"></textarea>
         </div>
         <div class="center">
@@ -65,8 +64,12 @@
         </ul>
     </div>
     {{#if error}}
-        <div class="form-error">
-            <p>Error: {{error}}</p>
+        <div class="form-elem">
+            <ul>
+            {{#each error}}
+            <li class="error-elem">{{this}}</li>
+            {{/each}}
+            </ul>
         </div>
     {{/if}}
 </div>
