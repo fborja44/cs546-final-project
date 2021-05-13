@@ -1,11 +1,13 @@
+/*
+* To check inputs of the review form, before submission.
+*/
+
 $("#review-form").submit(function(event) {
 
     $("#reviewList").empty();
     $("#reviewError").empty();
     $("#reviewError").hide();
 
-    let gameTitle = $("#reviewTitle").val().trim();
-    let gameId = $("#reviewTitle").val().trim();
     let title = $("#reviewTitle").val().trim();
     let rating = $("#reviewRating").val();
     let review = $("#reviewBody").val().trim();
@@ -14,10 +16,6 @@ $("#review-form").submit(function(event) {
     let error = false;
     let message = null;
 
-    if(!gameTitle || !gameId){
-        error = true;
-        message = "Emmm... it is interesting... Nothing to submit."
-    }
 
     if (!error && (!title || !rating || !review)){
         error = true;
@@ -32,7 +30,7 @@ $("#review-form").submit(function(event) {
 
     if (error){
         event.preventDefault();
-        let htmlStr = `<li class="reviewErrors">${message}</li>`;
+        let htmlStr = `<p class="reviewErrors">${message}</p>`;
         $("#reviewError").append(htmlStr);
         $("#reviewError").show();
     }
