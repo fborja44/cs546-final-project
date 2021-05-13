@@ -53,10 +53,13 @@
                 <img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
                 <h2>{{reviewTitle}}</h2>
             </div>
-            <p>Author: {{author.username}}</p>
+            <p>Author: <a href="/games/{{gameId}}/{{_id}}/profile"> {{author.username}} </a></p>
             <p>Date: {{reviewDate}}</p>
             <p>Review: {{review}}</p>
-            
+            <form>
+            <button class="reply-link" type="submit" formaction="/games/{{gameId}}/{{_id}}/delete" formmethod="POST">Delete</button>
+            </form>
+            <a class="reply-link" href="/games/{{gameId}}/{{_id}}/editreview">Edit</a>
             <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}">Leave a Reply</a>
             <div class="button-container">
                 <form class="action-form" action="/games/{{gameId}}/{{_id}}/like" method="POST">
