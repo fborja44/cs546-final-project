@@ -448,7 +448,7 @@ router.post('/:id/review/:reviewId', async (req, res) => {
     }
 
     if (errors.length > 0) {
-        res.status(400).render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, hasErrors: true, errors: e, signed_in: req.body.signed_in, partial:'gameList'});
+        res.status(400).render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, hasErrors: true, errors: errors, signed_in: req.body.signed_in, partial:'gameList'});
         return;
     }
 
