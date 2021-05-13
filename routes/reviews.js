@@ -140,7 +140,7 @@ router.get('/:gameId/:reviewId/profile', async (req, res) => {
 
     //what handlebars to use??
     try {
-        res.render('users/single', {user:user, partial:'script'});
+        res.render('users/single', {user:user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, partial:'script'});
     } catch (e) {
         console.log(e);
         res.status(500).json({message: e});
