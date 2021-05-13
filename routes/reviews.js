@@ -94,7 +94,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 
     try {
-        res.render('games/editreview', {review:review, partial:'gameList'});
+        res.render('games/editreview', {title:review.reviewTitle, review:review, partial:'gameList'});
     } catch (e) {
         res.status(500).json({message: e});
     }
