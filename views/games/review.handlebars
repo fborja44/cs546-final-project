@@ -54,7 +54,6 @@
     <div>
         <h3>Create a Reply</h3>
         <form method="POST" class="new-review-post" action="/games/{{game._id}}/review/{{review._id}}">
-            <input name="reply-gameId" value="{{game._id}}" type="hidden">
             <div class="form-elem">
                 <label>Reply</label>
                 <textarea name="replyBody" placeholder="Enter your reply here!" rows="4" cols="50"></textarea>

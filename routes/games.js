@@ -416,6 +416,7 @@ router.post('/search', async (req, res) => {
  router.post('/like/:id', async (req, res) => {
     // Parse the game id
     let id = xss(req.params.id);
+    let single = xss(req.body.singleLike);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -465,9 +466,12 @@ router.post('/search', async (req, res) => {
             return res.status(500).json({message: e});
         }
 
-        // Increment game's like count
+        // Decrement game's like count
         try {
             await gamesData.decrementLikes(id);
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
@@ -484,6 +488,9 @@ router.post('/search', async (req, res) => {
         // Increment game's like count
         try {
             await gamesData.incrementLikes(id);
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
@@ -543,6 +550,7 @@ router.post('/search', async (req, res) => {
 router.post('/wishlist/:id', async (req, res) => {
     // Parse the game id
     let id = xss(req.params.id);
+    let single = xss(req.body.singleWishlist);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -591,6 +599,9 @@ router.post('/wishlist/:id', async (req, res) => {
     if (wishlisted) {
         try {
             await usersData.removeWishlistedGame(req.session.user_id, id)
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
@@ -598,6 +609,9 @@ router.post('/wishlist/:id', async (req, res) => {
     } else {
         try {
             await usersData.addWishlistGame(req.session.user_id, id);
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
@@ -656,6 +670,7 @@ router.post('/wishlist/:id', async (req, res) => {
 router.post('/follow/:id', async (req, res) => {
     // Parse the game id
     let id = xss(req.params.id);
+    let single = xss(req.body.singleFollow);
     let errors = [];
 
     if (!id || id.trim().length === 0) {
@@ -708,6 +723,9 @@ router.post('/follow/:id', async (req, res) => {
         // Increment game's follow count
         try {
             await gamesData.decrementFollow(id);
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
@@ -724,6 +742,9 @@ router.post('/follow/:id', async (req, res) => {
         // Increment game's follow count
         try {
             await gamesData.incrementFollow(id);
+            if (single === 'single') {
+                return res.redirect(`/games/${id.trim()}`);
+            }
             return res.redirect("/games");
         } catch (e) {
             return res.status(500).json({message: e});
