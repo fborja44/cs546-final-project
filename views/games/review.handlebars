@@ -33,20 +33,31 @@
          
            
         <h3>Replies</h3>
+        {{#unless repliesEmpty}}
         <div>
-            {{review.replies}}
+            {{#each review.replies}}
+                <div class="review">
+                    <div class="review-heading">
+                        <img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
+                        <h2>Author: {{this.username}}</h2>
+                    </div>
+                    <p>Date: {{this.replyDate}}</p>
+                    <p>Reply: {{this.reply}}</p>
+                </div>
+            {{/each}}
         </div>
+        {{/unless}}
         {{#if repliesEmpty}}
         <p id="empty">This review has no replies. You can be the first to reply!</p>
         {{/if}}
     </div>
     <div>
         <h3>Create a Reply</h3>
-        <form method="POST" class="new-review-post">
-            <input name="gameTitle" value="{{game.title}}" type="hidden">
+        <form method="POST" class="new-review-post" action="/games/{{game._id}}/review/{{review._id}}">
+            <input name="reply-gameId" value="{{game._id}}" type="hidden">
             <div class="form-elem">
                 <label>Reply</label>
-                <textarea name="reviewBody" placeholder="Enter your reply here!" rows="4" cols="50"></textarea>
+                <textarea name="replyBody" placeholder="Enter your reply here!" rows="4" cols="50"></textarea>
             </div>
             <button type="submit">Submit</button>
         </form>

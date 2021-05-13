@@ -6,11 +6,12 @@ const xss = require('xss');
 const reviewsData = data.reviews;
 const gamesData = data.games;
 const usersData = data.users;
+const replyData = data.replies;
 
 router.get('/:id/review/:reviewId', async (req, res) => {
     // Parse the game and review id
-    let gameId = req.params.id;
-    let reviewId = req.params.reviewId;
+    let gameId = xss(req.params.id);
+    let reviewId = xss(req.params.reviewId);
     let errors = [];
 
     if (!gameId || gameId.trim().length === 0) {
@@ -23,7 +24,7 @@ router.get('/:id/review/:reviewId', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.status(404).json({messge: errors})
+        res.status(404).json({message: errors})
         return;
     }
 
@@ -148,14 +149,13 @@ router.get('/:gameId/:reviewId/profile', async (req, res) => {
 });
 
 router.post('/:gameId', async (req, res) => {
-    let gameId = req.params.gameId;
+    let gameId = xss(req.params.gameId);
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
 
-    //let reviewPost = xss(req.body);
     let reviewPost = req.body;
     let errors = [];
 
@@ -366,7 +366,6 @@ router.post('/:reviewId/update', async (req, res) => {
  */
 router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
-   console.log("in Likes");
    let reviewId = req.params.reviewId;
    let gameId = req.params.gameId;
     //let body = req.body;
@@ -496,8 +495,8 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
  */
  router.post('/:gameId/:reviewId/dislike', async (req, res) => {
     // Parse the game id
-   let reviewId = req.params.reviewId;
-   let gameId = req.params.gameId;
+   let reviewId = xss(req.params.reviewId);
+   let gameId = xss(req.params.gameId);
     //let body = req.body;
     let errors = [];
 
@@ -651,7 +650,6 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
         return;
     }
 
-
     // Check if review exists with reviewId
     let review;
     try {
@@ -706,9 +704,93 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     }
 });
 
+router.post('/:id/review/:reviewId', async (req, res) => {
+    let gameId = xss(req.params.id);
+    let reviewId = xss(req.params.reviewId);
+    let errors = [];
 
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
 
+    if (!gameId || gameId.trim().length === 0) {
+        errors.push('Missing id.');
+    }
 
+    if (!reviewId || reviewId.trim().length === 0) {
+        errors.push('Missing id.');
+    }
+
+    let reply = xss(req.body.replyBody);
+
+    if (!gameId) {
+        errors.push("Missing id");
+    } else if (gameId.trim().length === 0) {
+        errors.push("GameId must not be an empty string");
+    }
+
+    if (!reply) {
+        errors.push("A reply must be provided");
+    } else if (typeof reply !== 'string') {
+        errors.push("The reply must be a string");
+    } else if (reply.trim().length === 0) {
+        errors.push("The reply must not be empty");
+    }
+
+    // Check if game exists with gameId
+    let game;
+    try {
+        game = await gamesData.getGameById(gameId);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    // Check if review exists with reviewId
+    let review;
+    try {
+        review = await reviewsData.getReviewById(gameId, reviewId);
+    } catch (e) {
+        res.status(404).json({message: e}); // CHANGE THIS
+        return;
+    }
+
+    if (errors.length > 0) {
+        res.status(400).render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, hasErrors: true, errors: errors, signed_in: req.body.signed_in, partial:'gameList'});
+        return;
+    }
+
+    if (!req.session.user_id) {
+        // User is not authenticated
+        res.redirect(`/games/${gameId}`);
+        return;
+    }
+
+    let user;
+    try {
+    user = await usersData.getUserById(req.session.user_id);
+    } catch (e) {
+        res.status(404).json({message: e});
+        return;
+    }
+
+    try {
+        let replyInfo = await replyData.createReply(gameId.trim(), reviewId.trim(), user._id.trim(), today.toString(), reply.trim());
+        try {
+            review = await reviewsData.getReviewById(gameId, reviewId);
+        } catch (e) {
+            res.status(404).json({message: e}); // CHANGE THIS
+            return;
+        }
+        res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+    } catch (e) {
+        res.status(500).json({message: e});
+        return;
+    }
+    
+})
 
 
 module.exports = router;

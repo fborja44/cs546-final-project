@@ -41,6 +41,11 @@
         <input id="search" type="text" name="searchTerm" placeholder="Search for game(s)..." value="{{search_term_value}}">
         <button type="submit">></button>
     </form>
+    <div class="center">
+        <div id="client-error">
+
+        </div>
+    </div>
     {{#if error}}
     <div class="center">
         <div class="form-error">
@@ -62,7 +67,6 @@
         </div>
         <img class="game-img" src="{{image}}" alt="{{title}}" title="{{title}}">
         <div class="info">
-            {{!-- <a href="games/{{replace title " " ""}}" class="title">{{title}}</a> --}}
             <a href="games/{{_id}}" class="title">{{title}}</a>
             <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>
             <table>

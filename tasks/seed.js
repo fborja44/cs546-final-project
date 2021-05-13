@@ -5,6 +5,7 @@ const data = require('../data/');
 const usersData = data.users;
 const gamesData = data.games;
 const reviewsData = data.reviews;
+const replyData = data.replies;
 const chalk = require('chalk'); // add colors to output for easier reading
 
 const main = async () => {
