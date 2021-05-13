@@ -105,7 +105,7 @@ router.get('/private/edit', async (req, res) => {
         return;
     }
 
-    res.render('users/edit',  {title: "Edit",signed_in: req.body.signed_in, partial:"editUser"});
+    res.render('users/edit',  {title: "Edit", signed_in: req.body.signed_in, partial:"editUser"});
 
  
 });

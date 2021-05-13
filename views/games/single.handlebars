@@ -56,11 +56,14 @@
             <p>Author: <a class="user-link" href="/public/{{author._id}}"> {{author.username}} </a></p>
             <p>Date: {{reviewDate}}</p>
             <p>Review: {{review}}</p>
+            <!-- Review Action Buttons -->
+            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}">Leave a Reply</a> 
+            {{#if (checkUserId ../user author._id)}}
             <form class="delete-form">
                 <button class="reply-link delete-link" type="submit" formaction="/games/{{gameId}}/{{_id}}/delete" formmethod="POST">Delete</button>
-            </form>
-            <a class="reply-link" href="/games/{{gameId}}/{{_id}}/editreview">Edit</a>
-            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}">Leave a Reply</a>
+            </form> 
+            <a class="reply-link" href="/games/{{gameId}}/{{_id}}/editreview">Edit</a> 
+            {{/if}}
             <div class="button-container">
                 <form class="action-form" action="/games/{{gameId}}/{{_id}}/like" method="POST">
                     <label for="like-{{_id}}">Like</label>

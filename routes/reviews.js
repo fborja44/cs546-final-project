@@ -310,8 +310,6 @@ router.post('/:reviewId/update', async (req, res) => {
 
 });
 
-
-
 /**
  * Increases the review's like count.
  */
