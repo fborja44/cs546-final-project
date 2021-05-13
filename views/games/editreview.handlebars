@@ -1,34 +1,34 @@
 <link rel="stylesheet" href="/public/css/review.css">
 <div class ="review-container">
         {{#if review}}
-         <a id="return" href="/games/{{game._id}}">Back to Game</a>
+         <a id="return" href="/games/{{game._id}}">Back to Games List</a>
          <h1>Edit Review</h1>
-<form method="POST" action="/games/{{review._id}}/update" class="new-review-post">
-                <input name="gameTitle" value="{{review.gameTitle}}" type="hidden">
-                <input name="gameId" value="{{review.gameId}}" type="hidden">
-                <div class="form-elem">
-                    <label>Title</label>
-                    <input name="reviewTitle" type="text" value="{{review.reviewTitle}}" placeholder="Give your review a title!">
-                </div>
-                <div id="rating-input" class="form-elem">
-                    <label>Rating</label>
-                    <input name="reviewRating" type="number" value="{{review.rating}}" min="1" max="5" placeholder="5">
-                </div>
-                <div class="form-elem">
-                    <label>Review</label>
-                    <textarea name="reviewBody" placeholder="{{review.review}}" rows="4" cols="50"></textarea>
-                </div>
-                <button type="submit">Submit</button>
- </form>
-        {{/if}}
+    <form method="POST" action="/games/{{review._id}}/update" class="new-review-post">
+        <input name="gameTitle" value="{{review.gameTitle}}" type="hidden">
+        <input name="gameId" value="{{review.gameId}}" type="hidden">
+        <div class="form-elem">
+            <label for="reviewTitle">Title</label>
+            <input id="reviewTitle" name="reviewTitle" type="text" value="{{review.reviewTitle}}" placeholder="Give your review a title!">
+        </div>
+        <div id="rating-input" class="form-elem">
+            <label for="reviewRating">Rating</label>
+            <input id="reviewRating" name="reviewRating" type="number" value="{{review.rating}}" min="1" max="5" placeholder="5">
+        </div>
+        <div class="form-elem">
+            <label for="reviewBody">Review</label>
+            <textarea id="reviewBody" name="reviewBody" placeholder="{{review.review}}" rows="4" cols="50"></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    {{/if}}
 
-        {{#if hasErrors}}
-             <ul>
-               {{#each errors}}
-               <li class="reviewErrors">
-                    {{this}}
-               </li>
-              {{/each}}
-            </ul>
-            {{/if}}
+    {{#if hasErrors}}
+        <ul>
+        {{#each errors}}
+            <li class="reviewErrors">
+                {{this}}
+            </li>
+        {{/each}}
+        </ul>
+    {{/if}}
  </div>

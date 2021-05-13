@@ -338,7 +338,6 @@ router.post('/:reviewId/update', async (req, res) => {
     //  deleting review from user db
     let updatedUserInfo;
     try{
-
         updatedUserInfo = await usersData.deleteReview(user._id,user.reviews,reviewId);
     }catch(e){
         res.status(404).json({message: e}); // CHANGE THIS
@@ -664,7 +663,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        console.log("You must login to dislike a game."); // CHANGE THIS
+        console.log("You must login to delete a game."); // CHANGE THIS
         return res.redirect(`/games/${gameId}`);
     }
 
@@ -705,10 +704,5 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
             return;
     }
 });
-
-
-
-
-
 
 module.exports = router;

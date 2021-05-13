@@ -103,10 +103,10 @@ h3 {
 .prev, .next {
     cursor: pointer;
     position: absolute;
-    top: 50%;
+    top: 86.5%;
     width: auto;
     margin-top: -22px;
-    padding: 16px;
+    padding: 10px;
     color: black;
     font-weight: bold;
     font-size: 18px;
@@ -123,8 +123,7 @@ h3 {
 
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
+    color: #2473a4;
 }
 
 /* Caption text */

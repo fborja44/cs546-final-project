@@ -107,6 +107,10 @@ h2 {
     padding-top: 12px;
 }
 
+.user-link:hover {
+    color: #2473a4;
+}
+
 .review p {
     margin: 5px 15px 5px 15px;
 }
@@ -149,6 +153,22 @@ h2 {
 
 .reply-link:hover {
     color: #2473a4;
+}
+
+.delete-form {
+    padding: 0 0 0 0;
+    margin-right: 15px;
+}
+
+.delete-link {
+    background: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    font-weight: normal;
+}
+
+.delete-link:hover {
+    background: none;
 }
 
 /* Game image */
@@ -220,7 +240,7 @@ button {
     padding: 3px 10px 3px 10px;
     margin-left: 25px;
     font-family: "Poppins";
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 button:hover {
@@ -236,7 +256,6 @@ button:hover {
     position:absolute;
     left: 450px;
 }
-
 
 /*reviews button-container*/
 .button-container{
