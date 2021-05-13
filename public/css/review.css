@@ -84,7 +84,7 @@ h2 {
     background: #2FE58E;
     float: right;
     
-    color: white;
+    color: black;
     text-align: center;
     vertical-align: middle;
     
@@ -200,7 +200,7 @@ form {
 
 button {
     background: #2473a4;
-    color: white;
+    /* color: white; */
 
     font-size: 14px;
 
@@ -213,7 +213,16 @@ button {
     /* font-weight: bold; */
 }
 
-button:hover {
+/* button:hover {
+    background: #a6a6a6;
+    cursor: pointer;
+} */
+
+#reviewSubmitButton {
+    color: white;
+}
+
+#reviewSubmitButton:hover {
     background: #a6a6a6;
     cursor: pointer;
 }

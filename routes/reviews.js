@@ -710,16 +710,17 @@ router.post('/:id/review/:reviewId', async (req, res) => {
         return;
     }
 
+    if (!req.session.user_id) {
+        // User is not authenticated
+        errors.push("You must be logged in to submit a reply");
+    }
+
     if (errors.length > 0) {
         res.status(400).render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, hasErrors: true, errors: errors, signed_in: req.body.signed_in, partial:'gameList'});
         return;
     }
 
-    if (!req.session.user_id) {
-        // User is not authenticated
-        res.redirect(`/games/${gameId}`);
-        return;
-    }
+    
 
     let user;
     try {
