@@ -317,20 +317,18 @@ router.post('/:reviewId/update', async (req, res) => {
  */
 router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
-   console.log("in Likes");
-   let reviewId = req.params.reviewId;
-   let gameId = req.params.gameId;
+    let reviewId = req.params.reviewId;
+    let gameId = req.params.gameId;
     //let body = req.body;
     let errors = [];
 
-   if (!reviewId || reviewId.trim().length === 0) {
-     errors.push('Missing reviewId.');
-   }
+    if (!reviewId || reviewId.trim().length === 0) {
+        errors.push('Missing reviewId.');
+    }
 
-   if (!gameId || gameId.trim().length === 0) {
-     errors.push('Missing gameId.');
-   }
-
+    if (!gameId || gameId.trim().length === 0) {
+        errors.push('Missing gameId.');
+    }
 
     if (errors.length > 0) {
         res.status(404).json({message: e}); // CHANGE THIS

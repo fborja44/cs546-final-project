@@ -58,6 +58,21 @@ h2 {
     width: 150px;
     height: auto;
     /* float: left; */
+    display: block;
+}
+
+#user-info {
+    float: right;
+    display: block;
+    position: relative;
+    right: 615px;
+}
+
+#user-info-public {
+    float: right;
+    display: block;
+    position: relative;
+    right: 661px;
 }
 
 #empty {

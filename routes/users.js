@@ -7,8 +7,6 @@ const path = require('path');
 const xss = require('xss');
 const bcrypt = require('bcryptjs');
 
-
-
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const games = mongoCollections.games;
@@ -95,7 +93,7 @@ router.get('/', async (req, res) => {
     try {
         res.render('users/home', { title: "Home", games: games ,signed_in: req.body.signed_in, partial: 'home'});
     } catch (e) {
-        res.status(404).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in, partial:'home'});
+        res.status(500).render('general/error', { status: 500, error: 'Something went wrong with the server.' ,signed_in: req.body.signed_in, partial:'home'});
     }
     
 });
@@ -156,7 +154,7 @@ router.post('/private/edit', async (req, res) => {
 
          res.redirect('/private');
      } catch (e){
-        res.status(400).json({ error: 'Creation failed.'});
+        res.status(404).json({ error: 'User not found.'});
      }
 });
 
@@ -178,12 +176,12 @@ router.post('/signup', async (req, res) => {
     const password = xss(req.body.signup_password).toString().trim();
 
     if(!username || !firstName || !lastName || !email || !password){
-        res.status(400).render('users/signup', { error: "Error: Invalid inputs to sign up, all feilds must be supplied."});
+        res.status(400).render('users/signup', { error: "Error: Invalid input. All fields must be supplied.", partial:"signup"});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email)){
-        res.status(400).render('general/error', { error: "Error: Invaild email."});
+        res.status(400).render('general/error', { error: "Error: Invaild email.", partial:"signup"});
         return;
      }
 
@@ -195,7 +193,7 @@ router.post('/signup', async (req, res) => {
      try{
          let userInfo = await usersData.getUserByUsername(username);
          if(userInfo){
-            res.status(400).render('users/signup', { error: "Error : Username exists.", partial:"signup"});
+            res.status(400).render('users/signup', { error: "Error : Username already exists.", partial:"signup"});
             return;
          }
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
@@ -204,7 +202,7 @@ router.post('/signup', async (req, res) => {
          res.redirect('/');
         //  res.render('users/home', { message: `Welcome ${newUser.username}`});
      } catch (e){
-        res.status(400).json({ error: 'Creation failed.'});
+        res.status(400).json({ error: 'Failed to create user.'});
      }
 
 });

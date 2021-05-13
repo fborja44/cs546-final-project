@@ -3,10 +3,12 @@
     {{#if user}}
     <div class="user">
         <h1>{{user.username}}'s Profile</h1>
-        <div class="content-container"> 
+        <div class="content-container">
+            <div id="user-info">
+                <p>Name: {{user.firstName}} {{user.lastName}}</p>
+                <p>Email: {{user.email}}</p>
+            </div>
             <img id="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">
-            <p>{{user.firstName}} {{user.lastName}}</p>
-            <p>Email: {{user.email}}</p>
             <div class="update">
                 <a id = "editProfile" class = "update" href="/private/edit">Edit Profile</a>
             </div>
