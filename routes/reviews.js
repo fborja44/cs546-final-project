@@ -94,56 +94,8 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 
     try {
-        res.render('games/editreview', {review:review, partial:'gameList'});
+        res.render('games/editreview', {title:review.reviewTitle, review:review, partial:'gameList'});
     } catch (e) {
-        res.status(500).json({message: e});
-    }
-});
-
-router.get('/:gameId/:reviewId/profile', async (req, res) => {
-    // Parse the game and review id
-    let reviewId = req.params.reviewId;
-    let gameId = req.params.gameId;
-
-    let errors = [];
-
-    if (!gameId || gameId.trim().length === 0) {
-        errors.push('Missing id.');
-    }
-
-    if (!reviewId || reviewId.trim().length === 0) {
-        errors.push('Missing id.');
-    }
-
-    if (errors.length > 0) {
-        res.status(404).json({messge: errors})
-        return;
-    }
-
-    // Check if review exists with reviewId
-    let review;
-    try {
-
-        review = await reviewsData.getReviewById(gameId, reviewId);
-    } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
-
-    let userId = review.author._id;
-    let user;
-    try{
-        user = await usersData.getUserById(userId);
-    }catch(e){
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
-
-    //what handlebars to use??
-    try {
-        res.render('users/single', {user:user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, partial:'script'});
-    } catch (e) {
-        console.log(e);
         res.status(500).json({message: e});
     }
 });
@@ -338,7 +290,6 @@ router.post('/:reviewId/update', async (req, res) => {
     //  deleting review from user db
     let updatedUserInfo;
     try{
-
         updatedUserInfo = await usersData.deleteReview(user._id,user.reviews,reviewId);
     }catch(e){
         res.status(404).json({message: e}); // CHANGE THIS
@@ -359,26 +310,23 @@ router.post('/:reviewId/update', async (req, res) => {
 
 });
 
-
-
 /**
- * increases the review's like count.
+ * Increases the review's like count.
  */
 router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
-   let reviewId = req.params.reviewId;
-   let gameId = req.params.gameId;
+    let reviewId = req.params.reviewId;
+    let gameId = req.params.gameId;
     //let body = req.body;
     let errors = [];
 
-   if (!reviewId || reviewId.trim().length === 0) {
-     errors.push('Missing reviewId.');
-   }
+    if (!reviewId || reviewId.trim().length === 0) {
+        errors.push('Missing reviewId.');
+    }
 
-   if (!gameId || gameId.trim().length === 0) {
-     errors.push('Missing gameId.');
-   }
-
+    if (!gameId || gameId.trim().length === 0) {
+        errors.push('Missing gameId.');
+    }
 
     if (errors.length > 0) {
         res.status(404).json({message: e}); // CHANGE THIS
@@ -491,7 +439,7 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
 
 
 /**
- * increases the review's like count.
+ * Increases the review's like count.
  */
  router.post('/:gameId/:reviewId/dislike', async (req, res) => {
     // Parse the game id
@@ -620,7 +568,9 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
 
 });
 
-
+/**
+ * Route to delete a review.
+ */
 router.post('/:id/:reviewId/delete', async (req, res) => {
     // Parse the game and review id
     let gameId = req.params.id;
@@ -662,7 +612,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
-        console.log("You must login to dislike a game."); // CHANGE THIS
+        console.log("You must login to delete a game."); // CHANGE THIS
         return res.redirect(`/games/${gameId}`);
     }
 
@@ -704,6 +654,9 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     }
 });
 
+/**
+ * Route to add a reply to a review.
+ */
 router.post('/:id/review/:reviewId', async (req, res) => {
     let gameId = xss(req.params.id);
     let reviewId = xss(req.params.reviewId);

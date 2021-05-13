@@ -118,15 +118,16 @@ footer p.right {
 .login-container button {
     color: black;
     margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .login-header {
     background-image: linear-gradient(to right, #2473a4, #18415b);
-    color: white;
+    color: black;
     font-weight: normal;
 }
 
-.login-header h2 {
+.login-header h1 {
     padding: 10px 0 10px 0;
 }
 
@@ -172,12 +173,12 @@ footer p.right {
 
 .login-error p {
     margin: 0 0 0 0;
-    color: rgb(165, 143, 143);
+    color: black;
 }
 
 
 .signError {
-    color: red;
+    color: #bc0000;
 }
 
 /* Error Page Styles */
@@ -202,5 +203,6 @@ footer p.right {
 }
 
 .reviewErrors{
-    color:red;
+    color: #bc0000;
+    text-align: center;
 }

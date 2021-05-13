@@ -224,6 +224,8 @@ h1 {
 
 #new-submit {
     margin: 10px auto 0 auto;
+    color: white;
+    font-weight: normal;
 }
 
 .form-elem {
@@ -241,17 +243,17 @@ h1 {
 }
 
 .gameFormError {
-    color: red;
+    color: #bc0000;
     text-align: left;
 }
 
 .form-elem .gameFormInputError {
-    border-color:red;
+    border-color:#bc0000;
     border-width: 3px;
 }
 
 .error-elem {
-    color:red;
+    color:#bc0000;
 }
 
 .hidden {
