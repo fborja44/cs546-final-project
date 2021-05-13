@@ -169,7 +169,7 @@ async function getReviewById(gameId,reviewId){
  * @param {number} rating
  * @param {string} reviewId
  */
-async function updateReview(gameId,reviewId, reviewTitle, reviewDate, review, rating){
+async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, review, rating){
 
     // gameId error checking
     if (!gameId) throw "A gameId must be provided";
@@ -191,19 +191,16 @@ async function updateReview(gameId,reviewId, reviewTitle, reviewDate, review, ra
         specificReview.reviewTitle = reviewTitle
     }
 
-    // author error checking
-    //if (!author) author_ = games.author;
-    // else:
-    //     if (typeof author !== 'object') throw `${author || "provided argument"} must be a string`;
-        // author username
-        // if (!author.username) throw "Author's username must be provided";
-        // if (typeof author.username !== 'string') throw `${author.username || "provided argument"} must be a string`;
-        // if (author.username.trim().length === 0) throw "Author's username must not be an empty string";
-        // // author id
-        // if (!author._id) throw "Author's id must be provided";
-        // if (typeof author._id !== 'string') throw `${author.username || "provided argument"} must be a string`;
-        // if (author._id.trim().length === 0) throw "Author's id must not be an empty string";
-
+    //author error checking
+    if (typeof author !== 'object') throw `${author || "provided argument"} must be a string`;
+    if (!author.username) throw "Author's username must be provided";
+    if (typeof author.username !== 'string') throw `${author.username || "provided argument"} must be a string`;
+    if (author.username.trim().length === 0) throw "Author's username must not be an empty string";
+    // author id
+    if (!author._id) throw "Author's id must be provided";
+    if (typeof author._id !== 'string') throw `${author.username || "provided argument"} must be a string`;
+    if (author._id.trim().length === 0) throw "Author's id must not be an empty string";
+    specificReview.author = author;
 
     // reviewDate error checking
     if (reviewDate || reviewDate.trim().length ===0) {
