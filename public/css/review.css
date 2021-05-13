@@ -26,7 +26,7 @@ th {
 }
 
 h1 {
-    color: white;
+    color: black;
     padding: 10px 15px 10px 15px;
     margin: auto;
     background-image: linear-gradient(to right, #2473a4, #18415b);
@@ -36,7 +36,7 @@ h1 {
 }
 
 h3 {
-    color: white;
+    color: black;
     padding: 5px 15px 5px 15px;
     margin: auto;
     background-image: linear-gradient(to right, #2473a4, #18415b);
@@ -51,6 +51,9 @@ h2 {
     font-size: 18px;
 }
 
+#return:hover {
+    color: white;
+}
 
 /*reviews button-container*/
 .button-container{
@@ -185,9 +188,6 @@ h2 {
     margin: auto;
 }
 
-
-
-
 /** Reply Form **/
 form {
     padding: 0px 15px 15px 0;
@@ -200,7 +200,7 @@ form {
 
 button {
     background: #2473a4;
-    color: black;
+    color: white;
 
     font-size: 14px;
 
@@ -210,7 +210,7 @@ button {
     padding: 3px 10px 3px 10px;
     margin-left: 25px;
     font-family: "Poppins";
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 button:hover {

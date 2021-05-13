@@ -104,6 +104,13 @@ handlebarsInstance.handlebars.registerHelper('stringOfArray', function(array) {
   return string;
 });
 
+/**
+ * Handlebars helper to check the currently logged in user
+ */
+ handlebarsInstance.handlebars.registerHelper('checkUserId', function(userId, id) {
+    return userId == id;
+});
+
 
 // Create session
 app.use(session({

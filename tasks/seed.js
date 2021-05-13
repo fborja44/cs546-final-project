@@ -128,6 +128,72 @@ const main = async () => {
     )
     let game8_id = game8._id.toString();
 
+    /* Creating Users
+    ---------------------------------------------------------------------------*/
+    let user1 = await usersData.createUser(
+        "fborja44",
+        "Francis",
+        "Borja",
+        "fborja@stevens.edu",
+        "supersecret"
+    )
+    let user1_id = user1._id.toString();
+
+    let user2 = await usersData.createUser(
+        "naomi",
+        "Naomi",
+        "Zheng",
+        "nzheng1@stevens.edu",
+        "password"
+    )
+    let user2_id = user2._id.toString();
+
+    let user3 = await usersData.createUser(
+        "brian",
+        "Brian",
+        "Lee",
+        "elee9@stevens.edu",
+        "password"
+    )
+    let user3_id = user3._id.toString();
+
+    let user4 = await usersData.createUser(
+        "bingxin",
+        "Bingxin",
+        "Xia",
+        "bxia5@stevens.edu",
+        "password"
+    )
+    let user4_id = user4._id.toString();
+
+    let user5 = await usersData.createUser(
+        "BestProfessor",
+        "Patrick",
+        "Hill",
+        "phill@stevens.edu",
+        "cs546spring"
+    )
+    let user5_id = user5._id.toString();
+
+    /* Testing Users functions
+    ---------------------------------------------------------------------------*/
+    // Testing getAllUsers()
+    //let users = await usersData.getAllUsers();
+    // console.log(users);
+
+    // Testing getUserById()
+    //let usertest1 = await usersData.getUserById(user1_id);
+    // console.log(usertest1);
+
+    // Testing updateUserName()
+    //await usersData.updateUsername(user1_id, "fborja");
+
+    // Testing updateFirstName()
+    //await usersData.updateFirstName(user1_id, "Frankie")
+
+    // Testing updateLastName()
+    //await usersData.updateLastName(user1_id, "B");
+
     /* Creating reviews
     ---------------------------------------------------------------------------*/
     /* Game 1 Reviews: Cyberpunk 2077
@@ -135,7 +201,7 @@ const main = async () => {
     let review1_1 = await reviewsData.createReview(
         game1_id,
         "nice",
-        { username: "dude", _id: "1" },
+        { username: user1.username, _id: user1_id },
         "4/18/2020",
         "pretty cool",
         4
@@ -144,7 +210,7 @@ const main = async () => {
     let review1_2 = await reviewsData.createReview(
         game1_id,
         "sucks",
-        { username: "otherdude", _id: "2" },
+        { username: user2.username, _id: user2_id },
         "4/15/2020",
         "this game sucks",
         1
@@ -153,7 +219,7 @@ const main = async () => {
     let review1_3 = await reviewsData.createReview(
         game1_id,
         "ok i guess",
-        { username: "nextdude", _id: "3" },
+        { username: user3.username, _id: user3_id },
         "1/12/2021",
         "it was ok",
         3
@@ -164,7 +230,7 @@ const main = async () => {
     let review2_1 = await reviewsData.createReview(
         game2_id,
         "This Game is Awesome!",
-        { username: "ZeldaFan1000", _id: "4" },
+        { username: user2.username, _id: user2_id },
         "4/18/2017",
         "This is the greatest game ever! Nintendo really outdid themselves",
         5
@@ -173,7 +239,7 @@ const main = async () => {
     let review2_2 = await reviewsData.createReview(
         game2_id,
         "Could be better.",
-        { username: "xXPessimistXx", _id: "5" },
+        { username: user4.username, _id: user4_id },
         "6/23/2018",
         "It was an ok game I guess.",
         3
@@ -182,7 +248,7 @@ const main = async () => {
     let review2_3 = await reviewsData.createReview(
         game2_id,
         "5 Stars",
-        { username: "mang0", _id: "6" },
+        { username: user5.username, _id: user5_id },
         "6/23/2018",
         "^^^",
         5
@@ -191,7 +257,7 @@ const main = async () => {
     let review2_4 = await reviewsData.createReview(
         game2_id,
         "lol",
-        { username: "ok", _id: "100" },
+        { username: user1.username, _id: user1_id },
         "2/15/2019",
         "this is a review",
         5
@@ -202,7 +268,7 @@ const main = async () => {
     let review3_1 = await reviewsData.createReview(
         game3_id,
         "this game is bad",
-        { username: "dude", _id: "101" },
+        { username: user3.username, _id: user3_id },
         "5/1/2021",
         "its not good",
         1
@@ -213,7 +279,7 @@ const main = async () => {
     let review4_1 = await reviewsData.createReview(
         game4_id,
         "title",
-        { username: "guy", _id: "103" },
+        { username: user1.username, _id: user1_id },
         "1/1/2000",
         "dope",
         4
@@ -225,7 +291,7 @@ const main = async () => {
     let review6_1 = await reviewsData.createReview(
         game6_id,
         "kd is a snake",
-        { username: "kdburneraccount", _id: "102" },
+        { username: user4.username, _id: user4_id },
         "8/23/2020",
         "sssss",
         2
@@ -236,7 +302,7 @@ const main = async () => {
     let review8_1 = await reviewsData.createReview(
         game8_id,
         "The Best Game Ever",
-        { username: "TitanSlayer", _id: "7" },
+        { username: user2.username, _id: user2_id },
         "11/9/2020",
         "Supergiant always makes awesome games!",
         5
@@ -245,7 +311,7 @@ const main = async () => {
     let review8_2 = await reviewsData.createReview(
         game8_id,
         "The Best Game Ever2",
-        { username: "TitanSlayer2", _id: "8" },
+        { username: user5.username, _id: user5_id },
         "11/9/2020",
         "Supergiant always makes awesome games!",
         4
@@ -254,7 +320,7 @@ const main = async () => {
     let review8_3 = await reviewsData.createReview(
         game8_id,
         "The Best Game Ever3",
-        { username: "TitanSlayer3", _id: "9" },
+        { username: user1.username, _id: user1_id },
         "11/9/2020",
         "Supergiant always makes awesome games!",
         4
@@ -322,44 +388,6 @@ const main = async () => {
     let bestgenre1 = await gamesData.getBestGameByGenre("Action");
     // console.log(bestgenre1);
 
-    /* Creating Users
-    ---------------------------------------------------------------------------*/
-    let user1 = await usersData.createUser(
-        "fborja44",
-        "Francis",
-        "Borja",
-        "fborja@stevens.edu",
-        "supersecret"
-    )
-    let user1_id = user1._id.toString();
-
-    let user2 = await usersData.createUser(
-        "naomi",
-        "Naomi",
-        "Zheng",
-        "nzheng1@stevens.edu",
-        "password"
-    )
-
-    /* Testing Users functions
-    ---------------------------------------------------------------------------*/
-    // Testing getAllUsers()
-    let users = await usersData.getAllUsers();
-    // console.log(users);
-
-    // Testing getUserById()
-    let usertest1 = await usersData.getUserById(user1_id);
-    // console.log(usertest1);
-
-    // Testing updateUserName()
-    //await usersData.updateUsername(user1_id, "fborja");
-
-    // Testing updateFirstName()
-    await usersData.updateFirstName(user1_id, "Frankie")
-
-    // Testing updateLastName()
-    await usersData.updateLastName(user1_id, "B");
-
      /* Testing Review functions
     ---------------------------------------------------------------------------*/
     //Testing Delete Review();
@@ -378,12 +406,6 @@ const main = async () => {
     // Finished seeding
     console.log(chalk.yellow("\nDatabase seeding complete."));
     await db.serverConfig.close();
-
-
-
-
-
-
 }
 
 main().catch(console.log);
