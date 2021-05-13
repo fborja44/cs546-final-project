@@ -99,54 +99,6 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 });
 
-router.get('/:gameId/:reviewId/profile', async (req, res) => {
-    // Parse the game and review id
-    let reviewId = req.params.reviewId;
-    let gameId = req.params.gameId;
-
-    let errors = [];
-
-    if (!gameId || gameId.trim().length === 0) {
-        errors.push('Missing id.');
-    }
-
-    if (!reviewId || reviewId.trim().length === 0) {
-        errors.push('Missing id.');
-    }
-
-    if (errors.length > 0) {
-        res.status(404).json({messge: errors})
-        return;
-    }
-
-    // Check if review exists with reviewId
-    let review;
-    try {
-
-        review = await reviewsData.getReviewById(gameId, reviewId);
-    } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
-
-    let userId = review.author._id;
-    let user;
-    try{
-        user = await usersData.getUserById(userId);
-    }catch(e){
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
-
-    //what handlebars to use??
-    try {
-        res.render('users/single', {user:user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, partial:'script'});
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({message: e});
-    }
-});
-
 router.post('/:gameId', async (req, res) => {
     let gameId = req.params.gameId;
     var today = new Date();

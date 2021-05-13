@@ -282,11 +282,8 @@ router.get('/private', async (req, res) => {
     res.redirect(address);
 });
 
-
-
-
 /**
- * Route to individual user page. Private.
+ * Route to a user's private user page.
  */
 router.get('/private/:id', async (req, res) => {
     if (!req.session.user_id || !req.params.id){
@@ -297,7 +294,6 @@ router.get('/private/:id', async (req, res) => {
     const userId = req.session.user_id;
     if (id != userId)
         id = userId;
-    let errors = [];
 
     if (!id) {
         // Display error page. error.handlebars
@@ -306,12 +302,27 @@ router.get('/private/:id', async (req, res) => {
 
     try {
         const user = await usersData.getUserById(id);
-
-        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishEmpty: user.wishlist.length === 0,signed_in: req.body.signed_in , partial:'signup'});
-
-
+        res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
         res.status(404).render('general/error', { status: 404, error: "User not found." } );
+    }
+});
+
+/**
+ * Route to a user's public user page.
+ */
+router.get('/public/:id', async (req, res) => {
+    let id = req.params.id;
+    if (!id) {
+        // Display error page. error.handlebars
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
+    }
+
+    try {
+        const user = await usersData.getUserById(id);
+        res.render('users/single', {title: user.username, user: user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, signed_in: req.body.signed_in, partial:'signup'});
+    } catch (e) {
+        res.status(404).json({message: e});
     }
 });
 
