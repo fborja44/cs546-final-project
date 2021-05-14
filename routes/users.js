@@ -196,7 +196,7 @@ router.post('/signup', async (req, res) => {
      try{
          let userInfo = await usersData.getUserByUsername(username);
          if(userInfo){
-            res.status(400).render('users/signup', { error: "Error : Username already exists.", signed_in: req.body.signed_in, partial:"signup"});
+            res.status(400).render('users/signup', { error: "Error: Username already exists.", signed_in: req.body.signed_in, partial:"signup"});
             return;
          }
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
