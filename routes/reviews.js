@@ -7,6 +7,15 @@ const reviewsData = data.reviews;
 const gamesData = data.games;
 const usersData = data.users;
 const replyData = data.replies;
+let nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'vgreviewsnotifications@gmail.com',
+    pass: "francisnaomibrianbing551!"
+  }
+});
 
 router.get('/:id/review/:reviewId', async (req, res) => {
     // Parse the game and review id
@@ -176,6 +185,34 @@ router.post('/:gameId', async (req, res) => {
           //adding the newly written review to the users database
         user.reviews.push(newReview);
         await usersData.addReviews(user._id,user.reviews);
+
+        // Sending notifications
+        let listOfUsers = await usersData.getAllUsers();
+        let followers = [];
+        for (let x of listOfUsers) {
+            for (let y of x.follows) {
+                if (y._id === game._id) {
+                    followers.push(x);
+                    break;
+                }
+            }
+        }
+        for (let x of followers) {
+            let mailOptions = {
+                from: "vgreviewsnotifications@gmail.com",
+                to: `${x.email}`,
+                subject: `New Review for ${game.title}`,
+                text: `A review has been made for ${game.title}`
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+        }
+        
         return res.redirect(`/games/${game._id}`);
 
     } catch (e) {

@@ -263,6 +263,11 @@ router.post('/login', async (req, res) => {
  * Route to handle user logout
  */
 router.get('/logout', async (req, res) => {
+    if (!req.body.signed_in) {
+        console.log('hello');
+        res.redirect('/login');
+        return;
+    }
     let userInfo = await usersData.getUserById(req.session.user_id);
     req.session.destroy();
     let gamesList;
@@ -270,7 +275,8 @@ router.get('/logout', async (req, res) => {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"signup"});
+        console.log('hello');
+        return res.status(404).render('general/error', { status: "404", error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"signup"});
     }
     res.redirect('/');
     return;
@@ -304,14 +310,14 @@ router.get('/private/:id', async (req, res) => {
 
     if (!id) {
         // Display error page. error.handlebars
-        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
+        res.status(404).render('general/error', { status: "404", error: "User ID missing." ,signed_in: req.body.signed_in} );
     }
 
     try {
         const user = await usersData.getUserById(id);
         res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
-        res.status(404).render('general/error', { status: 404, signed_in: req.body.signed_in, error: "User not found." } );
+        res.status(404).render('general/error', { status: "404", signed_in: req.body.signed_in, error: "User not found.", partial: "gameList"} );
     }
 });
 
@@ -322,7 +328,7 @@ router.get('/public/:id', async (req, res) => {
     let id = req.params.id;
     if (!id) {
         // Display error page. error.handlebars
-        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in, partial:"gameList"} );
     }
 
     try {
