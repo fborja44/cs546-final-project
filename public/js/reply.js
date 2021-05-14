@@ -2,6 +2,7 @@
 * To check inputs of the reply form, before submission.
 */
 
+(function(){
 $("#reply-form").submit(function(event) {
 
     $(".reviewErrors").empty();
@@ -27,3 +28,4 @@ $("#reply-form").submit(function(event) {
     }
 
 })
+})();
