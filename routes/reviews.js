@@ -655,7 +655,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
 /**
  * Route to add a reply to a review.
  */
-router.post('/:id/review/:reviewId', async (req, res) => {
+router.get(':id/review/:reviewId/replies', async (req, res) => {
     let gameId = xss(req.params.id);
     let reviewId = xss(req.params.reviewId);
     let errors = [];
@@ -735,11 +735,13 @@ router.post('/:id/review/:reviewId', async (req, res) => {
             res.status(404).json({message: e}); // CHANGE THIS
             return;
         }
-        res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+        // res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+        return res.json({reply:replyInfo});
     } catch (e) {
         res.status(500).json({message: e});
         return;
     }
+ 
     
 })
 
