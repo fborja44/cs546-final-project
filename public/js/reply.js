@@ -43,6 +43,7 @@
             };
               
                $.ajax(requestConfig).then(function(responseMessage) {
+                   console.log("hello");
                    console.log(responseMessage);
                });
        

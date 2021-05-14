@@ -662,7 +662,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
 /**
  * Route to add a reply to a review.
  */
-router.post(':id/review/:reviewId', async (req, res) => {
+router.post('/:id/review/:reviewId', async (req, res) => {
     let gameId = xss(req.params.id);
     let reviewId = xss(req.params.reviewId);
     let errors = [];
