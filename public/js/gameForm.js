@@ -9,6 +9,10 @@
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
 
     const validPrice = /^.+: \$\d+.\d\d$/; // price format
+
+    function checkURL(url) {
+        return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); // https://stackoverflow.com/questions/9714525/javascript-image-url-verify
+    }
   
     // Add game form
     const form = document.getElementById('game-new'); 
@@ -204,6 +208,12 @@
             }
             if (!validURL.test(image) && imageError) {
                 errorsMsg.push(`The image must be a valid url`);
+                errorList.push("image");
+                imageError = false;
+                error = true;
+            }
+            if (!checkURL(image) && imageError) {
+                errorsMsg.push("The image must be a valid url");
                 errorList.push("image");
                 imageError = false;
                 error = true;
@@ -428,16 +438,16 @@
 
             for (let x of e[2]) {
                 let genre = document.getElementById(`genre-input${x}`);
-                genre.classList.add("gameFormInputError");
+                genre.classList.add("error-elem");
             }
 
             for (let x of e[3]) {
                 let platform = document.getElementById(`platform-input${x}`);
-                platform.classList.add("gameFormInputError");
+                platform.classList.add("error-elem");
             }
             for (let x of e[4]) {
                 let price = document.getElementById(`price-input${x}`);
-                price.classList.add("gameFormInputError");
+                price.classList.add("error-elem");
             }
             errorContainer.classList.remove('hidden');
         }

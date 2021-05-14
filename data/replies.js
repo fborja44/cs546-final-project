@@ -69,6 +69,9 @@ async function createReply(gameId, reviewId, userId, replyDate, reply) {
     if (reply.trim().length === 0) {
         throw "The reply must not be an empty string";
     }
+    if (reply.trim().length >= 1000) {
+        throw "The reply must be less than 1000 characters";
+    }
 
     const gameCollection = await games();
     const userCollection = await users();

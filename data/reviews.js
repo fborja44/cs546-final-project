@@ -20,6 +20,7 @@
     if (!gameId) throw "A gameId must be provided";
     if (typeof gameId !== 'string') throw `${gameId || "provided argument"} must be a string`;
     if (gameId.trim().length === 0) throw "The gameId must not be an empty string";
+    let parsedGameId = ObjectId(gameId.trim()); // Check if its a valid id
 
     // reviewTitle error checking
     if (!reviewTitle) throw "A reviewTitle must be provided";
@@ -29,7 +30,9 @@
 
     // author error checking
     if (!author) throw "An author must be provided";
-    if (typeof author !== 'object') throw `${author || "provided argument"} must be a string`;
+    if (typeof author !== 'object') throw `${author || "provided argument"} must be an object`;
+    if (Array.isArray(author)) throw "The author must be an object";
+    if (author === null) throw "The author must be not null";
     // author username
     if (!author.username) throw "Author's username must be provided";
     if (typeof author.username !== 'string') throw `${author.username || "provided argument"} must be a string`;
@@ -54,22 +57,26 @@
     if (rating === null) throw "A rating must be provided";
     if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${rating || "provided argument"} must be an integer.`;
     if (rating < 1 || rating > 5) throw "The rating must be an integer in the range [1-5]";
+    if (isNaN(rating)) throw "The rating must not be NaN";
 
     const gameCollection = await games();
 
     let gameInfo;
-    try{ gameInfo = await gamesData.getGameById(gameId)
-       }catch(e){
+    try { 
+        gameInfo = await gamesData.getGameById(gameId)
+        } catch(e){
            throw "Invalid gameId. Can not get game by Id"
-       }
-     let newReview = {
+        }
+    let parsedAuthorId = ObjectId(author._id.trim());
+    
+    let newReview = {
         _id: ObjectId(),
-        gameId: gameId,
+        gameId: parsedGameId, // change back to string if doesn't work
         reviewTitle: reviewTitle.trim(),
         gameTitle: gameInfo.title,
         author: {
             username: author.username.trim(),
-            _id: author._id.trim()
+            _id: parsedAuthorId // change back to string if doesn't work 
         },
         reviewDate: reviewDate,
         review: review.trim(),
@@ -78,7 +85,7 @@
         reviewLikes:0,
         reviewDislikes:0
     }
-    parsedGameId = ObjectId(gameId);
+    // parsedGameId = ObjectId(gameId);
 
     const updateInfo = await gameCollection.updateOne(
         { _id: parsedGameId },
@@ -86,6 +93,8 @@
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to create review.';
     newReview._id = newReview._id.toString();
+    newReview.gameId = newReview.gameId.toString();
+    newReview.author._id = newReview.author._id.toString();
 
     // Also remember to update the game's average rating!
     let total = 0, avgRating;
@@ -97,7 +106,12 @@
     avgRating = total/game.reviews.length;
     // trim to 1 decimal
     avgRating = parseFloat(avgRating.toFixed(1));
-    await gamesData.updateGameRating(gameId, avgRating);
+    let updateGameRatingInfo;
+    try {
+        updateGameRatingInfo = await gamesData.updateGameRating(gameId, avgRating);
+    } catch (e) {
+        throw "Could not update game rating";
+    }
 
     return newReview;
 }
@@ -111,6 +125,8 @@ async function getAllReviews(gameId) {
     if (!gameId) throw "A title must be provided";
     if (typeof gameId !== 'string') throw `${gameId || "provided argument"} must be a string`;
     if (gameId.trim().length === 0) throw "The gameId must not be an empty string";
+
+    let parsedGameId = ObjectId(gameId.trim());
 
     const game = await gamesData.getGameById(gameId);
     return game.reviews;

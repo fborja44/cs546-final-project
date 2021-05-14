@@ -22,6 +22,10 @@ const validURL = new RegExp('^(https?:\\/\\/)?'+ // protocol
 
 const validPrice = /^.+: \$\d+.\d\d$/; // price format
 
+function checkURL(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); // https://stackoverflow.com/questions/9714525/javascript-image-url-verify
+}
+
 /**
  * Renders games list page.
  */
@@ -120,6 +124,8 @@ router.post('/new', async (req, res) => {
     } else if (gameData.newImage.trim().length === 0) {
         errors.push("The image must not be an empty string");
     } else if (!validURL.test(gameData.newImage)) {
+        errors.push("The image must be a valid url");
+    } else if (!checkURL(gameData.newImage)) {
         errors.push("The image must be a valid url");
     }
 

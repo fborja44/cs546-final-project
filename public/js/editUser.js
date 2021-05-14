@@ -1,4 +1,5 @@
-$("#edit-form").submit(function(event) {
+(function($) {
+    $("#edit-form").submit(function(event) {
 
     $("#editError").empty();
     $("#editError").hide();
@@ -34,4 +35,5 @@ $("#edit-form").submit(function(event) {
         $("#editpError").show();
     }
 
-})
+    });
+})(window.jQuery);

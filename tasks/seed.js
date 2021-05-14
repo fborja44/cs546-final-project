@@ -62,7 +62,7 @@ const main = async () => {
     -----------------------------------------------------*/
     let game4 = await gamesData.createGame(
         "Pokémon Emerald",
-        "https://e.snmc.io/lk/f/x/a9134260c04804e3ae77eb4fb7760be7/5280480",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1zhr.jpg",
         "Gamefreak",
         ["Adventure", "RPG", "Strategy"],
         "2004",
@@ -76,7 +76,7 @@ const main = async () => {
     -----------------------------------------------------*/
     let game5 = await gamesData.createGame(
         "NBA 2K21",
-        "https://specials-images.forbesimg.com/imageserve/5efac3590c5dac00077000c0/960x0.jpg?fit=scale",
+        "https://specials-images.forbesimg.com/imageserve/5efac3590c5dac00077000c0/960x0.jpg",
         "2K Games",
         ["Sports", "Simulation"],
         "2020",

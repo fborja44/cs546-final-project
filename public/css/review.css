@@ -218,11 +218,11 @@ button {
     cursor: pointer;
 } */
 
-#reviewSubmitButton {
+.reviewSubmitButton {
     color: white;
 }
 
-#reviewSubmitButton:hover {
+.reviewSubmitButton:hover {
     background: #a6a6a6;
     cursor: pointer;
 }
