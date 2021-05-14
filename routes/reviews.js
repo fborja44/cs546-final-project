@@ -204,19 +204,22 @@ router.post('/:gameId', async (req, res) => {
             }
         }
         for (let x of followers) {
-            let mailOptions = {
-                from: "vgreviewsnotifications@gmail.com",
-                to: `${x.email}`,
-                subject: `New Review for ${game.title}`,
-                text: `A review has been made for ${game.title}`
-            };
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                  console.log(error);
-                } else {
-                  console.log('Email sent: ' + info.response);
-                }
-              });
+            if (req.session.user_id != x._id) { // only send to other users
+                let mailOptions = {
+                    from: "vgreviewsnotifications@gmail.com",
+                    to: `${x.email}`,
+                    subject: `VGReviews: New Review for ${game.title}`,
+                    text: `The user ${newReview.author.username} has posted a new review for the game ${game.title} with a score of ${newReview.rating}.`
+                };
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log('Email sent: ' + info.response);
+                    }
+                });
+            }
+
         }
         
         return res.redirect(`/games/${game._id}`);
