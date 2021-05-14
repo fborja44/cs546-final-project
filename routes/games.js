@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         let gamesList = await gamesData.getAllGames();
         res.render('games/gameslist', { title: "Games", games: gamesList , gamesEmpty: gamesList.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
     } catch (e) {
-        res.status(500).json({message: e});
+        res.status(500).render("general/error", {title: "Error", status:"500", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
 });
 
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
     try {
         res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
     } catch (e) {
-        res.status(500).json({message: e});
+        res.status(500).render("general/error", {title: "Error", status:"500", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
 });
 
@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.render('games/single', {
+        res.status(400).render('games/single', {
           errors: errors,
           hasErrors: true,
           title: "Error"
@@ -74,7 +74,7 @@ router.get('/', async (req, res) => {
         let game = await gamesData.getGameById(id);
         res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , user: req.session.user_id, signed_in: req.body.signed_in, partial:'gameList'});
     } catch (e) {
-        res.status(404).json({message: e});
+        res.status(404).render("general/error", {title: "Error", status:"404", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
 });
 
@@ -245,7 +245,7 @@ router.post('/new', async (req, res) => {
     }
 
     if (errors.length > 0) { 
-        res.status(400).render('games/newgame', { title: "Add Game", error: errors, partial:"gameForm"});
+        res.status(400).render('games/newgame', { title: "Add Game", error: errors, signed_in: req.body.signed_in, partial:"gameForm"});
         return;
     }
 
@@ -270,7 +270,9 @@ router.post('/new', async (req, res) => {
                 platform: platformsTrim[0],
                 price: gameData.newPrices[0].trim(),
                 description: gameData.newDesc.trim(),
-                error: errors, signed_in: req.body.signed_in, partial:"gameForm"});
+                error: errors, 
+                signed_in: req.body.signed_in, 
+                partial:"gameForm"});
         return;
     }
 
@@ -299,12 +301,14 @@ router.post('/search', async (req, res) => {
     // maybe update to make it so search type is remembered after search?
     let gamesList = await gamesData.getAllGames();
     if (errors.length > 0) { 
-        res.render('games/gameslist', { title: "Games", 
+        res.status(400).render('games/gameslist', { title: "Games", 
                                         games: gamesList , 
                                         gamesEmpty: gamesList.length === 0, 
                                         error: errors, 
                                         search_type_value: searchType, 
-                                        search_term_value: searchTerm , signed_in: req.body.signed_in, partial:"gameList"});
+                                        search_term_value: searchTerm , 
+                                        signed_in: req.body.signed_in, 
+                                        partial:"gameList"});
         return;
     }
     
@@ -321,9 +325,11 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: false,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in , partial:"gameList"});
+                                            signed_in: req.body.signed_in , 
+                                            partial:"gameList"});
+            return;
         } catch (e) {
-            res.render('games/gameslist', { title: "Games", 
+            res.status(500).render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
@@ -333,7 +339,9 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: false,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in , partial:"gameList"});
+                                            signed_in: req.body.signed_in , 
+                                            partial:"gameList"});
+            return;
         }
     } else if (searchType === "genre") {
         try {
@@ -347,9 +355,11 @@ router.post('/search', async (req, res) => {
                                             genre_selected: true,
                                             platform_selected: false,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in , partial:"gameList"});
+                                            signed_in: req.body.signed_in , 
+                                            partial:"gameList"});
+            return;
         } catch (e) {
-            res.render('games/gameslist', { title: "Games", 
+            res.status(500).render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
@@ -359,7 +369,9 @@ router.post('/search', async (req, res) => {
                                             genre_selected: true,
                                             platform_selected: false,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in, partial:"gameList"});
+                                            signed_in: req.body.signed_in, 
+                                            partial:"gameList"});
+            return;
         }
     } else if (searchType === "platform") {
         try {
@@ -373,9 +385,11 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: true,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in, partial:"gameList"});
+                                            signed_in: req.body.signed_in, 
+                                            partial:"gameList"});
+            return;
         } catch (e) {
-            res.render('games/gameslist', { title: "Games", 
+            res.status(500).render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
@@ -385,7 +399,9 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: true,
                                             price_selected: false,
-                                            signed_in: req.body.signed_in, partial:"gameList"});
+                                            signed_in: req.body.signed_in, 
+                                            partial:"gameList"});
+            return;
         }
     } else if (searchType === "price") {
         try {
@@ -399,9 +415,11 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: false,
                                             price_selected: true,
-                                            signed_in: req.body.signed_in, partial:"gameList"});
+                                            signed_in: req.body.signed_in, 
+                                            partial:"gameList"});
+            return;
         } catch (e) {
-            res.render('games/gameslist', { title: "Games", 
+            res.status(500).render('games/gameslist', { title: "Games", 
                                             games: gamesList , 
                                             gamesEmpty: gamesList.length === 0, 
                                             error: e, 
@@ -411,7 +429,9 @@ router.post('/search', async (req, res) => {
                                             genre_selected: false,
                                             platform_selected: false,
                                             price_selected: true,
-                                            signed_in: req.body.signed_in, partial:"gameList"});
+                                            signed_in: req.body.signed_in, 
+                                            partial:"gameList"});
+            return;
         }
     }
 });
@@ -431,7 +451,7 @@ router.post('/search', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -439,7 +459,8 @@ router.post('/search', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -456,7 +477,7 @@ router.post('/search', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
     let liked = false;
     for (let game of user.likes) {
@@ -469,7 +490,7 @@ router.post('/search', async (req, res) => {
         try {
             await usersData.removeLikedGame(req.session.user_id, id)
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
 
         // Decrement game's like count
@@ -480,7 +501,7 @@ router.post('/search', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         }
 
     } else { // Game is not liked; add
@@ -488,7 +509,7 @@ router.post('/search', async (req, res) => {
         try {
             await usersData.addLikedGame(req.session.user_id, id)
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         }
 
         // Increment game's like count
@@ -499,7 +520,7 @@ router.post('/search', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         }
     }
     
@@ -528,7 +549,8 @@ router.post('/search', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -542,7 +564,7 @@ router.post('/search', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
     let liked = false;
     for (let game of user.likes) {
@@ -573,7 +595,8 @@ router.post('/wishlist/:id', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -590,7 +613,7 @@ router.post('/wishlist/:id', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
 
     let wishlisted = false;
@@ -610,7 +633,7 @@ router.post('/wishlist/:id', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
     } else {
         try {
@@ -620,7 +643,7 @@ router.post('/wishlist/:id', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
     }
 });
@@ -648,7 +671,8 @@ router.post('/wishlist/:id', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -662,7 +686,7 @@ router.post('/wishlist/:id', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
     let wishlisted = false;
     for (let game of user.wishlist) {
@@ -693,7 +717,8 @@ router.post('/follow/:id', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -710,7 +735,7 @@ router.post('/follow/:id', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
     let follow = false;
     for (let game of user.follows) {
@@ -723,7 +748,7 @@ router.post('/follow/:id', async (req, res) => {
         try {
             await usersData.removeFollowGame(req.session.user_id, id)
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
 
         // Increment game's follow count
@@ -734,7 +759,7 @@ router.post('/follow/:id', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
 
     } else { // Game is not followed; add
@@ -742,7 +767,7 @@ router.post('/follow/:id', async (req, res) => {
         try {
             await usersData.addFollowGame(req.session.user_id, id)
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
 
         // Increment game's follow count
@@ -753,7 +778,7 @@ router.post('/follow/:id', async (req, res) => {
             }
             return res.redirect("/games");
         } catch (e) {
-            return res.status(500).json({message: e});
+            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
     }
     
@@ -778,7 +803,8 @@ router.get('/follow/:id', async (req, res) => {
     try {
         let game = await gamesData.getGameById(id);
     } catch (e) {
-        res.status(404).json({message: e}); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
     }
 
     // Make sure user is authenticated
@@ -792,7 +818,7 @@ router.get('/follow/:id', async (req, res) => {
 	try {
 		user = await usersData.getUserById(req.session.user_id);
 	} catch (e) {
-		return res.status(404).json({message: e});
+		return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	}
     let followed = false;
     for (let game of user.follows) {
