@@ -13,6 +13,7 @@
             }
             $.ajax(requestConfig).then(function(responseMessage) {
                 // Create list items for each show
+                console.log(responseMessage);
                 if (responseMessage.liked) {
                     let like_img = $(`#like-${id}`);
                     like_img.attr("src", "/public/img/like-filled.png");

@@ -80,7 +80,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+        res.status(404).render("general/error", {title: "Error", error: errors, signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         return;
     }
 
@@ -89,7 +89,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     try {
         game = await gamesData.getGameById(gameId);
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: "Review not found.", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -98,7 +98,13 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     try {
         review = await reviewsData.getReviewById(gameId, reviewId);
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: "Review not found.", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
+    }
+
+    // Check if user who posted review is the same as the currently logged in user
+    if (!req.session.user_id || req.session.user_id != review.author._id) {
+        res.status(400).render("general/error", {title: "Error", error: "You cannot edit another user's review.", signed_in: req.body.signed_in, status:"400", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -356,6 +362,7 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
     let reviewId = xss(req.params.reviewId);
     let gameId = xss(req.params.gameId);
+    let single = xss(req.body.singleReviewLike);
     //let body = req.body;
     let errors = [];
 
@@ -434,7 +441,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         // Increment game's like count
         try {
             await reviewsData.incrementLike(gameId,reviewId);
-            return res.redirect(`/games/${gameId}`);
+            if (single) {
+                return res.redirect(`/games/${gameId}/review/${reviewId}`);
+            }
+            return res.redirect(`/games/${gameId}/#${reviewId}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -451,7 +461,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         try {
             await reviewsData.decrementLike(gameId, reviewId);
             await reviewsData.getReviewById(gameId,reviewId);
-            return res.redirect(`/games/${gameId}`);
+            if (single) {
+                return res.redirect(`/games/${gameId}/review/${reviewId}`);
+            }
+            return res.redirect(`/games/${gameId}/#${reviewId}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -467,7 +480,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         // Increment game's like count
         try {
             await reviewsData.incrementLike(gameId,reviewId);
-            return res.redirect(`/games/${gameId}`);
+            if (single) {
+                return res.redirect(`/games/${gameId}/review/${reviewId}`);
+            }
+            return res.redirect(`/games/${gameId}/#${reviewId}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -484,6 +500,7 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
     // Parse the game id
    let reviewId = xss(req.params.reviewId);
    let gameId = xss(req.params.gameId);
+   let single = xss(req.body.singleReviewDislike);
     //let body = req.body;
     let errors = [];
 
@@ -563,7 +580,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         // Increment game's dislike count
       try {
         await reviewsData.incrementDislike(gameId,reviewId);
-        return res.redirect(`/games/${gameId}`);
+        if (single) {
+            return res.redirect(`/games/${gameId}/review/${reviewId}`);
+        }
+        return res.redirect(`/games/${gameId}/#${reviewId}`);
       } catch (e) {
         return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
       }
@@ -581,7 +601,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         try {
             await reviewsData.decrementDislike(gameId, reviewId);
             await reviewsData.getReviewById(gameId,reviewId);
-            return res.redirect(`/games/${gameId}`);
+            if (single) {
+                return res.redirect(`/games/${gameId}/review/${reviewId}`);
+            }
+            return res.redirect(`/games/${gameId}/#${reviewId}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -598,7 +621,10 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
         // Increment game's dislike count
         try {
             await reviewsData.incrementDislike(gameId,reviewId);
-            return res.redirect(`/games/${gameId}`);
+            if (single) {
+                return res.redirect(`/games/${gameId}/review/${reviewId}`);
+            }
+            return res.redirect(`/games/${gameId}/#${reviewId}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -690,9 +716,9 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
             return;
         }
      }else{
-            console.log("user didnt write this review"); // CHANGE THIS
-            res.status(401).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"400", error: "Unauthorized", partial:"gameList" });
-            return;
+        console.log("user didnt write this review"); // CHANGE THIS
+        res.status(401).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"400", error: "Unauthorized", partial:"gameList" });
+        return;
     }
 });
 
@@ -755,7 +781,7 @@ router.post('/:id/review/:reviewId', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         errors.push("You must be logged in to submit a reply");
-        res.redirect("/login");
+        res.json({reply:false})
         return;
     }
 
@@ -782,11 +808,14 @@ router.post('/:id/review/:reviewId', async (req, res) => {
             res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
             return;
         }
-        res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+        // res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+       // return res.json({liked:true});
+          return res.json({reply:replyInfo});
     } catch (e) {
         res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         return;
     }
+ 
     
 })
 
