@@ -83,6 +83,8 @@ h2 {
     margin: 0 15px 0 0 !important;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+
+    float:left;
 }
 
 .review-rating {
@@ -172,13 +174,23 @@ h2 {
 }
 
 /* Game image */
-.game img {
+.game-img {
     width: 110px;
+    min-height: 110px;
+    max-height: 155px;
     display: block;
     float: left;
 
     margin: 10px 25px 5px 25px;
 }
+
+/* .game img {
+    width: 110px;
+    display: block;
+    float: left;
+
+    margin: 10px 25px 5px 25px;
+} */
 
 /* Game info */
 .game {
@@ -353,6 +365,10 @@ button:hover {
     top: 1px;
 }
 
+.action-review:hover {
+    color: #2473a4;
+    cursor: pointer;
+}
 
 .comment-img {
     margin-left: 2px;

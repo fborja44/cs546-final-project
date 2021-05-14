@@ -101,12 +101,12 @@ router.get('/', async (req, res) => {
 
 router.get('/private/edit', async (req, res) => {
     if (!req.session.user_id){
-        res.redirect('/');
+        res.redirect('/login');
         return;
     }
 
     res.render('users/edit',  {title: "Edit", signed_in: req.body.signed_in, partial:"editUser"});
-
+    return;
  
 });
 
@@ -122,24 +122,24 @@ router.post('/private/edit', async (req, res) => {
     const password = xss(req.body.editpassword).toString().trim();
 
     if(!firstName && !lastName && !email && !password){
-        res.status(400).render('users/edit', { error: "Nothing will be changed, at least one field must be supplied."});
+        res.status(400).render('users/edit', { error: "Nothing will be changed, at least one field must be supplied.", signed_in: req.body.signed_in, partial:"editUser"});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (email && !emailPattern.test(email)){
-        res.status(400).render('users/edit', { error: "Invaild email."});
+        res.status(400).render('users/edit', { error: "Invaild email.", signed_in: req.body.signed_in, partial:"editUser"});
         return;
      }
 
      if (password && (password.length < 4 || password.length > 20)){
-        res.status(400).render('users/edit', { error: "Password is too long or too short."});
+        res.status(400).render('users/edit', { error: "Password is too long or too short.", signed_in: req.body.signed_in, partial:"editUser"});
         return;
      }
 
      try{
          let userInfo = await usersData.getUserById(req.session.user_id);
          if(!userInfo){
-            res.status(400).render('users/edit', { error: "User Not found."});
+            res.status(400).render('users/edit', { error: "User Not found.", signed_in: req.body.signed_in, partial:"editUser"});
             return;
          }
         
@@ -153,8 +153,10 @@ router.post('/private/edit', async (req, res) => {
             await usersData.updatePassword(userInfo._id, password);
 
          res.redirect('/private');
+         return;
      } catch (e){
-        res.status(404).json({ error: 'User not found.'});
+        res.status(404).render('users/edit', { error: 'User not found.', signed_in: req.body.signed_in, partial:"editUser"});
+        return;
      }
 });
 
@@ -163,6 +165,7 @@ router.post('/private/edit', async (req, res) => {
  */
 router.get('/signup', async (req, res) => {
     res.render('users/signup', { title: "Sign up" ,signed_in: req.body.signed_in, partial:'signup'});
+    return;
 });
 
 /**
@@ -176,33 +179,34 @@ router.post('/signup', async (req, res) => {
     const password = xss(req.body.signup_password).toString().trim();
 
     if(!username || !firstName || !lastName || !email || !password){
-        res.status(400).render('users/signup', { error: "Error: Invalid input. All fields must be supplied.", partial:"signup"});
+        res.status(400).render('users/signup', { error: "Error: Invalid input. All fields must be supplied.", signed_in: req.body.signed_in, partial:"signup"});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (!emailPattern.test(email)){
-        res.status(400).render('general/error', { error: "Error: Invaild email.", partial:"signup"});
+        res.status(400).render('general/error', { error: "Error: Invaild email.", signed_in: req.body.signed_in, partial:"signup"});
         return;
      }
 
      if (password.length < 4 || password.length > 20){
-        res.status(400).render('general/error', { error: "Error: Password is too long or too short.", partial:"signup"});
+        res.status(400).render('general/error', { error: "Error: Password is too long or too short.", signed_in: req.body.signed_in, partial:"signup"});
         return;
      }
 
      try{
          let userInfo = await usersData.getUserByUsername(username);
          if(userInfo){
-            res.status(400).render('users/signup', { error: "Error : Username already exists.", partial:"signup"});
+            res.status(400).render('users/signup', { error: "Error : Username already exists.", signed_in: req.body.signed_in, partial:"signup"});
             return;
          }
          let newUser = await usersData.createUser(username, firstName, lastName, email, password);
          let userId = newUser._id.toString();
          req.session.user_id = userId;
          res.redirect('/');
+         return;
         //  res.render('users/home', { message: `Welcome ${newUser.username}`});
      } catch (e){
-        res.status(400).json({ error: 'Failed to create user.'});
+        res.status(400).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
      }
 
 });
@@ -212,6 +216,7 @@ router.post('/signup', async (req, res) => {
  */
  router.get('/login', async (req, res) => {
     res.render('users/login', { title: "Login" ,signed_in: req.body.signed_in, partial:'signup'});
+    return;
 });
 
 /**
@@ -241,13 +246,16 @@ router.post('/login', async (req, res) => {
     if (await bcrypt.compare(password, userInfo.hashedPassword)){
         req.session.user_id = userInfo._id;
         res.redirect('/');
+        return;
         // res.render('home', { message: `Welcome ${userInfo.username}`});
     } else {
         res.status(401).render('users/login', { error: "Wrong username or password.",username: username,signed_in: req.body.signed_in, partial:"signup"});
+        return;
     }
     // return to main page?
      } catch (e) {
         res.status(401).render('users/login', { title: "Login" ,username:username,signed_in: req.body.signed_in, partial:"signup"});
+        return;
      }
 });
 
@@ -265,6 +273,7 @@ router.get('/logout', async (req, res) => {
         return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"signup"});
     }
     res.redirect('/');
+    return;
 });
 
 /**
@@ -302,7 +311,7 @@ router.get('/private/:id', async (req, res) => {
         const user = await usersData.getUserById(id);
         res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
-        res.status(404).render('general/error', { status: 404, error: "User not found." } );
+        res.status(404).render('general/error', { status: 404, signed_in: req.body.signed_in, error: "User not found." } );
     }
 });
 
@@ -320,7 +329,7 @@ router.get('/public/:id', async (req, res) => {
         const user = await usersData.getUserById(id);
         res.render('users/single', {title: user.username, user: user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
-        res.status(404).json({message: e});
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
     }
 });
 

@@ -172,7 +172,7 @@ button:hover {
 .game-img {
     width: 110px;
     min-height: 110px;
-    max-height: 160px;
+    max-height: 155px;
     display: block;
     float: left;
 
@@ -304,6 +304,11 @@ h1 {
     display: inline;
     position: relative;
     top: 1px;
+}
+
+.action-review:hover {
+    color: #2473a4;
+    cursor: pointer;
 }
 
 .comment-img {

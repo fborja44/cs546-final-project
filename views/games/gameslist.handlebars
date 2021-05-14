@@ -65,9 +65,9 @@
         <div class="score">
             <span class="score-span">{{averageRating}}</span>
         </div>
-        <img class="game-img" src="{{image}}" alt="{{title}}" title="{{title}}">
+        <img class="game-img" src="{{image}}" alt="{{title}}" title="{{title}}" onerror=this.src="/public/img/default_game.png">
         <div class="info">
-            <a href="games/{{_id}}" class="title">{{title}}</a>
+            <a href="/games/{{_id}}" class="title">{{title}}</a>
             <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>
             <table>
                 <tr>
@@ -97,7 +97,7 @@
                 <form class="action-form" action="/games/wishlist/{{_id}}" method="POST">
                     <button name="wishlist" value="wishlist" id="wishlist-{{_id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button>| 
                 </form>
-                <a href="games/{{_id}}"><img class="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
+                <a class="action-review" href="games/{{_id}}/#review-form-header"><img class="comment-img" src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
         </div>
     </li>
     {{/each}}

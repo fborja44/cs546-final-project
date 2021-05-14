@@ -6,7 +6,7 @@
             <div class="score">
                 <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
             </div>
-            <img class="game-img" src="{{game.image}}" alt="{{game.title}}" title="{{game.title}}">
+            <img class="game-img" src="{{game.image}}" alt="{{game.title}}" title="{{game.title}}" onerror=this.src="/public/img/default_game.png">
             <div class="info">
                 <h1 class="title">{{game.title}}</h1>
                 <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>
@@ -31,15 +31,18 @@
             </p>
             <div class="actions">
                     <form class="action-form" action="/games/like/{{game._id}}" method="POST">
-                        <button name="like" value="like"><img id="like-{{game._id}}" src="/public/img/like.png" alt="Like Icon">Like</button> [<span>{{game.numLikes}}</span>] |
+                        <input name="singleLike" value="single" type="hidden">
+                        <button name="like" value="like" ><img id="like-{{game._id}}" src="/public/img/like.png" alt="Like Icon">Like</button> [<span>{{game.numLikes}}</span>] |
                     </form>
                     <form class="action-form" action="/games/follow/{{game._id}}" method="POST">
+                        <input name="singleFollow" value="single" type="hidden">
                         <button name="follow" value="follow" id="follow-{{game._id}}"><img src="/public/img/follow.png" alt="Follow Icon">Follow</button> [<span>{{game.numFollows}}</span>] |
                     </form>
                     <form class="action-form" action="/games/wishlist/{{game._id}}" method="POST">
+                        <input name="singleWishlist" value="single" type="hidden">
                         <button name="wishlist" value="wishlist" id="wishlist-{{game._id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button> |
                     </form>
-                    <a><img src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
+                    <a class="action-review" href="#review-form-header"><img src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
             </div>
         </div>
 
@@ -57,7 +60,7 @@
             <p>Date: {{reviewDate}}</p>
             <p>Review: {{review}}</p>
             <!-- Review Action Buttons -->
-            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}">Leave a Reply</a> 
+            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}/#reply-form-header">Leave a Reply</a> 
             {{#if (checkUserId ../user author._id)}}
             <form class="delete-form">
                 <button class="reply-link delete-link" type="submit" formaction="/games/{{gameId}}/{{_id}}/delete" formmethod="POST">Delete</button>
@@ -92,7 +95,7 @@
         {{/if}}
         <!-- Should only be shown if user is logged in -->
         <div>
-            <h3>Create a new Review</h3>
+            <h3 id="review-form-header">Create a new Review</h3>
             <form id = "review-form" method="POST" action="/games/{{game._id}}" class="new-review-post">
                 <input name="gameTitle" value="{{game.title}}" type="hidden">
                 <input name="gameId" value="{{game._id}}" type="hidden">
@@ -114,13 +117,9 @@
         
             </div>
             {{#if hasErrors}}
-             <ul id = "reviewList">
                {{#each errors}}
-               <li class="reviewErrors">
-                    {{this}}
-               </li>
+               <p class="reviewErrors">{{this}}</p>
               {{/each}}
-            </ul>
             {{/if}}
         </div>
     </div>

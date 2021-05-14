@@ -12,6 +12,10 @@ const validURL = new RegExp('^(https?:\\/\\/)?'+ // protocol
 '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
 '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
 
+function checkURL(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); // https://stackoverflow.com/questions/9714525/javascript-image-url-verify
+}
+
 const validPrice = /^\$(\d+\.\d{1,2})$/
 
 /**
@@ -37,6 +41,7 @@ async function createGame(title, image, publisher, genres, releaseYear, platform
     if (typeof image !== 'string') throw `${image || "provided argument"} must be a string`;
     if (image.trim().length === 0) throw "The image must not be an empty string";
     if (!validURL.test(image)) throw `${image || "provided argument"} must be a valid url`;
+    if (!checkURL(image.trim())) throw "The image must be a valid url";
 
     // publisher error checking
     if (!publisher) throw "A publisher must be provided";
@@ -168,6 +173,14 @@ async function getAllGames() {
 
     for (let x of gameList) {
         x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
+            }
+        }
     }
 
     return gameList;
@@ -188,6 +201,14 @@ async function getGameById(id) {
     const game = await gameCollection.findOne({ _id: parsedId });
     if (game === null) throw "No game with that id";
     game._id = game._id.toString();
+    for (let x of game.reviews) {
+        x._id = x._id.toString();
+        x.gameId = x.gameId.toString();
+        x.author._id = x.author._id.toString();
+        for (let y of x.replies) {
+            y._id = y._id.toString();
+        }
+    }
 
     return game;
 }
@@ -205,6 +226,14 @@ async function getGameById(id) {
     const game = await gameCollection.findOne({ title: title });
     if (game === null) throw "No game with that title";
     game._id = game._id.toString();
+    for (let x of game.reviews) {
+        x._id = x._id.toString();
+        x.gameId = x.gameId.toString();
+        x.author._id = x.author._id.toString();
+        for (let y of x.replies) {
+            y._id = y._id.toString();
+        }
+    }
 
     return game;
 }
@@ -221,6 +250,7 @@ async function getGameById(id) {
     if (rating === null) throw "You must provide a rating";
     if (typeof rating !== 'number') throw "The provided rating is not a number";
     if (rating > 5 || rating < 1) throw "Rating must be in the valid range of (1-5)";
+    if (isNaN(rating)) throw "The provided rating must not be NaN";
 
     let parsedId = ObjectId(id);
 
@@ -392,12 +422,25 @@ async function removeGameById(id) {
  */
 async function getGamesByRating(minRating) {
     if (minRating === null) throw 'A minimum rating must be provided';
-    if (typeof minRating !== 'number' || !Number.isInteger(minRating)) throw `${review || "provided argument"} must be an integer.`;
+    if (typeof minRating !== 'number' || !Number.isInteger(minRating)) throw `${minRating || "provided argument"} must be an integer.`;
     if (minRating < 1 || minRating > 5) throw "The rating must be an integer in the range [1-5]";
+    if (isNaN(minRating)) throw "The minimum rating must not be NaN";
 
     const gameCollection = await games();
 
-    const query = gameCollection.find( { averageRating: { $gte: minRating } } ).toArray();
+    let query = await gameCollection.find( { averageRating: { $gte: minRating } } ).toArray();
+    for (let x of query) {
+        x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
+            }
+        }
+    }
+
     return query;
 }
 
@@ -411,14 +454,25 @@ async function getGamesByGenre(genre) {
     if (genre.trim().length === 0) throw "The genre must not be an empty string";
     
     genre = genre.toLowerCase();
-    const query = [];
+    let query = [];
     const gameCollection = await games();
     const gameList = await gameCollection.find({}).toArray();
     for (const game of gameList) {
         for (const x of game.genres) {
-            if (x.toLowerCase() === genre) {
+            if (x.toLowerCase() === genre.toLowerCase()) {
                 query.push(game);
                 break;
+            }
+        }
+    }
+    for (let x of query) {
+        x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
             }
         }
     }
@@ -435,14 +489,25 @@ async function getGamesByGenre(genre) {
     if (platform.trim().length === 0) throw "The publisher must not be an empty string";
     
     platform = platform.toLowerCase();
-    const query = [];
+    let query = [];
     const gameCollection = await games();
     const gameList = await gameCollection.find({}).toArray();
     for (const game of gameList) {
         for (const x of game.platforms) {
-            if (x.toLowerCase() === platform) {
+            if (x.toLowerCase() === platform.toLowerCase()) {
                 query.push(game);
                 break;
+            }
+        }
+    }
+    for (let x of query) {
+        x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
             }
         }
     }
@@ -460,8 +525,20 @@ async function searchGamesByTitle(title) {
 
     const gamesCollection = await games();
 
-    let searchData = gamesCollection.find( { $text: { $search: `${title}`} } ).toArray();
+    let searchData = await gamesCollection.find( { $text: { $search: `${title}`} } ).toArray();
     if (!searchData) throw `Failed to find game after searching with ${title}`;
+
+    for (let x of searchData) {
+        x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
+            }
+        }
+    }
     return searchData;
 }
 
@@ -471,7 +548,18 @@ async function searchGamesByTitle(title) {
 async function getBestGame() {
     const gamesCollection = await games();
 
-    const game = gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
+    const game = await gamesCollection.find().sort( {averageRating: -1} ).limit(1).toArray();
+    for (let x of game) {
+        x._id = x._id.toString();
+        for (let y of x.reviews) {
+            y._id = y._id.toString();
+            y.gameId = y.gameId.toString();
+            y.author._id = y.author._id.toString();
+            for (let z of y.replies) {
+                z._id = z._id.toString();
+            }
+        }
+    }
     return game;
 }
 

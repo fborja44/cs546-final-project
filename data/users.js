@@ -69,9 +69,37 @@
 	 if(userList.length == 0){
 		 return userList;
 	 }else{
-		 userList.forEach((user) => {
-			 user._id = user._id.toString();
-		 })
+		 for (let x of userList) {
+			x._id = x._id.toString();
+			for (let y of x.likes) {
+				y._id = y._id.toString();
+			}
+			for (let y of x.follows) {
+			y._id = y._id.toString();
+			}
+			for (let y of x.wishlist) {
+				y._id = y._id.toString();
+			}
+			for (let y of x.reviews) {
+				y._id = y._id.toString();
+				y.gameId = y.gameId.toString();
+				y.author._id = y.author._id.toString();
+				for (let z of y.replies) {
+					z._id = z._id.toString();
+				}
+			}
+			for (let y of x.reviewLikes) {
+				y.gameId = y.gameId.toString();
+				y.reviewId = y.reviewId.toString();
+			}
+			for (let y of x.reviewDislikes) {
+				y.gameId = y.gameId.toString();
+				y.reviewId = y.reviewId.toString();
+			}
+		 }
+		//  userList.forEach((user) => {
+		// 	 user._id = user._id.toString();
+		//  })
 	 }
 	 return userList;
  }
@@ -81,42 +109,41 @@
   * @param string id String representation of the ObjectId of the user.
   */
  async function getUserById(id) {
-	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
-	 if(id.trim() === '') throw "The input is an empty string."
-	 if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
-	 let parsedId = ObjectId(id);
-	 const userCollection = await users();
-	 const res = await userCollection.findOne({_id: parsedId});
-	 if(res === null) throw "Not found. No such ID in database."
-	 res._id = res._id.toString();
+	if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
+	if(id.trim() === '') throw "The input is an empty string."
+	if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
+	let parsedId = ObjectId(id);
+	const userCollection = await users();
+	const res = await userCollection.findOne({_id: parsedId});
+	if(res === null) throw "Not found. No such ID in database."
+	res._id = res._id.toString();
+	for (let y of res.likes) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.follows) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.wishlist) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.reviews) {
+		y._id = y._id.toString();
+		y.gameId = y.gameId.toString();
+		y.author._id = y.author._id.toString();
+		for (let z of y.replies) {
+			z._id = z._id.toString();
+		}
+	}
+	for (let y of res.reviewLikes) {
+		y.gameId = y.gameId.toString();
+		y.reviewId = y.reviewId.toString();
+	}
+	for (let y of res.reviewDislikes) {
+		y.gameId = y.gameId.toString();
+		y.reviewId = y.reviewId.toString();
+	}
 	 return res;
  }
-
- /**
-  * Updates a user's username in the database with the given id.
-  * @param {string} id String representation of the ObjectId of the user.
-  * @param {string} newInfo the updated information of the user.
-  */
- /**
-  * async function updateUsername(id, newUsername) {
-	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
-	 if(id.trim() === '') throw "The input is an empty string."
-	 if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
-	 let parsedId = ObjectId(id);
-	 if(!newUsername || newUsername.trim() == '')
-		 throw "No username provided."
-	 const newUser = newUsername.trim();
-	 if(!usernameCheck(newUser))
-		 throw "The username exists the same username, please try another one."
-
-	 const userCollection = await users();
-	 return await userCollection
-		 .updateOne({_id: parsedId}, {$set: {username: newUser}})
-		 .then(async function (){
-			 return await module.exports.getUserById(id);
-		 });
- }
- */
 
  async function updateFirstName(id, newName) {
 	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
@@ -244,22 +271,31 @@
 		 });
  }
 
- async function addReviews(id, reviews) {
-	 if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
-	 if(id.trim() === '') throw "The input is an empty string."
-	 if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
-	 let parsedId = ObjectId(id);
+async function addReviews(id, reviews) {
+	if(!id || typeof id != 'string') throw "Id should be provied and it is a string."
+	if(id.trim() === '') throw "The input is an empty string."
+	if(!ObjectId.isValid(id)) throw "Invalid ObjectId."
+	let parsedId = ObjectId(id);
 
-	 if(!reviews || !Array.isArray(reviews))
-		 throw "Reviews list is not an array."
+	if(!reviews || !Array.isArray(reviews))
+		throw "Reviews list is not an array.";
 
-	 const userCollection = await users();
-	 return await userCollection
-		 .updateOne({_id: parsedId}, {$set: {reviews: reviews}})
-		 .then(async function (){
-			 return await module.exports.getUserById(id);
-		 });
- }
+	for (let x of reviews) {
+		x._id = ObjectId(x._id);
+		x.gameId = ObjectId(x.gameId);
+		x.author._id = ObjectId(x.author._id);
+		for (let y of x.replies) {
+			y._id = ObjectId(y._id);
+		}
+	}
+
+	const userCollection = await users();
+	return await userCollection
+		.updateOne({_id: parsedId}, {$set: {reviews: reviews}})
+		.then(async function (){
+			return await module.exports.getUserById(id);
+		});
+}
 
  /**
   * remove review from user db
@@ -281,7 +317,17 @@
 	 if(!reviews || !Array.isArray(reviews))
 		 throw "Reviews list is not an array."
     
-     let updatedReviewList = reviews.filter(review => review._id.toString() != reviewId.toString())
+     let updatedReviewList = reviews.filter(review => review._id.toString() != reviewId.toString());
+
+	 for (let x of updatedReviewList) {
+		x._id = ObjectId(x._id);
+		x.gameId = ObjectId(x.gameId);
+		x.author._id = ObjectId(x.author._id);
+		for (let y of x.replies) {
+			y._id = ObjectId(y._id);
+		}
+	}
+
 	 const userCollection = await users();
 	 return await userCollection
 		 .updateOne({_id: parsedId}, {$set: {reviews: updatedReviewList}})
@@ -338,6 +384,31 @@
 	 if(res === null)
 	 	return null;
 	 res._id = res._id.toString();
+	for (let y of res.likes) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.follows) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.wishlist) {
+		y._id = y._id.toString();
+	}
+	for (let y of res.reviews) {
+		y._id = y._id.toString();
+		y.gameId = y.gameId.toString();
+		y.author._id = y.author._id.toString();
+		for (let z of y.replies) {
+			z._id = z._id.toString();
+		}
+	}
+	for (let y of res.reviewLikes) {
+		y.gameId = y.gameId.toString();
+		y.reviewId = y.reviewId.toString();
+	}
+	for (let y of res.reviewDislikes) {
+		y.gameId = y.gameId.toString();
+		y.reviewId = y.reviewId.toString();
+	}
 	 return res;
  }
 
@@ -940,7 +1011,6 @@ async function removeFollowGame(userId, gameId) {
 	 getAllUsers,
 	 getUserById,
 	 getUserByUsername,
-  //   updateUsername,
 	 updateFirstName,
 	 updateLastName,
 	 updateEmail,
