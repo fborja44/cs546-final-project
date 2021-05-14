@@ -40,7 +40,8 @@
          
            
         <h3>Replies</h3>
-        {{#unless repliesEmpty}}
+
+           {{#unless repliesEmpty}}
         <div>
             {{#each review.replies}}
                 <div class="review">
@@ -54,6 +55,9 @@
             {{/each}}
         </div>
         {{/unless}}
+
+           <div id="replyResponse" ></div>
+           
         {{#if repliesEmpty}}
         <p id="empty">This review has no replies. You can be the first to reply!</p>
         {{/if}}
