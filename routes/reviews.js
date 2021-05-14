@@ -242,15 +242,12 @@ router.post('/:reviewId/update', async (req, res) => {
       errors.push('No rating provided');
     }
 
-    //checking if anything was updated if nothing was then throw an error
-    if(review.reviewTitle === reviewPost.reviewTitle && parseInt(review.rating) === parseInt(reviewPost.reviewRating) && review.review === reviewPost.reviewBody){
-        errors.push("Nothing was updated. Please change review if you want it to be updated.")
-    }
 
     let user;
     try {
         user = await usersData.getUserById(req.session.user_id);
     } catch (e) {
+        console.log(e);
         return res.status(404).json({message: e});
     }
 
@@ -605,6 +602,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     try {
         review = await reviewsData.getReviewById(gameId, reviewId);
     } catch (e) {
+        console.log(e);
         res.status(404).json({message: e}); // CHANGE THIS
         return;
     }

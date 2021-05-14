@@ -2,7 +2,10 @@
 * To check inputs of the editReview form, before submission.
 */
 
-$("#editReview-form").submit(function(event) {
+(function()
+    {
+
+        $("#editReview-form").submit(function(event) {
 
         $(".reviewErrors").empty();
         $("#editReviewError").empty();
@@ -26,7 +29,7 @@ $("#editReview-form").submit(function(event) {
             error = true;
             message = "Error: The rating should between 1 and 5."
         }
-    
+
     
         if (error){
             event.preventDefault();
@@ -36,3 +39,5 @@ $("#editReview-form").submit(function(event) {
         }
     
     })
+ }
+)();

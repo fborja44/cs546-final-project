@@ -183,11 +183,14 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
 
 
     let specificReview = await getReviewById(gameId,reviewId);
-
+    let count = 0;
     // reviewTitle error checking
     if(reviewTitle || reviewTitle.trim().length ===0){
     if (typeof reviewTitle !== 'string') throw `${reviewTitle || "reviewTitle provided argument"} must be a string`;
     if (reviewTitle.trim().length === 0) throw "The reviewTitle must not be an empty string";
+    if(specificReview.reviewTitle === reviewTitle){
+            count++;
+        }
         specificReview.reviewTitle = reviewTitle
     }
 
@@ -207,21 +210,28 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
         if (typeof reviewDate !== 'string') throw `${reviewDate || "reviewDate provided argument"} must be a string`;
         if (reviewDate.trim().length === 0) throw "The reviewDate must not be an empty string";
         if (!(moment(reviewDate, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
+        if(specificReview.reviewDate === reviewDate){
+            count++;
+        }
         specificReview.reviewDate = reviewDate;
     }
 
     // review error checking
-    if (review  || review.trim().length ===0) {
-        if (typeof reviewDate !== 'string') throw `${reviewDate || "review provided argument"} must be a string`;
-        if (reviewDate.trim().length === 0) throw "The reviewDate must not be an empty string";
-        if (!(moment(reviewDate, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
-        specificReview.reviewDate = reviewDate;
-    }
+    // if (review  || review.trim().length ===0) {
+    //     if (typeof reviewDate !== 'string') throw `${reviewDate || "review provided argument"} must be a string`;
+    //     if (reviewDate.trim().length === 0) throw "The reviewDate must not be an empty string";
+    //     if (!(moment(reviewDate, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
+    //     specificReview.reviewDate = reviewDate;
+
+    // }
 
     // review error checking
     if (review || review.trim().length ===0){
         if (typeof review !== 'string') throw `${review || "review provided argument"} must be a string`;
         if (review.trim().length === 0) throw "The review must not be an empty string";
+        if(specificReview.review === review){
+            count++;
+        }
         specificReview.review=review;
     }
 
@@ -229,10 +239,16 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
     if (rating || rating.trim().length ===0){
         if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${rating || "rating provided argument"} must be an integer.`;
         if (rating < 1 || rating > 5) throw "The rating must be an integer in the range [1-5]"
+        if(specificReview.rating === rating){
+            count++;
+        }
         specificReview.rating = rating;
     }
 
-
+    //returns if the updated review is already the same
+    if(count === 4){
+        return await getReviewById(gameId,reviewId);
+    }
 
     const gamesCollection = await games();
     let parsedGameId = ObjectId(gameId);
