@@ -42,7 +42,7 @@
                         <input name="singleWishlist" value="single" type="hidden">
                         <button name="wishlist" value="wishlist" id="wishlist-{{game._id}}"><img src="/public/img/wishlist.png" alt="Wishlist Icon">Wishlist</button> |
                     </form>
-                    <a><img src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
+                    <a href="#review-form-header"><img src="/public/img/comment.png" alt="Review Icon">Leave a Review</a>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
             <p>Date: {{reviewDate}}</p>
             <p>Review: {{review}}</p>
             <!-- Review Action Buttons -->
-            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}">Leave a Reply</a> 
+            <a class="reply-link" href="/games/{{gameId}}/review/{{_id}}/#reply-form-header">Leave a Reply</a> 
             {{#if (checkUserId ../user author._id)}}
             <form class="delete-form">
                 <button class="reply-link delete-link" type="submit" formaction="/games/{{gameId}}/{{_id}}/delete" formmethod="POST">Delete</button>
@@ -95,7 +95,7 @@
         {{/if}}
         <!-- Should only be shown if user is logged in -->
         <div>
-            <h3>Create a new Review</h3>
+            <h3 id="review-form-header">Create a new Review</h3>
             <form id = "review-form" method="POST" action="/games/{{game._id}}" class="new-review-post">
                 <input name="gameTitle" value="{{game.title}}" type="hidden">
                 <input name="gameId" value="{{game._id}}" type="hidden">

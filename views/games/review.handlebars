@@ -59,7 +59,7 @@
         {{/if}}
     </div>
     <div>
-        <h3>Create a Reply</h3>
+        <h3 id="reply-form-header">Create a Reply</h3>
         <form id = "reply-form" method="POST" class="new-review-post" action="/games/{{game._id}}/review/{{review._id}}">
             <input name="reply-gameId" value="{{game._id}}" type="hidden">
             <div class="form-elem">
