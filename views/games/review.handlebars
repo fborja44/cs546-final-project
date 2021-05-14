@@ -42,7 +42,8 @@
          
            
         <h3>Replies</h3>
-        {{#unless repliesEmpty}}
+
+           {{#unless repliesEmpty}}
         <div>
             {{#each review.replies}}
                 <div class="review">
@@ -56,14 +57,18 @@
             {{/each}}
         </div>
         {{/unless}}
+
+           <div id="replyResponse" ></div>
+           
         {{#if repliesEmpty}}
         <p id="empty">This review has no replies. You can be the first to reply!</p>
         {{/if}}
     </div>
     <div>
         <h3 id="reply-form-header">Create a Reply</h3>
-        <form id = "reply-form" method="POST" class="new-review-post" action="/games/{{game._id}}/review/{{review._id}}">
-            <input name="reply-gameId" value="{{game._id}}" type="hidden">
+        <form id = "reply-form" class="new-review-post">
+            <input name="reply-gameId" class="gameId" value="{{game._id}}" type="hidden">
+            <input name="reply-reviewId" class="reviewId" value="{{review._id}}" type="hidden">
             <div class="form-elem">
                 <label for="replyBody">Reply</label>
                 <textarea id = "replyBody" name="replyBody" placeholder="Enter your reply here!" rows="4" cols="50"></textarea>

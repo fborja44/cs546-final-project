@@ -744,7 +744,7 @@ router.post('/:id/review/:reviewId', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         errors.push("You must be logged in to submit a reply");
-        res.redirect("/login");
+        res.json({reply:false})
         return;
     }
 
@@ -771,11 +771,14 @@ router.post('/:id/review/:reviewId', async (req, res) => {
             res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
             return;
         }
-        res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+        // res.render('games/review', {title: "VGReviews", game: game, review: review , repliesEmpty: review.replies.length === 0, signed_in: req.body.signed_in, partial:'gameList'});
+       // return res.json({liked:true});
+          return res.json({reply:replyInfo});
     } catch (e) {
         res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         return;
     }
+ 
     
 })
 

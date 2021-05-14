@@ -8,11 +8,11 @@ const reviewData = require('./reviews');
 const userData = require('./users');
 
 /**
- * 
- * @param {string} gameId 
- * @param {string} userId 
- * @param {string} replyDate 
- * @param {string} reply 
+ *
+ * @param {string} gameId
+ * @param {string} userId
+ * @param {string} replyDate
+ * @param {string} reply
  */
 async function createReply(gameId, reviewId, userId, replyDate, reply) {
     // Error checking
@@ -86,6 +86,7 @@ async function createReply(gameId, reviewId, userId, replyDate, reply) {
     }
 
     let newReply = {
+        replyId: ObjectId(),
         _id: parsedUserId,
         username: userInfo.username,
         replyDate: replyDate.trim(),
@@ -130,7 +131,7 @@ async function createReply(gameId, reviewId, userId, replyDate, reply) {
         }
     }
 
-    return this.getRepliesById(reviewId.trim());
+    return newReply;
 }
 
 async function getRepliesById(reviewId) {
@@ -158,6 +159,8 @@ async function getRepliesById(reviewId) {
 
     return reviewInfo.replies;
 }
+
+
 
 module.exports = {
     createReply,
