@@ -744,7 +744,7 @@ router.post('/:id/review/:reviewId', async (req, res) => {
     if (!req.session.user_id) {
         // User is not authenticated
         errors.push("You must be logged in to submit a reply");
-        res.redirect("/login");
+        res.json({reply:false})
         return;
     }
 

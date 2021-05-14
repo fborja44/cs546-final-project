@@ -34,6 +34,7 @@
             let htmlStr = `<p class="reviewErrors">${message}</p>`;
             $("#replyError").append(htmlStr);
             $("#replyError").show();
+            return;
         }
   
         let requestConfig = {
@@ -46,17 +47,24 @@
             };
               
                $.ajax(requestConfig).then(function(responseMessage) {
-                  empty.hide();
-                   console.log("this is the response  message");
-                   console.log(responseMessage.reply);
-                   let div = $(`<div class="review"></div>`)
-                   let reviewH = $(`<div class="review-heading"> </div>`);
-                   replyHtml.append(div);
-                   div.append(reviewH);
-                   reviewH.append(`<img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">`);
-                   reviewH.append(`<h2>Author: ${responseMessage.reply.username}</h2>`)
-                   div.append(`<p>Date: ${responseMessage.reply.replyDate}</p>`);
-                   div.append(`<p>Reply: ${responseMessage.reply.reply}</p>`)
+                  if (responseMessage.reply) {
+                      empty.hide();
+                       console.log("this is the response  message");
+                       console.log(responseMessage.reply);
+                       let div = $(`<div class="review"></div>`)
+                       let reviewH = $(`<div class="review-heading"> </div>`);
+                       replyHtml.append(div);
+                       div.append(reviewH);
+                       reviewH.append(`<img class="profile-pic" src="/public/img/default_user.jpg" alt="profile pic">`);
+                       reviewH.append(`<h2>Author: ${responseMessage.reply.username}</h2>`)
+                       div.append(`<p>Date: ${responseMessage.reply.replyDate}</p>`);
+                       div.append(`<p>Reply: ${responseMessage.reply.reply}</p>`)
+                  } else {
+                      event.preventDefault();
+                      let htmlStr = `<p class="reviewErrors">Error: Must be logged in</p>`
+                      $("#replyError").append(htmlStr);
+                      $("#replyError").show();
+                  }
 
 
                });
