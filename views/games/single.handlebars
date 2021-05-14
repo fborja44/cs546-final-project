@@ -6,7 +6,7 @@
             <div class="score">
                 <span>{{game.averageRating}}</span> <!-- replace with {{averageRating}} -->
             </div>
-            <img class="game-img" src="{{game.image}}" alt="{{game.title}}" title="{{game.title}}">
+            <img class="game-img" src="{{game.image}}" alt="{{game.title}}" title="{{game.title}}" onerror=this.src="/public/img/default_game.png">
             <div class="info">
                 <h1 class="title">{{game.title}}</h1>
                 <p class="subinfo">({{game.releaseYear}}) <span>{{game.publisher}}</span></p>

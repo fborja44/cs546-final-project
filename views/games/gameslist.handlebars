@@ -65,7 +65,7 @@
         <div class="score">
             <span class="score-span">{{averageRating}}</span>
         </div>
-        <img class="game-img" src="{{image}}" alt="{{title}}" title="{{title}}">
+        <img class="game-img" src="{{image}}" alt="{{title}}" title="{{title}}" onerror=this.src="/public/img/default_game.png">
         <div class="info">
             <a href="/games/{{_id}}" class="title">{{title}}</a>
             <p class="subinfo">({{releaseYear}}) <span>{{publisher}}</span></p>

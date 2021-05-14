@@ -172,13 +172,23 @@ h2 {
 }
 
 /* Game image */
-.game img {
+.game-img {
     width: 110px;
+    min-height: 110px;
+    max-height: 155px;
     display: block;
     float: left;
 
     margin: 10px 25px 5px 25px;
 }
+
+/* .game img {
+    width: 110px;
+    display: block;
+    float: left;
+
+    margin: 10px 25px 5px 25px;
+} */
 
 /* Game info */
 .game {
