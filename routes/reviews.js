@@ -117,6 +117,9 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 });
 
+/**
+ * Route to post a review for a game.
+ */
 router.post('/:gameId', async (req, res) => {
     let gameId = xss(req.params.gameId);
     var today = new Date();
@@ -154,7 +157,6 @@ router.post('/:gameId', async (req, res) => {
     if (reviewPost.reviewBody.length > 125) {
         errors.push("Body can't exceed over 125 characters.");
     }
-
 
     if (!reviewPost.reviewRating) {
       errors.push('No rating provided');
@@ -222,7 +224,7 @@ router.post('/:gameId', async (req, res) => {
 
         }
         
-        return res.redirect(`/games/${game._id}`);
+        return res.redirect(`/games/${game._id}/#${newReview._id}`);
 
     } catch (e) {
         console.log(e);
