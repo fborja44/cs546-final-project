@@ -206,6 +206,10 @@ const main = async () => {
         "pretty cool",
         4
     )
+    
+    let reviewUser1 = [];
+    reviewUser1.push(review1_1);
+    await usersData.addReviews(user1._id, reviewUser1)
 
     let review1_2 = await reviewsData.createReview(
         game1_id,
@@ -216,6 +220,10 @@ const main = async () => {
         1
     )
 
+    let reviewUser2 = [];
+    reviewUser2.push(review1_2);
+    await usersData.addReviews(user2._id, reviewUser2)
+
     let review1_3 = await reviewsData.createReview(
         game1_id,
         "ok i guess",
@@ -224,6 +232,10 @@ const main = async () => {
         "it was ok",
         3
     )
+
+    let reviewUser3 = [];
+    reviewUser3.push(review1_3);
+    await usersData.addReviews(user3._id, reviewUser3)
 
     /* Game 2 Reviews: Breath of the Wild
     -------------------------------------*/
@@ -235,6 +247,9 @@ const main = async () => {
         "This is the greatest game ever! Nintendo really outdid themselves",
         5
     )
+    
+    reviewUser2.push(review2_1);
+    await usersData.addReviews(user2._id, reviewUser2)
 
     let review2_2 = await reviewsData.createReview(
         game2_id,
@@ -245,6 +260,10 @@ const main = async () => {
         3
     )
 
+    let reviewUser4 = [];
+    reviewUser4.push(review2_2);
+    await usersData.addReviews(user4._id, reviewUser4)
+
     let review2_3 = await reviewsData.createReview(
         game2_id,
         "5 Stars",
@@ -253,6 +272,10 @@ const main = async () => {
         "^^^",
         5
     )
+    
+    let reviewUser5 = [];
+    reviewUser5.push(review2_3);
+    await usersData.addReviews(user5._id, reviewUser5)
 
     let review2_4 = await reviewsData.createReview(
         game2_id,
@@ -262,6 +285,9 @@ const main = async () => {
         "this is a review",
         5
     )
+    
+    reviewUser1.push(review2_4);
+    await usersData.addReviews(user1._id, reviewUser1)
 
     /* Game 3 Reviews: Valorant
     -------------------------------------*/
@@ -273,6 +299,8 @@ const main = async () => {
         "its not good",
         1
     )
+    reviewUser3.push(review3_1);
+    await usersData.addReviews(user3._id, reviewUser3)
 
     /* Game 4 Reviews: Emerald
     -------------------------------------*/
@@ -284,7 +312,8 @@ const main = async () => {
         "dope",
         4
     )
-
+    reviewUser1.push(review4_1);
+    await usersData.addReviews(user1._id, reviewUser1)
     
     /* Game 6 Reviews: NBA 2K20
     -----------------------------------------------------*/
@@ -296,6 +325,8 @@ const main = async () => {
         "sssss",
         2
     )
+    reviewUser4.push(review6_1);
+    await usersData.addReviews(user4._id, reviewUser4)
 
     /* Game 8 Reviews: Hades
     -------------------------------------*/
@@ -307,6 +338,8 @@ const main = async () => {
         "Supergiant always makes awesome games!",
         5
     )
+    reviewUser2.push(review8_1);
+    await usersData.addReviews(user2._id, reviewUser2)
 
     let review8_2 = await reviewsData.createReview(
         game8_id,
@@ -316,6 +349,8 @@ const main = async () => {
         "Supergiant always makes awesome games!",
         4
     )
+    reviewUser5.push(review8_2);
+    await usersData.addReviews(user5._id, reviewUser5)
 
     let review8_3 = await reviewsData.createReview(
         game8_id,
@@ -325,6 +360,8 @@ const main = async () => {
         "Supergiant always makes awesome games!",
         4
     )
+    reviewUser1.push(review8_3);
+    await usersData.addReviews(user1._id, reviewUser1)
 
     /* Testing Games functions
     ---------------------------------------------------------------------------*/

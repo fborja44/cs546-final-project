@@ -161,7 +161,7 @@ router.post('/private/edit', async (req, res) => {
 });
 
 /**
- * 
+ * Route to get the sign up form
  */
 router.get('/signup', async (req, res) => {
     res.render('users/signup', { title: "Sign up" ,signed_in: req.body.signed_in, partial:'signup'});
@@ -169,7 +169,7 @@ router.get('/signup', async (req, res) => {
 });
 
 /**
- * Temporary post (for test)
+ * Route to post sign up form
  */
 router.post('/signup', async (req, res) => {
     const username = xss(req.body.signup_username).toString().toLowerCase().trim();
@@ -263,14 +263,17 @@ router.post('/login', async (req, res) => {
  * Route to handle user logout
  */
 router.get('/logout', async (req, res) => {
-    let userInfo = await usersData.getUserById(req.session.user_id);
+    if (!req.session.user_id){
+        res.redirect('/login');
+        return;
+    }
     req.session.destroy();
     let gamesList;
     try {
         gamesList = await gamesData.getAllGames();
     } catch (e) {
         // DISPLAY ERROR PAGE
-        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"signup"});
+        return res.status(404).render('general/error', { status: 404, error: 'Something went wrong accessing the games database.' ,signed_in: req.body.signed_in, partial:"script"});
     }
     res.redirect('/');
     return;
@@ -299,19 +302,25 @@ router.get('/private/:id', async (req, res) => {
     }
     let id = req.params.id;
     const userId = req.session.user_id;
-    if (id != userId)
-        id = userId;
+    if (id != userId){
+        res.status(404).render('general/error', { status: 404, 
+                                                error: "Access denied. Id is not allowed to access the private page." ,
+                                                signed_in: req.body.signed_in, 
+                                                partial:"script"} );
+        return;
+    }
 
     if (!id) {
         // Display error page. error.handlebars
-        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in, partial:"script"} );
+        return;
     }
 
     try {
         const user = await usersData.getUserById(id);
         res.render('users/private', {title: user.username, user: user, reviewsEmpty: user.reviews.length === 0, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
-        res.status(404).render('general/error', { status: 404, signed_in: req.body.signed_in, error: "User not found." } );
+        res.status(404).render('general/error', { status: 404, signed_in: req.body.signed_in, error: "User not found.",  partial:"script" } );
     }
 });
 
@@ -322,14 +331,14 @@ router.get('/public/:id', async (req, res) => {
     let id = req.params.id;
     if (!id) {
         // Display error page. error.handlebars
-        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in} );
+        res.status(404).render('general/error', { status: 404, error: "User ID missing." ,signed_in: req.body.signed_in,  partial:"script"} );
     }
 
     try {
         const user = await usersData.getUserById(id);
         res.render('users/single', {title: user.username, user: user, likesEmpty: user.likes.length === 0, followsEmpty: user.follows.length === 0, wishlistEmpty: user.wishlist.length === 0, reviewsEmpty: user.reviews.length === 0, signed_in: req.body.signed_in, partial:'signup'});
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status: 404,  partial:"script" });
     }
 });
 

@@ -185,7 +185,7 @@ app.use('/private', (req, res, next) => {
 
 app.use('/signup', (req, res, next) => {
   if (req.session.user_id){
-    res.status(401).render('users/signup', { error: "You have already Sign up."});
+    res.status(401).render('general/error', { status: 401, error: "You have already logged in." ,signed_in: req.body.signed_in,  partial:"script"} );
   }else{
     next();
   }
@@ -193,15 +193,7 @@ app.use('/signup', (req, res, next) => {
 
 app.use('/login', (req, res, next) => {
   if (req.session.user_id){
-    res.status(401).render('users/login', { error: "You have already Login."});
-  }else{
-    next();
-  }
-});
-
-app.use('/logout', (req, res, next) => {
-  if (!req.session.user_id){
-    res.status(401).render('users/login', { error: "Please Login first."});
+    res.status(401).render('general/error', { status: 401, error: "You have already logged in." ,signed_in: req.body.signed_in,  partial:"script"} );
   }else{
     next();
   }
