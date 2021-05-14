@@ -695,6 +695,7 @@ router.get(':id/review/:reviewId/replies', async (req, res) => {
     try {
         game = await gamesData.getGameById(gameId);
     } catch (e) {
+        // res.json(e);
         res.status(404).json({message: e}); // CHANGE THIS
         return;
     }
@@ -704,6 +705,7 @@ router.get(':id/review/:reviewId/replies', async (req, res) => {
     try {
         review = await reviewsData.getReviewById(gameId, reviewId);
     } catch (e) {
+        // res.json(e);
         res.status(404).json({message: e}); // CHANGE THIS
         return;
     }
@@ -723,6 +725,7 @@ router.get(':id/review/:reviewId/replies', async (req, res) => {
     try {
     user = await usersData.getUserById(req.session.user_id);
     } catch (e) {
+        // res.json(e);
         res.status(404).json({message: e});
         return;
     }
@@ -732,6 +735,7 @@ router.get(':id/review/:reviewId/replies', async (req, res) => {
         try {
             review = await reviewsData.getReviewById(gameId, reviewId);
         } catch (e) {
+            // res.json(e);
             res.status(404).json({message: e}); // CHANGE THIS
             return;
         }
