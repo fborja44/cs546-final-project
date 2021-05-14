@@ -267,42 +267,42 @@ router.post('/:reviewId/update', async (req, res) => {
     }
 
     if(user._id === review.author._id){
-    let updateReview;
-    try {
-          updateReview = await reviewsData.updateReview(
-          game._id,
-          reviewId,
-          xss(reviewPost.reviewTitle),
-          {username:user.username,_id:user._id},
-          today.toString(),
-          xss(reviewPost.reviewBody),
-          parseInt(xss(reviewPost.reviewRating))
-          )
-    }catch(e){
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-     }
+        let updateReview;
+        try {
+            updateReview = await reviewsData.updateReview(
+            game._id,
+            reviewId,
+            xss(reviewPost.reviewTitle),
+            {username:user.username,_id:user._id},
+            today.toString(),
+            xss(reviewPost.reviewBody),
+            parseInt(xss(reviewPost.reviewRating))
+            )
+        }catch(e){
+            res.status(404).json({message: e}); // CHANGE THIS
+            return;
+        }
 
-    //  adding the newly written review to the users database
-    //  deleting review from user db
-    let updatedUserInfo;
-    try{
-        updatedUserInfo = await usersData.deleteReview(user._id,user.reviews,reviewId);
-    }catch(e){
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
+        //  adding the newly written review to the users database
+        //  deleting review from user db
+        let updatedUserInfo;
+        try{
+            updatedUserInfo = await usersData.deleteReview(user._id,user.reviews,reviewId);
+        }catch(e){
+            res.status(404).json({message: e}); // CHANGE THIS
+            return;
+        }
 
-    updatedUserInfo.reviews.push(updateReview);
+        updatedUserInfo.reviews.push(updateReview);
 
-    try{
-        await usersData.addReviews(updatedUserInfo._id,updatedUserInfo.reviews);
-    }catch(e){
-        res.status(404).json({message: e}); // CHANGE THIS
-        return;
-    }
+        try{
+            await usersData.addReviews(updatedUserInfo._id,updatedUserInfo.reviews);
+        }catch(e){
+            res.status(404).json({message: e}); // CHANGE THIS
+            return;
+        }
 
-    return res.redirect(`/games/${game._id}`);
+        return res.redirect(`/games/${game._id}`);
     }
 
 });
@@ -355,14 +355,14 @@ router.post('/:gameId/:reviewId/like', async (req, res) => {
 	 }
    let liked = false;
    for (let reviewInfo of user.reviewLikes) {
-	   if (reviewInfo.gameId.toString() == gameId && reviewInfo.reviewId.toString() == reviewId) {
+	   if (reviewInfo.gameId.toString() === gameId && reviewInfo.reviewId.toString() === reviewId) {
         liked = true;
 	   }
 	 }
 
    let dislike = false;
    for (let reviewInfo of user.reviewDislikes) {
-	   if (reviewInfo.gameId.toString() == gameId && reviewInfo.reviewId.toString() == reviewId) {
+	   if (reviewInfo.gameId.toString() === gameId && reviewInfo.reviewId.toString() === reviewId) {
         dislike = true;
 	   }
 	 }

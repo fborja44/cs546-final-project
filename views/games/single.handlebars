@@ -117,13 +117,9 @@
         
             </div>
             {{#if hasErrors}}
-             <ul id = "reviewList">
                {{#each errors}}
-               <li class="reviewErrors">
-                    {{this}}
-               </li>
+               <p class="reviewErrors">{{this}}</p>
               {{/each}}
-            </ul>
             {{/if}}
         </div>
     </div>

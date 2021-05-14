@@ -2,6 +2,7 @@
  ---------------------------------------------------------------------------*/
  const mongoCollections = require('../config/mongoCollections');
  const games = mongoCollections.games;
+ const users = mongoCollections.users;
  let { ObjectId } = require('mongodb');
  const moment = require('moment'); // for date checking
  const gamesData = require('./games'); // games database methods
@@ -60,6 +61,7 @@
     if (isNaN(rating)) throw "The rating must not be NaN";
 
     const gameCollection = await games();
+    const userCollection = await users();
 
     let gameInfo;
     try { 
@@ -92,6 +94,12 @@
         { $addToSet: { reviews: newReview } },
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to create review.';
+
+    const updateInfo2 = await userCollection.updateOne(
+        {_id: parsedAuthorId},
+        {$addToSet:  { reviews: newReview }},
+    );
+
     newReview._id = newReview._id.toString();
     newReview.gameId = newReview.gameId.toString();
     newReview.author._id = newReview.author._id.toString();
@@ -204,6 +212,7 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
     if(reviewTitle || reviewTitle.trim().length ===0){
     if (typeof reviewTitle !== 'string') throw `${reviewTitle || "reviewTitle provided argument"} must be a string`;
     if (reviewTitle.trim().length === 0) throw "The reviewTitle must not be an empty string";
+    if (reviewTitle.trim().length > 85) throw "Title can't exceed over 85 characters.";
     if(specificReview.reviewTitle === reviewTitle){
             count++;
         }
@@ -233,18 +242,10 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
     }
 
     // review error checking
-    // if (review  || review.trim().length ===0) {
-    //     if (typeof reviewDate !== 'string') throw `${reviewDate || "review provided argument"} must be a string`;
-    //     if (reviewDate.trim().length === 0) throw "The reviewDate must not be an empty string";
-    //     if (!(moment(reviewDate, 'M/D/YYYY', true).isValid())) throw "The reviewDate must be of the format MM/DD/YYY";
-    //     specificReview.reviewDate = reviewDate;
-
-    // }
-
-    // review error checking
     if (review || review.trim().length ===0){
         if (typeof review !== 'string') throw `${review || "review provided argument"} must be a string`;
         if (review.trim().length === 0) throw "The review must not be an empty string";
+        if (review.trim().length > 125) throw "Body can't exceed over 125 characters.";
         if(specificReview.review === review){
             count++;
         }
@@ -255,6 +256,7 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
     if (rating || rating.trim().length ===0){
         if (typeof rating !== 'number' || !Number.isInteger(rating)) throw `${rating || "rating provided argument"} must be an integer.`;
         if (rating < 1 || rating > 5) throw "The rating must be an integer in the range [1-5]"
+        if (isNaN(rating)) throw "The rating must not be NaN";
         if(specificReview.rating === rating){
             count++;
         }
@@ -265,6 +267,10 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
     if(count === 4){
         return await getReviewById(gameId,reviewId);
     }
+
+    specificReview._id = ObjectId(specificReview._id);
+    specificReview.gameId = ObjectId(specificReview.gameId);
+    specificReview.author._id = ObjectId(specificReview.author._id);
 
     const gamesCollection = await games();
     let parsedGameId = ObjectId(gameId);

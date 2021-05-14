@@ -122,24 +122,24 @@ router.post('/private/edit', async (req, res) => {
     const password = xss(req.body.editpassword).toString().trim();
 
     if(!firstName && !lastName && !email && !password){
-        res.status(400).render('users/edit', { error: "Nothing will be changed, at least one field must be supplied."});
+        res.status(400).render('users/edit', { error: "Nothing will be changed, at least one field must be supplied.", partial:"editUser"});
         return;
     }
 	 const emailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	 if (email && !emailPattern.test(email)){
-        res.status(400).render('users/edit', { error: "Invaild email."});
+        res.status(400).render('users/edit', { error: "Invaild email.", partial:"editUser"});
         return;
      }
 
      if (password && (password.length < 4 || password.length > 20)){
-        res.status(400).render('users/edit', { error: "Password is too long or too short."});
+        res.status(400).render('users/edit', { error: "Password is too long or too short.", partial:"editUser"});
         return;
      }
 
      try{
          let userInfo = await usersData.getUserById(req.session.user_id);
          if(!userInfo){
-            res.status(400).render('users/edit', { error: "User Not found."});
+            res.status(400).render('users/edit', { error: "User Not found.", partial:"editUser"});
             return;
          }
         
@@ -154,7 +154,7 @@ router.post('/private/edit', async (req, res) => {
 
          res.redirect('/private');
      } catch (e){
-        res.status(404).json({ error: 'User not found.'});
+        res.status(404).json({ error: 'User not found.', partial:"editUser"});
      }
 });
 
