@@ -34,10 +34,13 @@
         }
   
         let requestConfig = {
-                   method: 'GET',
-                   url: `/games/${id}/review/${reviewId}/replies`,
+                   method: 'POST',
+                   url: `/games/${id}/review/${reviewId}`,
                    contentType: 'application/json',
-               }
+                   data: JSON.stringify({
+                        reply:body
+                    })
+            };
               
                $.ajax(requestConfig).then(function(responseMessage) {
                    console.log(responseMessage);
