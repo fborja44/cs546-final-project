@@ -2,7 +2,7 @@
 * To check inputs of the editReview form, before submission.
 */
 
-(function()
+(function($)
     {
 
         $("#editReview-form").submit(function(event) {
@@ -15,7 +15,8 @@
         let rating = $("#reviewRating").val();
         let review = $("#reviewBody").val().trim();
     
-        
+        let parseRating = parseInt(rating);
+
         let error = false;
         let message = null;
     
@@ -24,8 +25,13 @@
             error = true;
             message = "Error: Title, rating or review is missing."
         }
+
+        if (!error && title.length >= 50) {
+            error = true;
+            message = "Error: The title must be less than 50 characters";
+        }
     
-        if (!error && ( rating < 1 || rating > 5)){
+        if (!error && ( parseRating < 1 || parseRating > 5)){
             error = true;
             message = "Error: The rating should between 1 and 5."
         }
@@ -40,4 +46,4 @@
     
     })
  }
-)();
+)(window.jQuery);

@@ -69,16 +69,14 @@ async function createReply(gameId, reviewId, userId, replyDate, reply) {
     if (reply.trim().length === 0) {
         throw "The reply must not be an empty string";
     }
+    if (reply.trim().length >= 1000) {
+        throw "The reply must be less than 1000 characters";
+    }
 
     const gameCollection = await games();
     const userCollection = await users();
 
-    let allUsers;
-    try {
-        allUsers = await userData.getAllUsers();
-    } catch (e) {
-        throw "Could not get all users";
-    }
+    let allUsers = await userCollection.find({}).toArray();
 
     let userInfo;
     try {
@@ -107,12 +105,8 @@ async function createReply(gameId, reviewId, userId, replyDate, reply) {
     }
 
 
-    let gameInfo;
-    try {
-        gameInfo = await gamesData.getGameById(gameId.trim());
-    } catch (e) {
-        throw "Invalid gameId. Cannot get game by id";
-    }
+    let gameInfo = await gameCollection.findOne({_id: parsedGameId});
+    if (gameInfo === null) throw "No game with that id";
 
     for (let x of gameInfo.reviews) {
         if (x._id.toString() === reviewId.trim()) {
