@@ -306,6 +306,11 @@ h1 {
     top: 1px;
 }
 
+.action-review:hover {
+    color: #2473a4;
+    cursor: pointer;
+}
+
 .comment-img {
     margin-left: 2px;
 }
