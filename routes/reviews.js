@@ -7,6 +7,15 @@ const reviewsData = data.reviews;
 const gamesData = data.games;
 const usersData = data.users;
 const replyData = data.replies;
+let nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'vgreviewsnotifications@gmail.com',
+    pass: "francisnaomibrianbing551!"
+  }
+});
 
 router.get('/:id/review/:reviewId', async (req, res) => {
     // Parse the game and review id
@@ -108,6 +117,9 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 });
 
+/**
+ * Route to post a review for a game.
+ */
 router.post('/:gameId', async (req, res) => {
     let gameId = xss(req.params.gameId);
     var today = new Date();
@@ -146,7 +158,6 @@ router.post('/:gameId', async (req, res) => {
         errors.push("Body can't exceed over 125 characters.");
     }
 
-
     if (!reviewPost.reviewRating) {
       errors.push('No rating provided');
     }
@@ -182,7 +193,38 @@ router.post('/:gameId', async (req, res) => {
           //adding the newly written review to the users database
         user.reviews.push(newReview);
         await usersData.addReviews(user._id,user.reviews);
-        return res.redirect(`/games/${game._id}`);
+
+        // Sending notifications
+        let listOfUsers = await usersData.getAllUsers();
+        let followers = [];
+        for (let x of listOfUsers) {
+            for (let y of x.follows) {
+                if (y._id === game._id) {
+                    followers.push(x);
+                    break;
+                }
+            }
+        }
+        for (let x of followers) {
+            if (req.session.user_id != x._id) { // only send to other users
+                let mailOptions = {
+                    from: "vgreviewsnotifications@gmail.com",
+                    to: `${x.email}`,
+                    subject: `VGReviews: New Review for ${game.title}`,
+                    text: `The user ${newReview.author.username} has posted a new review for the game ${game.title} with a score of ${newReview.rating}.`
+                };
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log('Email sent: ' + info.response);
+                    }
+                });
+            }
+
+        }
+        
+        return res.redirect(`/games/${game._id}/#${newReview._id}`);
 
     } catch (e) {
         console.log(e);
