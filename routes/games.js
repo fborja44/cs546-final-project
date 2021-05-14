@@ -499,7 +499,7 @@ router.post('/search', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         }
@@ -518,7 +518,7 @@ router.post('/search', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         }
@@ -631,9 +631,9 @@ router.post('/wishlist/:id', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
-            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
+            return res.status(500).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
     } else {
         try {
@@ -641,9 +641,9 @@ router.post('/wishlist/:id', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
-            return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
+            return res.status(500).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
     }
 });
@@ -757,7 +757,7 @@ router.post('/follow/:id', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }
@@ -776,7 +776,7 @@ router.post('/follow/:id', async (req, res) => {
             if (single === 'single') {
                 return res.redirect(`/games/${id.trim()}`);
             }
-            return res.redirect("/games");
+            return res.redirect(`/games/#${id.trim()}`);
         } catch (e) {
             return res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
         }

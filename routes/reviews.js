@@ -71,7 +71,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+        res.status(404).render("general/error", {title: "Error", error: errors, signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         return;
     }
 
@@ -80,7 +80,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     try {
         game = await gamesData.getGameById(gameId);
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: "Review not found.", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -89,7 +89,13 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     try {
         review = await reviewsData.getReviewById(gameId, reviewId);
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: "Review not found.", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        return;
+    }
+
+    // Check if user who posted review is the same as the currently logged in user
+    if (!req.session.user_id || req.session.user_id != review.author._id) {
+        res.status(400).render("general/error", {title: "Error", error: "You cannot edit another user's review.", signed_in: req.body.signed_in, status:"400", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
