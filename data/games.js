@@ -249,7 +249,7 @@ async function getGameById(id) {
 
     if (rating === null) throw "You must provide a rating";
     if (typeof rating !== 'number') throw "The provided rating is not a number";
-    if (rating > 5 || rating < 1) throw "Rating must be in the valid range of (1-5)";
+    if (rating > 5 || rating < 0) throw "Rating must be in the valid range of (0-5)"; // need to include 0 for N/A or empty reviews after deletion
     if (isNaN(rating)) throw "The provided rating must not be NaN";
 
     let parsedId = ObjectId(id);

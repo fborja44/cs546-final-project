@@ -363,7 +363,7 @@ router.post('/:reviewId/update', async (req, res) => {
             parseInt(xss(reviewPost.reviewRating))
             )
         }catch(e){
-            res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+            res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
             return;
         }
 
@@ -373,7 +373,7 @@ router.post('/:reviewId/update', async (req, res) => {
         try{
             updatedUserInfo = await usersData.deleteReview(user._id,user.reviews,reviewId);
         }catch(e){
-            res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+            res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
             return;
         }
 
@@ -382,7 +382,7 @@ router.post('/:reviewId/update', async (req, res) => {
         try{
             await usersData.addReviews(updatedUserInfo._id,updatedUserInfo.reviews);
         }catch(e){
-            res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+            res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
             return;
         }
 
@@ -688,7 +688,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
 
     if (errors.length > 0) {
         // console.log("error.");
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+        res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" });
         return;
     }
 
@@ -697,7 +697,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
     try {
         game = await gamesData.getGameById(gameId);
     } catch (e) {
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -707,7 +707,7 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
         review = await reviewsData.getReviewById(gameId, reviewId);
     } catch (e) {
         console.log(e);
-        res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+        res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
         return;
     }
 
@@ -725,34 +725,28 @@ router.post('/:id/:reviewId/delete', async (req, res) => {
 	 try {
 	   user = await usersData.getUserById(req.session.user_id);
 	 } catch (e) {
-	   return res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+	   return res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" });
 	 }
 
     //checking if the person who wrote the review is the user
     if(user.username === review.author.username && user._id === review.author._id){
-        //deleting review
         try{
+            //deleting review
             await reviewsData.deleteReview(gameId,reviewId);
-        }catch(e){
-            res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
-            return;
-        }
-        //deleting review from user db
-        try{
+            //deleting review from user db; do both in same try catch since might mess up database if it's deleting in one place and not the other
             await usersData.deleteReview(user._id,user.reviews,reviewId);
         }catch(e){
-            res.status(404).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"404", partial:"gameList" }); // CHANGE THIS
+            res.status(500).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"500", partial:"gameList" }); // CHANGE THIS
             return;
         }
 
         try {
             return res.redirect(`/games/${gameId}`);
         } catch (e) {
-            res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
+            res.status(500).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"500", partial:"gameList" });
             return;
         }
      }else{
-        console.log("user didnt write this review"); // CHANGE THIS
         res.status(401).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"400", error: "Unauthorized", partial:"gameList" });
         return;
     }

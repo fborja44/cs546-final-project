@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
 
     try {
         let game = await gamesData.getGameById(id);
-        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0 , user: req.session.user_id, signed_in: req.body.signed_in, partial:'gameList'});
+        res.render('games/single', { title: game.title, game: game, reviewEmpty: game.reviews.length === 0, user: req.session.user_id, signed_in: req.body.signed_in, partial:'gameList'});
     } catch (e) {
         res.status(404).render("general/error", {title: "Error", status:"404", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
