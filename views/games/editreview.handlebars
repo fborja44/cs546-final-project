@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/public/css/review.css">
 <div class ="review-container">
     {{#if review}}
-        <a id="return" href="/games/{{game._id}}">Back to Games List</a>
-        <h1>Edit Review</h1>
+        <a id="return" href="/games/{{game._id}}">Back to Game Page</a>
+        <h1>Edit Review for {{game.title}}</h1>
         <form id="editReview-form" method="POST" action="/games/{{review._id}}/update" class="new-review-post">
             <input name="gameTitle" value="{{review.gameTitle}}" type="hidden">
             <input name="gameId" value="{{review.gameId}}" type="hidden">

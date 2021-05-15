@@ -109,7 +109,7 @@ router.get('/:id/:reviewId/editreview', async (req, res) => {
     }
 
     try {
-        res.render('games/editreview', {title:review.reviewTitle, review:review, signed_in: req.body.signed_in, partial:'gameList'});
+        res.render('games/editreview', {title:review.reviewTitle, review:review, game: game, signed_in: req.body.signed_in, partial:'gameList'});
         return;
     } catch (e) {
         res.status(500).render("general/error", {title: "Error", signed_in: req.body.signed_in, status:"500", partial:"gameList" });
@@ -274,7 +274,13 @@ router.post('/:reviewId/update', async (req, res) => {
         errors.push('Missing id.');
     }
 
-    let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
+    let game;
+    try {
+        game = await gamesData.getGameByTitle(reviewPost.gameTitle);
+    } catch (e) {
+        return res.status(404).json({message: e});
+    }
+    
 
     let review;
     try{
@@ -289,6 +295,7 @@ router.post('/:reviewId/update', async (req, res) => {
          res.status(400).render('games/editreview', {
             title:review.reviewTitle,
             review:review,
+            game: game,
             errors: errors,
             hasErrors: true,
             signed_in: req.body.signed_in,
@@ -334,6 +341,7 @@ router.post('/:reviewId/update', async (req, res) => {
         res.status(400).render('games/editreview', {
             title:review.reviewTitle,
             review:review,
+            game:game,
             errors: errors,
             hasErrors: true,
             signed_in: req.body.signed_in,
