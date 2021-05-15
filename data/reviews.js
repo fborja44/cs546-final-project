@@ -67,9 +67,16 @@
     try { 
         gameInfo = await gamesData.getGameById(gameId)
         } catch(e){
-           throw "Invalid gameId. Can not get game by Id"
+           throw "Invalid gameId. Could get game by Id";
         }
     let parsedAuthorId = ObjectId(author._id.trim());
+
+    // Check if user had already posted a review for that game
+    for (review of gameInfo.reviews) {
+        if (review.author._id == author._id){
+            throw "Users may not post multiple reviews for a game.";
+        }
+    }
     
     let newReview = {
         _id: ObjectId(),
@@ -106,7 +113,11 @@
 
     // Also remember to update the game's average rating!
     let total = 0, avgRating;
-    let game = await gamesData.getGameById(gameId);
+    try {
+        game = await gamesData.getGameById(gameId);
+    } catch (e) {
+        throw `Game with id '${gameId} does not exist'`;
+    }
     for (let i = 0; i < game.reviews.length; i++) {
         let review = game.reviews[i];
         total += review.rating;
@@ -279,6 +290,27 @@ async function updateReview(gameId,reviewId, reviewTitle,author,reviewDate, revi
                                                "reviews._id":parseReviewId},
                                               {$set:{"reviews.$":specificReview}});
     if(updatedInfo.modifiedCount === 0) throw "Could not update reviews successfully."
+
+    // Also remember to update the game's average rating!
+    let total = 0, avgRating;
+    try {
+        game = await gamesData.getGameById(gameId);
+    } catch (e) {
+        throw `Game with id '${gameId} does not exist'`;
+    }
+    for (let i = 0; i < game.reviews.length; i++) {
+        let review = game.reviews[i];
+        total += review.rating;
+    }
+    avgRating = total/game.reviews.length;
+    // trim to 1 decimal
+    avgRating = parseFloat(avgRating.toFixed(1));
+    let updateGameRatingInfo;
+    try {
+        updateGameRatingInfo = await gamesData.updateGameRating(gameId, avgRating);
+    } catch (e) {
+        throw "Edit: Could not update game rating";
+    }
   
     return await getReviewById(gameId,reviewId);
 
@@ -308,6 +340,33 @@ async function deleteReview(gameId,reviewId){
   
     const updatedGameReview = gamesCollection.updateOne({"_id":parseGameId},{$pull:{"reviews": {"_id":parseReviewId} } });
     if(updatedGameReview.modifiedCount === 0) throw "could not delete review successfully."
+
+    // Also remember to update the game's average rating!
+    let total = 0, avgRating;
+    let game;
+    try {
+        game = await gamesData.getGameById(gameId);
+    } catch (e) {
+        throw `Game with id '${gameId} does not exist'`;
+    }
+    // Check if there are reviews left after deletion
+    if (game.reviews.length > 0) {
+        for (let i = 0; i < game.reviews.length; i++) {
+            let review = game.reviews[i];
+            total += review.rating;
+        }
+        avgRating = total/game.reviews.length;
+        // trim to 1 decimal
+        avgRating = parseFloat(avgRating.toFixed(1));
+    } else {
+        avgRating = 0;
+    }
+    let updateGameRatingInfo;
+    try {
+        updateGameRatingInfo = await gamesData.updateGameRating(gameId, avgRating);
+    } catch (e) {
+        throw "Delete: Could not update game rating";
+    }
 
     return "successful delete";
 }
