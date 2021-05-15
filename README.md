@@ -1,6 +1,37 @@
 # **cs546-final-project: Video Game Review Platform**
 Final Project for CS-546 Spring 2021 Group 37
 
+## Setup
+To run this project, you will need node.js, the package manager npm, and MongoDB.
+1. Use ```npm install`` to install all node module dependencies.
+3. Ensure that you have MongoDB running on your machine. Use ```npm run seed``` to populate the database with inital data.
+    - ```npm run clear``` will clear the database.
+4. Use ```npm start``` to start the server on ```localhost:3000```
+5. Open ```localhost:3000``` in a web browser.
+6. Now you are free to browse the site, sign-up, log-in, and view games and reviews!
+
+# Seed Script
+You can use the command ```npm run seed``` to populate the database with preset games, reviews and users.
+
+There are 15 games created in the script which can be interacted with, along with reviews for several of the games.
+
+Here is a list of the 5 preset Users:
+1. User 1
+    - Username: fborja44
+    - Password: supersecret
+2. User 2
+    - Username: naomi
+    - Password: password1
+2. User 3
+    - Username: brian
+    - Password: password2
+2. User 4
+    - Username: bingxin
+    - Password: password3
+2. User 5
+    - Username: BestProfessor
+    - Password: cs546spring
+
 ## Project Description
 This project will focus on making a web application where users will be able to share information about video games with other users. Users will be able to add video games that have not already been added to the site, write reviews on the game and also give the games a rating. Users will be able to discuss with other users over various aspects of the game such as its gameplay, pricing, upcoming updates, or other news. With these ratings and reviews, users will be able to search for games by rating, genre, and other categories in order to find games that they may be interested in, and see what other users are interested in as well.
 
