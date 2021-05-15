@@ -18,7 +18,6 @@
         let error = false;
         let message = null;
     
-    
         if (!error && (!title || !rating || !review)){
             error = true;
             message = "Error: Title, rating or review is missing."
@@ -28,7 +27,6 @@
             error = true;
             message = "Error: The rating should between 1 and 5."
         }
-    
     
         if (error){
             event.preventDefault();

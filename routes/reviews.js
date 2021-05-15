@@ -135,12 +135,34 @@ router.post('/:gameId', async (req, res) => {
         errors.push('Missing id.');
     }
 
-    let game = await gamesData.getGameByTitle(reviewPost.gameTitle);
-
-      // Make sure user is authenticated
+    let game;
+    try {
+        game = await gamesData.getGameByTitle(reviewPost.gameTitle);
+    } catch (e) {
+        return res.status(404).render("general/error", {title: "Error", error: e, signed_in: req.body.signed_in, status:"404", partial:"gameList" });
+    }
+    
+    // Make sure user is authenticated
     if (!req.session.user_id) {
         // User is not authenticated
         errors.push("You must login to write a review.");
+        res.status(400).render('games/single', {
+            title:game.title,
+            game:game,
+            errors: errors,
+            hasErrors: true,
+            signed_in: req.body.signed_in,
+            partial: 'gameList'
+        });
+        return;
+    }
+
+    // Check if user had already written a review
+    for (review of game.reviews) {
+        if (review.author._id.toString() == req.session.user_id.toString()){
+            errors.push('Users may not post multiple reviews for a game.');
+            break;
+        }
     }
 
     if (!reviewPost.reviewTitle || reviewPost.reviewTitle.trim().length===0) {
@@ -167,7 +189,8 @@ router.post('/:gameId', async (req, res) => {
             title:game.title,
             game:game,
             errors: errors,
-            hasErrors: true,
+            hasErrors: true, 
+            user: req.session.user_id,
             signed_in: req.body.signed_in,
             partial: 'gameList'
         });
