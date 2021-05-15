@@ -72,8 +72,8 @@
     let parsedAuthorId = ObjectId(author._id.trim());
 
     // Check if user had already posted a review for that game
-    for (review of gameInfo.reviews) {
-        if (review.author._id == author._id){
+    for (const x of gameInfo.reviews) {
+        if (x.author._id == author._id){
             throw "Users may not post multiple reviews for a game.";
         }
     }

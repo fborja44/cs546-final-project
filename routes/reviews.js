@@ -158,8 +158,8 @@ router.post('/:gameId', async (req, res) => {
     }
 
     // Check if user had already written a review
-    for (review of game.reviews) {
-        if (review.author._id.toString() == req.session.user_id.toString()){
+    for (const x of game.reviews) {
+        if (x.author._id.toString() == req.session.user_id.toString()){
             errors.push('Users may not post multiple reviews for a game.');
             break;
         }

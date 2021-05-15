@@ -14,7 +14,7 @@
         <ul class="review">
             {{#each user.reviews}}
              <li class="user-li">
-                <a class="game-link" href="/games/{{gameId}}">{{gameTitle}}: {{reviewTitle}}</a>
+                <a class="game-link" href="/games/{{gameId}}/#{{_id}}">{{gameTitle}}: {{reviewTitle}}</a>
             </li>
             {{/each}}
         </ul>
