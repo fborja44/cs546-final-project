@@ -43,11 +43,7 @@ router.get('/', async (req, res) => {
  */
  router.get('/new', async (req, res) => {
     try {
-        if (!req.session.user_id) {
-            res.redirect('/login');
-        } else {
-            res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
-        }
+        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
     } catch (e) {
         res.status(500).render("general/error", {title: "Error", status:"500", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
