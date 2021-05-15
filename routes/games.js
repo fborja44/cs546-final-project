@@ -43,7 +43,11 @@ router.get('/', async (req, res) => {
  */
  router.get('/new', async (req, res) => {
     try {
-        res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
+        if (!req.session.user_id) {
+            res.redirect('/login');
+        } else {
+            res.render('games/newgame', { title: "Add Game" , signed_in: req.body.signed_in, partial:'gameForm'});
+        }
     } catch (e) {
         res.status(500).render("general/error", {title: "Error", status:"500", error: e, signed_in: req.body.signed_in, partial: "gameList"});
     }
@@ -104,6 +108,11 @@ router.post('/new', async (req, res) => {
         gameData.newPrices.push(strippedVal);
     }
     let errors = [];
+
+    // Check if user is logged in
+    if (!req.session.user_id) {
+        return res.status(400).render("general/error", {title: "Error", error: "You must be logged in to post a new game.", status:"400", signed_in: req.body.signed_in, partial: "gameList"});
+    }
 
     // title error checking
     if (!gameData.newTitle) {
