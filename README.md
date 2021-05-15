@@ -3,7 +3,7 @@ Final Project for CS-546 Spring 2021 Group 37
 
 ## Setup
 To run this project, you will need node.js, the package manager npm, and MongoDB.
-1. Use ```npm install`` to install all node module dependencies.
+1. Use ```npm install``` to install all node module dependencies.
 3. Ensure that you have MongoDB running on your machine. Use ```npm run seed``` to populate the database with inital data.
     - ```npm run clear``` will clear the database.
 4. Use ```npm start``` to start the server on ```localhost:3000```
