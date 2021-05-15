@@ -128,52 +128,150 @@ const main = async () => {
     )
     let game8_id = game8._id.toString();
 
+    /* Game 9: Undertale
+    -----------------------------------------------------*/
+    let game9 = await gamesData.createGame(
+        "Undertale",
+        "https://nintendosoup.com/wp-content/uploads/2018/07/undertale-packaging-jp-2.jpg",
+        "Toby Fox",
+        ["RPG", "Indie"],
+        "2015",
+        ["PC", "Nintendo Switch"],
+        "Undertale is a 2D role-playing video game created by indie developer Toby Fox. The player controls a child who has fallen into the Underground: a large, secluded region under the surface of the Earth, separated by a magic barrier. The player meets various monsters during the journey back to the surface.",
+        [{ price: "$9.99", platform: "PC" }, { price: "$24.99", platform: "Nintendo Switch" }]
+    )
+    let game9_id = game9._id.toString();
+
+    /* Game 10: Grand Theft Auto V
+    -----------------------------------------------------*/
+    let game10 = await gamesData.createGame(
+        "Grand Theft Auto V",
+        "https://i.pinimg.com/originals/07/98/29/079829b12d2c514eec9dc50a78b05d18.jpg",
+        "Rockstar",
+        ["RPG", "Action", "Shooting", "Racing", "Open World"],
+        "2013",
+        ["PlayStation 4", "PlayStation 3", "XBox One", "XBox 360", "PC"],
+        "When a young street hustler, a retired bank robber and a terrifying psychopath find themselves entangled with some of the most frightening and deranged elements of the criminal underworld, the U.S. government and the entertainment industry, they must pull off a series of dangerous heists to survive in a ruthless city in which they can trust nobody, least of all each other.",
+        [{ price: "$29.99", platform: "PC" }, { price: "$29.99", platform: "XBox One" }]
+        )
+    let game10_id = game10._id.toString();
+
+    /* Game 11: Grand Theft Auto IV
+    -----------------------------------------------------*/
+    let game11 = await gamesData.createGame(
+        "Grand Theft Auto IV",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/b/b7/Grand_Theft_Auto_IV_cover.jpg/220px-Grand_Theft_Auto_IV_cover.jpg",
+        "Rockstar",
+        ["RPG", "Action", "Shooting", "Open World"],
+        "2008",
+        ["PlayStation 3", "XBox 360", "PC"],
+        "Niko Bellic, Johnny Klebitz, and Luis Lopez all have one thing in common – they live in the worst city in America.Liberty City worships money and status, and is heaven for those who have them and a living nightmare for those who don’t.",
+        [{ price: "$19.99", platform: "PC" }]
+        )
+    let game11_id = game11._id.toString();
+
+    /* Game 12: Street Fighter V
+    -----------------------------------------------------*/
+    let game12 = await gamesData.createGame(
+        "Street Fighter V",
+        "https://howlongtobeat.com/games/52448_Street_Fighter_V_Arcade_Edition.jpg",
+        "Capcom",
+        ["Fighting"],
+        "2016",
+        ["PlayStation 4", "PC"],
+        "Experience the intensity of head-to-head battle with Street Fighter® V! Choose from 16 iconic characters, each with their own personal story and unique training challenges, then battle against friends online or offline with a robust variety of match options.",
+        [{ price: "$19.99", platform: "PC" }, { price: "$19.99", platform: "PlayStation 4" }]
+        )
+    let game12_id = game12._id.toString();
+
+    /* Game 13: Madden NFL 20
+    -----------------------------------------------------*/
+    let game13 = await gamesData.createGame(
+        "Madden NFL 20",
+        "https://media.contentapi.ea.com/content/dam/ea/madden-nfl/madden-nfl-20/patrick-mahomes/common/m20-superstar-packart.png",
+        "EA Tiburon",
+        ["Sports", "Simulation"],
+        "2019",
+        ["PlayStation 4", "XBox One X"],
+        "Be the Face of an NFL franchise where the decisions you make matter in your journey to become an NFL Superstar in 'FACE OF THE FRANCHISE: QB1'. Feel the emotion, personality, and power of NFL Superstars with 'SUPERSTAR XFACTOR', an all-new abilities progression system that reveals special abilities for today's most exciting NFL Superstars heightening the level strategy and excitement in every game.",
+        [{ price: "$49.99", platform: "PlayStation 5" }, { price: "$49.99", platform: "XBox One X" }]
+        )
+    let game13_id = game13._id.toString();
+
+    /* Game 14: Super Mario Bros.
+    -----------------------------------------------------*/
+    let game14 = await gamesData.createGame(
+        "Super Mario Bros.",
+        "https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.png",
+        "Nintendo",
+        ["Platformer"],
+        "1985",
+        ["Nintendo Entertainment System", "Nintendo Switch"],
+        "In Super Mario Bros., the player takes on the role of Mario, the protagonist of the series. Mario's younger brother, Luigi, is controlled by the second player in the game's multiplayer mode and assumes the same plot role and functionality as Mario. The objective is to race through the Mushroom Kingdom, survive the main antagonist Bowser's forces, and save Princess Toadstool.",
+        [{ price: "$9.99", platform: "Nintendo Switch" }]
+        )
+        let game14_id = game14._id.toString();
+
+    /* Game 15: Tekken 7
+    -----------------------------------------------------*/
+    let game15 = await gamesData.createGame(
+        "Tekken 7",
+        "https://cdn-prod.scalefast.com/public/assets/user/122595/image/43e3e5ca83662bcd121a658e2d2389cd.png",
+        "BANDAI NAMCO",
+        ["Fighting"],
+        "2015",
+        ["PlayStation 4", "XBox One", "PC"],
+        "Discover the epic conclusion of the Mishima clan and unravel the reasons behind each step of their ceaseless fight. Powered by Unreal Engine 4, TEKKEN 7 features stunning story-driven cinematic battles and intense duels that can be enjoyed with friends and rivals alike through innovative fight mechanics.",
+        [{ price: "$49.99", platform: "PlayStation 4" }, { price: "$49.99", platform: "XBox One" }, { price: "$39.99", platform: "PC" }]
+        )
+    let game15_id = game15._id.toString();
+
     /* Creating Users
     ---------------------------------------------------------------------------*/
-    // let user1 = await usersData.createUser(
-    //     "fborja44",
-    //     "Francis",
-    //     "Borja",
-    //     "fborja@stevens.edu",
-    //     "supersecret"
-    // )
-    // let user1_id = user1._id.toString();
+    let user1 = await usersData.createUser(
+        "fborja44",
+        "Francis",
+        "Borja",
+        "fborja@stevens.edu",
+        "supersecret"
+    )
+    let user1_id = user1._id.toString();
 
-    // let user2 = await usersData.createUser(
-    //     "naomi",
-    //     "Naomi",
-    //     "Zheng",
-    //     "nzheng1@stevens.edu",
-    //     "password"
-    // )
-    // let user2_id = user2._id.toString();
+    let user2 = await usersData.createUser(
+        "naomi",
+        "Naomi",
+        "Zheng",
+        "nzheng1@stevens.edu",
+        "password1"
+    )
+    let user2_id = user2._id.toString();
 
-    // let user3 = await usersData.createUser(
-    //     "brian",
-    //     "Brian",
-    //     "Lee",
-    //     "elee9@stevens.edu",
-    //     "password"
-    // )
-    // let user3_id = user3._id.toString();
+    let user3 = await usersData.createUser(
+        "brian",
+        "Brian",
+        "Lee",
+        "elee9@stevens.edu",
+        "password2"
+    )
+    let user3_id = user3._id.toString();
 
-    // let user4 = await usersData.createUser(
-    //     "bingxin",
-    //     "Bingxin",
-    //     "Xia",
-    //     "bxia5@stevens.edu",
-    //     "password"
-    // )
-    // let user4_id = user4._id.toString();
+    let user4 = await usersData.createUser(
+        "bingxin",
+        "Bingxin",
+        "Xia",
+        "bxia5@stevens.edu",
+        "password3"
+    )
+    let user4_id = user4._id.toString();
 
-    // let user5 = await usersData.createUser(
-    //     "BestProfessor",
-    //     "Patrick",
-    //     "Hill",
-    //     "phill@stevens.edu",
-    //     "cs546spring"
-    // )
-    // let user5_id = user5._id.toString();
+    let user5 = await usersData.createUser(
+        "BestProfessor",
+        "Patrick",
+        "Hill",
+        "phill@stevens.edu",
+        "cs546spring"
+    )
+    let user5_id = user5._id.toString();
 
     /* Testing Users functions
     ---------------------------------------------------------------------------*/
@@ -196,172 +294,172 @@ const main = async () => {
 
     /* Creating reviews
     ---------------------------------------------------------------------------*/
-    // /* Game 1 Reviews: Cyberpunk 2077
-    // -------------------------------------*/
-    // let review1_1 = await reviewsData.createReview(
-    //     game1_id,
-    //     "nice",
-    //     { username: user1.username, _id: user1_id },
-    //     "4/18/2020",
-    //     "pretty cool",
-    //     4
-    // )
+    /* Game 1 Reviews: Cyberpunk 2077
+    -------------------------------------*/
+    let review1_1 = await reviewsData.createReview(
+        game1_id,
+        "It had potential",
+        { username: user1.username, _id: user1_id },
+        "4/18/2020",
+        "When Cyberpunk's grim setting and mix of gameplay systems land, it is a powerfully impressive experience - sprawling, dense, clever, witty, and most importantly damn good fun. Other times, it has all the charm of a moody, edgy teenager.",
+        4
+    )
     
-    // let reviewUser1 = [];
-    // reviewUser1.push(review1_1);
-    // await usersData.addReviews(user1._id, reviewUser1)
+    let reviewUser1 = [];
+    reviewUser1.push(review1_1);
+    await usersData.addReviews(user1._id, reviewUser1)
 
-    // let review1_2 = await reviewsData.createReview(
-    //     game1_id,
-    //     "sucks",
-    //     { username: user2.username, _id: user2_id },
-    //     "4/15/2020",
-    //     "this game sucks",
-    //     1
-    // )
+    let review1_2 = await reviewsData.createReview(
+        game1_id,
+        "Disappointing",
+        { username: user2.username, _id: user2_id },
+        "4/15/2020",
+        "Is this a 1/5 game? No. But is that the equivalent rating to what they explicitly marketed the game to be? Yes. It isn't a simple coincidence that millions of people expected so much more from the game, the high expectations and hype were manufactured to the sole benefit of CD Projekt Red.",
+        1
+    )
 
-    // let reviewUser2 = [];
-    // reviewUser2.push(review1_2);
-    // await usersData.addReviews(user2._id, reviewUser2)
+    let reviewUser2 = [];
+    reviewUser2.push(review1_2);
+    await usersData.addReviews(user2._id, reviewUser2)
 
-    // let review1_3 = await reviewsData.createReview(
-    //     game1_id,
-    //     "ok i guess",
-    //     { username: user3.username, _id: user3_id },
-    //     "1/12/2021",
-    //     "it was ok",
-    //     3
-    // )
+    let review1_3 = await reviewsData.createReview(
+        game1_id,
+        "It Was Alright",
+        { username: user3.username, _id: user3_id },
+        "1/12/2021",
+        "It was an ok game, didn't really see much wrong, or anything out of the ordinary.",
+        3
+    )
 
-    // let reviewUser3 = [];
-    // reviewUser3.push(review1_3);
-    // await usersData.addReviews(user3._id, reviewUser3)
+    let reviewUser3 = [];
+    reviewUser3.push(review1_3);
+    await usersData.addReviews(user3._id, reviewUser3)
 
-    // /* Game 2 Reviews: Breath of the Wild
-    // -------------------------------------*/
-    // let review2_1 = await reviewsData.createReview(
-    //     game2_id,
-    //     "This Game is Awesome!",
-    //     { username: user2.username, _id: user2_id },
-    //     "4/18/2017",
-    //     "This is the greatest game ever! Nintendo really outdid themselves",
-    //     5
-    // )
+    /* Game 2 Reviews: Breath of the Wild
+    -------------------------------------*/
+    let review2_1 = await reviewsData.createReview(
+        game2_id,
+        "This Game is Awesome!",
+        { username: user2.username, _id: user2_id },
+        "4/18/2017",
+        "This is the greatest game ever! Nintendo really outdid themselves",
+        5
+    )
     
-    // reviewUser2.push(review2_1);
-    // await usersData.addReviews(user2._id, reviewUser2)
+    reviewUser2.push(review2_1);
+    await usersData.addReviews(user2._id, reviewUser2)
 
-    // let review2_2 = await reviewsData.createReview(
-    //     game2_id,
-    //     "Could be better.",
-    //     { username: user4.username, _id: user4_id },
-    //     "6/23/2018",
-    //     "It was an ok game I guess.",
-    //     3
-    // )
+    let review2_2 = await reviewsData.createReview(
+        game2_id,
+        "Could be better.",
+        { username: user4.username, _id: user4_id },
+        "6/23/2018",
+        "This game seemed really nice, but I've played better games.",
+        3
+    )
 
-    // let reviewUser4 = [];
-    // reviewUser4.push(review2_2);
-    // await usersData.addReviews(user4._id, reviewUser4)
+    let reviewUser4 = [];
+    reviewUser4.push(review2_2);
+    await usersData.addReviews(user4._id, reviewUser4)
 
-    // let review2_3 = await reviewsData.createReview(
-    //     game2_id,
-    //     "5 Stars",
-    //     { username: user5.username, _id: user5_id },
-    //     "6/23/2018",
-    //     "^^^",
-    //     5
-    // )
+    let review2_3 = await reviewsData.createReview(
+        game2_id,
+        "5 Stars",
+        { username: user5.username, _id: user5_id },
+        "6/23/2018",
+        "Simply Amazing. This is the best game I've played in this entire generation of hardware. The game is beautiful, combat is fun, the shrines have been delightful- I'm very, very impressed.",
+        5
+    )
     
-    // let reviewUser5 = [];
-    // reviewUser5.push(review2_3);
-    // await usersData.addReviews(user5._id, reviewUser5)
+    let reviewUser5 = [];
+    reviewUser5.push(review2_3);
+    await usersData.addReviews(user5._id, reviewUser5)
 
-    // let review2_4 = await reviewsData.createReview(
-    //     game2_id,
-    //     "lol",
-    //     { username: user1.username, _id: user1_id },
-    //     "2/15/2019",
-    //     "this is a review",
-    //     5
-    // )
+    let review2_4 = await reviewsData.createReview(
+        game2_id,
+        "GOTY",
+        { username: user1.username, _id: user1_id },
+        "2/15/2019",
+        "Amazing sound track. Fun gameplay and mechanics. Nice graphics and art style.",
+        5
+    )
     
-    // reviewUser1.push(review2_4);
-    // await usersData.addReviews(user1._id, reviewUser1)
+    reviewUser1.push(review2_4);
+    await usersData.addReviews(user1._id, reviewUser1)
 
-    // /* Game 3 Reviews: Valorant
-    // -------------------------------------*/
-    // let review3_1 = await reviewsData.createReview(
-    //     game3_id,
-    //     "this game is bad",
-    //     { username: user3.username, _id: user3_id },
-    //     "5/1/2021",
-    //     "its not good",
-    //     1
-    // )
-    // reviewUser3.push(review3_1);
-    // await usersData.addReviews(user3._id, reviewUser3)
+    /* Game 3 Reviews: Valorant
+    -------------------------------------*/
+    let review3_1 = await reviewsData.createReview(
+        game3_id,
+        "This game is bad",
+        { username: user3.username, _id: user3_id },
+        "5/1/2021",
+        "it's not good",
+        1
+    )
+    reviewUser3.push(review3_1);
+    await usersData.addReviews(user3._id, reviewUser3)
 
-    // /* Game 4 Reviews: Emerald
-    // -------------------------------------*/
-    // let review4_1 = await reviewsData.createReview(
-    //     game4_id,
-    //     "title",
-    //     { username: user1.username, _id: user1_id },
-    //     "1/1/2000",
-    //     "dope",
-    //     4
-    // )
-    // reviewUser1.push(review4_1);
-    // await usersData.addReviews(user1._id, reviewUser1)
+    /* Game 4 Reviews: Emerald
+    -------------------------------------*/
+    let review4_1 = await reviewsData.createReview(
+        game4_id,
+        "Classic",
+        { username: user1.username, _id: user1_id },
+        "1/1/2000",
+        "One of my favorite games from my childhood.",
+        4
+    )
+    reviewUser1.push(review4_1);
+    await usersData.addReviews(user1._id, reviewUser1)
     
-    // /* Game 6 Reviews: NBA 2K20
-    // -----------------------------------------------------*/
-    // let review6_1 = await reviewsData.createReview(
-    //     game6_id,
-    //     "kd is a snake",
-    //     { username: user4.username, _id: user4_id },
-    //     "8/23/2020",
-    //     "sssss",
-    //     2
-    // )
-    // reviewUser4.push(review6_1);
-    // await usersData.addReviews(user4._id, reviewUser4)
+    /* Game 6 Reviews: NBA 2K20
+    -----------------------------------------------------*/
+    let review6_1 = await reviewsData.createReview(
+        game6_id,
+        "KD is a snake",
+        { username: user4.username, _id: user4_id },
+        "8/23/2020",
+        "sssss",
+        2
+    )
+    reviewUser4.push(review6_1);
+    await usersData.addReviews(user4._id, reviewUser4)
 
-    // /* Game 8 Reviews: Hades
-    // -------------------------------------*/
-    // let review8_1 = await reviewsData.createReview(
-    //     game8_id,
-    //     "The Best Game Ever",
-    //     { username: user2.username, _id: user2_id },
-    //     "11/9/2020",
-    //     "Supergiant always makes awesome games!",
-    //     5
-    // )
-    // reviewUser2.push(review8_1);
-    // await usersData.addReviews(user2._id, reviewUser2)
+    /* Game 8 Reviews: Hades
+    -------------------------------------*/
+    let review8_1 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever",
+        { username: user2.username, _id: user2_id },
+        "11/9/2020",
+        "Supergiant always makes awesome games!",
+        5
+    )
+    reviewUser2.push(review8_1);
+    await usersData.addReviews(user2._id, reviewUser2)
 
-    // let review8_2 = await reviewsData.createReview(
-    //     game8_id,
-    //     "The Best Game Ever2",
-    //     { username: user5.username, _id: user5_id },
-    //     "11/9/2020",
-    //     "Supergiant always makes awesome games!",
-    //     4
-    // )
-    // reviewUser5.push(review8_2);
-    // await usersData.addReviews(user5._id, reviewUser5)
+    let review8_2 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever2",
+        { username: user5.username, _id: user5_id },
+        "11/9/2020",
+        "I agree!",
+        4
+    )
+    reviewUser5.push(review8_2);
+    await usersData.addReviews(user5._id, reviewUser5)
 
-    // let review8_3 = await reviewsData.createReview(
-    //     game8_id,
-    //     "The Best Game Ever3",
-    //     { username: user1.username, _id: user1_id },
-    //     "11/9/2020",
-    //     "Supergiant always makes awesome games!",
-    //     4
-    // )
-    // reviewUser1.push(review8_3);
-    // await usersData.addReviews(user1._id, reviewUser1)
+    let review8_3 = await reviewsData.createReview(
+        game8_id,
+        "The Best Game Ever3",
+        { username: user1.username, _id: user1_id },
+        "11/9/2020",
+        "Me too!",
+        4
+    )
+    reviewUser1.push(review8_3);
+    await usersData.addReviews(user1._id, reviewUser1)
 
     /* Testing Games functions
     ---------------------------------------------------------------------------*/
